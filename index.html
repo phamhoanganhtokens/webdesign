@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHẠM HOÀNG ANH - AI AGENT CEO</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blackMystic: '#020617',
+                        silverAccent: '#e2e8f0',
+                        neonBlue: '#38bdf8',
+                        deepBlue: '#0f172a',
+                    },
+                    animation: {
+                        'float': 'float 20s infinite alternate linear',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+        /* Explicit requirement: Times New Roman */
+        * {
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        body {
+            background-color: #020617;
+            color: #e2e8f0;
+            margin: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        p, .description-text {
+            text-align: justify !important;
+            text-justify: inter-word;
+            line-height: 1.6;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-border-glow:hover {
+            border: 1px solid rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        #background-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .cube {
+            position: absolute;
+            background: rgba(56, 189, 248, 0.03);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .rotate-wrapper {
+            perspective: 2000px;
+        }
+
+        .section-rotate {
+            transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.2s;
+            transform-style: preserve-3d;
+        }
+
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(100px) rotateX(-10deg);
+        }
+
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        .dock {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 3rem;
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .dock-item {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            font-size: 1.4rem;
+            color: #94a3b8;
+            position: relative;
+        }
+
+        .dock-item:hover {
+            transform: translateY(-8px) scale(1.2);
+            color: #38bdf8;
+        }
+
+        .dock-item::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .dock-item:hover::after {
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        .fade-rise {
+            animation: fadeRise 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeRise {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Abstract Background -->
+    <div id="background-3d"></div>
+
+    <!-- Floating Dock Navigation -->
+    <nav class="dock">
+        <a href="#hero" class="dock-item" data-label="Trang chủ"><i class="fas fa-home"></i></a>
+        <a href="#services" class="dock-item" data-label="Dịch vụ"><i class="fas fa-layer-group"></i></a>
+        <a href="#vision" class="dock-item" data-label="Tầm nhìn"><i class="fas fa-eye"></i></a>
+        <a href="#projects" class="dock-item" data-label="Dự án"><i class="fas fa-code-branch"></i></a>
+        <a href="#faq" class="dock-item" data-label="Hỏi đáp"><i class="fas fa-question-circle"></i></a>
+        <a href="#contact" class="dock-item" data-label="Liên hệ"><i class="fas fa-envelope"></i></a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden section-rotate">
+        <div class="max-w-4xl text-center z-10">
+            <h2 class="text-xl md:text-2xl font-light tracking-[0.3em] uppercase mb-4 text-silverAccent/60 fade-rise" style="animation-delay: 0.2s">AI Software Development</h2>
+            <h1 class="text-5xl md:text-8xl font-bold mb-6 tracking-tight fade-rise" style="animation-delay: 0.4s">
+                PHẠM HOÀNG ANH<br>
+                <span class="gradient-text">AI AGENT CEO</span>
+            </h1>
+            <div class="glass p-8 rounded-3xl mb-10 fade-rise" style="animation-delay: 0.6s">
+                <p class="text-lg md:text-xl text-silverAccent/80">
+                    Chào mừng bạn đến với kỷ nguyên của tự động hóa thông minh. Tôi là chuyên gia tiên phong trong lĩnh vực điều hành và phát triển hệ thống trí tuệ nhân tạo (AI Software Development). Với sứ mệnh tối ưu hóa quy trình doanh nghiệp, chúng tôi kiến tạo các tác tử AI thông minh, giúp chuyển đổi cách thức vận hành truyền thống sang mô hình kỹ thuật số toàn diện, mang lại hiệu suất vượt trội và giá trị bền vững cho tổ chức của bạn.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 justify-center fade-rise" style="animation-delay: 0.8s">
+                <a href="#services" class="px-8 py-4 bg-sky-500 hover:bg-sky-400 text-black font-bold rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-sky-500/20">
+                    Khám phá giải pháp AI
+                </a>
+                <a href="#contact" class="px-8 py-4 border border-white/20 hover:bg-white/10 text-white font-bold rounded-full transition-all hover:scale-105 active:scale-95">
+                    Liên hệ ngay
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 section-rotate section-hidden">
+        <div class="max-w-6xl w-full">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4">Dịch Vụ Chuyên Biệt</h2>
+                <div class="w-24 h-1 bg-sky-500 mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- AI Real Estate -->
+                <div class="glass p-10 rounded-[2rem] glass-border-glow group transition-all duration-500">
+                    <div class="w-16 h-16 bg-sky-500/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-sky-500/20 transition-colors">
+                        <i class="fas fa-building text-3xl text-sky-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6">AI Bất Động Sản</h3>
+                    <p class="text-silverAccent/70 mb-0">Tự động hóa hoàn toàn quy trình phân tích dữ liệu thị trường, định giá tài sản dựa trên học máy và triển khai hệ thống chatbot tư vấn khách hàng đa nền tảng 24/7. Chúng tôi giúp các sàn giao dịch nắm bắt xu hướng nhanh chóng và tăng tỷ lệ chuyển đổi khách hàng tiềm năng.</p>
+                </div>
+
+                <!-- AI Trading -->
+                <div class="glass p-10 rounded-[2rem] glass-border-glow group transition-all duration-500">
+                    <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-purple-500/20 transition-colors">
+                        <i class="fas fa-chart-line text-3xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6">AI Trading</h3>
+                    <p class="text-silverAccent/70 mb-0">Phát triển hệ thống thuật toán dự báo xu hướng thị trường tài chính, quản lý rủi ro thông minh và thực thi giao dịch tự động với độ trễ cực thấp. Giải pháp của chúng tôi tối ưu hóa lợi nhuận dựa trên các mô hình xác suất thống kê và AI tiên tiến nhất hiện nay.</p>
+                </div>
+
+                <!-- AI Crypto -->
+                <div class="glass p-10 rounded-[2rem] glass-border-glow group transition-all duration-500">
+                    <div class="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-amber-500/20 transition-colors">
+                        <i class="fas fa-coins text-3xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6">AI Crypto</h3>
+                    <p class="text-silverAccent/70 mb-0">Chuyên sâu phân tích dữ liệu on-chain, theo dõi biến động thị trường tiền điện tử theo thời gian thực và tối ưu hóa danh mục đầu tư bằng AI. Hệ thống cảnh báo sớm giúp nhà đầu tư đưa ra quyết định chính xác trong môi trường thị trường đầy biến động.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section id="vision" class="min-h-screen flex items-center justify-center px-6 py-24 section-rotate section-hidden">
+        <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl md:text-6xl font-bold mb-8">Tầm Nhìn Chiến Lược</h2>
+                <div class="glass p-8 rounded-3xl border-l-4 border-sky-500">
+                    <p class="text-xl italic text-silverAccent/90 leading-relaxed">
+                        "Tầm nhìn của chúng tôi không chỉ dừng lại ở việc áp dụng công nghệ, mà là định hình lại toàn bộ ngành công nghiệp phần mềm thông qua trí tuệ nhân tạo. Chúng tôi tập trung vào việc kiến tạo những thực thể AI có khả năng tự tư duy, tự học hỏi và giải quyết các vấn đề phức tạp một cách độc lập. Điều này cho phép con người giải phóng khỏi những công việc lặp đi lặp lại, tập trung tối đa nguồn lực vào những giá trị sáng tạo cốt lõi và những quyết định mang tính chiến lược cao cả."
+                    </p>
+                </div>
+            </div>
+            <div class="relative group">
+                <div class="absolute -inset-4 bg-sky-500/20 blur-3xl group-hover:bg-sky-500/30 transition duration-1000"></div>
+                <div class="relative glass rounded-[2.5rem] overflow-hidden aspect-video flex items-center justify-center">
+                    <!-- Representational SVG for "Innovation/AI" -->
+                    <svg class="w-1/2 h-1/2 text-sky-500/20 animate-pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a10 10 0 1 0 10 10H12V2zM12 12L2.7 7.3"></path>
+                        <path d="M12 12l9.3 4.7"></path>
+                        <path d="M12 12l-4.7 9.3"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <div class="absolute inset-0 bg-sky-500/5 mix-blend-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Carousel Section -->
+    <section id="projects" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 section-rotate section-hidden">
+        <div class="max-w-6xl w-full">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4">Dự Án Tiêu Biểu</h2>
+                <div class="w-24 h-1 bg-sky-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative glass rounded-[3rem] p-4 md:p-12 overflow-hidden group">
+                <div id="project-carousel" class="carousel-track">
+                    <!-- Project 1 -->
+                    <div class="min-w-full flex flex-col md:flex-row gap-12 items-center px-4">
+                        <div class="w-full md:w-1/2 aspect-video glass rounded-2xl overflow-hidden relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-purple-500/20 flex items-center justify-center">
+                                <i class="fas fa-robot text-8xl text-white/10 group-hover:scale-110 transition duration-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <h3 class="text-3xl font-bold mb-4">Alpha Trading Bot</h3>
+                            <p class="text-sky-400 font-mono text-sm mb-6 uppercase tracking-widest">Tech: Python, TensorFlow, WebSockets</p>
+                            <p class="text-lg text-silverAccent/80">Hệ thống giao dịch tần suất cao đạt lợi nhuận trung bình 15%/tháng với chỉ số rủi ro cực thấp. Áp dụng mạng thần kinh nhân tạo RNN để dự báo giá ngắn hạn.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="min-w-full flex flex-col md:flex-row gap-12 items-center px-4">
+                        <div class="w-full md:w-1/2 aspect-video glass rounded-2xl overflow-hidden relative group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-sky-500/20 flex items-center justify-center">
+                                <i class="fas fa-city text-8xl text-white/10 group-hover:scale-110 transition duration-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <h3 class="text-3xl font-bold mb-4">RealEstate AI Insight</h3>
+                            <p class="text-sky-400 font-mono text-sm mb-6 uppercase tracking-widest">Tech: React, Node.js, Scikit-learn</p>
+                            <p class="text-lg text-silverAccent/80">Nền tảng định giá bất động sản dựa trên vị trí và lịch sử giá, giúp các nhà đầu tư cá nhân tìm kiếm các cơ hội đầu tư sinh lời ẩn giấu trên bản đồ đô thị.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Nav -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-sky-500/20 transition-all z-20 group-hover:opacity-100 md:opacity-0">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-sky-500/20 transition-all z-20 group-hover:opacity-100 md:opacity-0">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 section-rotate section-hidden">
+        <div class="max-w-3xl w-full">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4">Hỏi Đáp Thông Minh</h2>
+                <p class="text-silverAccent/60">Giải đáp nhanh các thắc mắc về hệ thống AI của chúng tôi</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass rounded-2xl transition-all duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-6 text-left">
+                        <span class="text-lg md:text-xl font-bold">AI Agent là gì và nó giúp ích gì cho doanh nghiệp?</span>
+                        <i class="fas fa-plus faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6">
+                        <p class="text-silverAccent/70">AI Agent là một thực thể trí tuệ nhân tạo có khả năng thực hiện nhiệm vụ một cách chủ động dựa trên các mục tiêu được thiết lập. Đối với doanh nghiệp, AI Agent giúp tự động hóa quy trình, giảm thiểu sai sót do con người và cung cấp khả năng phân tích dữ liệu quy mô lớn trong tích tắc.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass rounded-2xl transition-all duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-6 text-left">
+                        <span class="text-lg md:text-xl font-bold">Chi phí triển khai hệ thống AI có cao không?</span>
+                        <i class="fas fa-plus faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6">
+                        <p class="text-silverAccent/70">Chúng tôi cung cấp các gói giải pháp linh hoạt từ cơ bản đến nâng cao. Chi phí phụ thuộc vào độ phức tạp của quy trình cần tự động hóa. Tuy nhiên, tỷ lệ hoàn vốn (ROI) là rất nhanh chóng thông qua việc tiết kiệm nhân lực và tối ưu hóa doanh thu.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass rounded-2xl transition-all duration-300">
+                    <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between p-6 text-left">
+                        <span class="text-lg md:text-xl font-bold">Làm sao để đảm bảo bảo mật dữ liệu khi dùng AI?</span>
+                        <i class="fas fa-plus faq-icon transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6">
+                        <p class="text-silverAccent/70">Bảo mật là ưu tiên hàng đầu của chúng tôi. Các hệ thống AI được xây dựng trên hạ tầng bảo mật cao cấp, mã hóa dữ liệu đầu cuối và tuân thủ các tiêu chuẩn quốc tế về bảo vệ thông tin người dùng.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="min-h-screen flex flex-col items-center justify-center px-6 py-24 section-rotate section-hidden">
+        <div class="max-w-6xl w-full">
+            <div class="glass rounded-[3rem] overflow-hidden flex flex-col lg:flex-row">
+                <!-- Info Column -->
+                <div class="lg:w-2/5 bg-sky-500 p-12 text-blackMystic">
+                    <h2 class="text-4xl font-bold mb-8">Liên Hệ Hợp Tác</h2>
+                    <p class="text-lg mb-12 opacity-80">Sẵn sàng để đưa doanh nghiệp của bạn vào kỷ nguyên AI? Hãy liên hệ với chúng tôi để bắt đầu hành trình chuyển đổi số.</p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-black/10 rounded-full flex items-center justify-center"><i class="fas fa-envelope"></i></div>
+                            <span class="font-bold">ceo@phamhoanganhtokens.com</span>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-black/10 rounded-full flex items-center justify-center"><i class="fas fa-globe"></i></div>
+                            <span class="font-bold">www.phamhoanganhtokens.com</span>
+                        </li>
+                    </ul>
+
+                    <div class="mt-20 flex gap-6">
+                        <a href="#" class="text-2xl hover:scale-110 transition-transform"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-2xl hover:scale-110 transition-transform"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl hover:scale-110 transition-transform"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="lg:w-3/5 p-12 bg-deepBlue/40">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm uppercase tracking-widest text-silverAccent/50">Họ và tên</label>
+                                <input type="text" placeholder="Nguyễn Văn A" class="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-sky-500 transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm uppercase tracking-widest text-silverAccent/50">Email</label>
+                                <input type="email" placeholder="example@domain.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-sky-500 transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm uppercase tracking-widest text-silverAccent/50">Lời nhắn</label>
+                            <textarea rows="5" placeholder="Bạn đang quan tâm đến giải pháp AI nào?" class="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-sky-500 transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-5 bg-sky-500 hover:bg-sky-400 text-black font-bold rounded-xl transition-all shadow-lg shadow-sky-500/20 active:scale-[0.98]">
+                            Gửi yêu cầu ngay
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Explicit requirement: Minimalist Footer within Contact or as separate -->
+            <div class="text-center mt-20 text-silverAccent/40 space-y-2">
+                <p>© 2026 PHẠM HOÀNG ANH - AI AGENT CEO. Bảo lưu mọi quyền.</p>
+                <p class="text-sm font-mono">WWW.PHAMHOANGANHTOKENS.COM</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- 3D Background Setup ---
+        const bg = document.getElementById('background-3d');
+        const cubeCount = 25;
+        for (let i = 0; i < cubeCount; i++) {
+            const cube = document.createElement('div');
+            cube.className = 'cube';
+            const size = Math.random() * 80 + 20;
+            cube.style.width = `${size}px`;
+            cube.style.height = `${size}px`;
+            cube.style.left = `${Math.random() * 100}%`;
+            cube.style.top = `${Math.random() * 100}%`;
+            cube.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            cube.style.animationDelay = `${Math.random() * -20}s`;
+            bg.appendChild(cube);
+        }
+
+        // Parallax effect on cubes based on mouse
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            const cubes = document.querySelectorAll('.cube');
+            cubes.forEach((cube, index) => {
+                const depth = (index % 5) + 1;
+                const moveX = (x - 0.5) * 50 * depth;
+                const moveY = (y - 0.5) * 50 * depth;
+                cube.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${x * 360}deg)`;
+            });
+        });
+
+        // --- macOS Rotating Scroll Effect ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -10% 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('section-hidden');
+                    entry.target.classList.add('section-visible');
+                } else {
+                    // Option: remove to allow re-animating when scrolling up
+                    // entry.target.classList.add('section-hidden');
+                    // entry.target.classList.remove('section-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-rotate').forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Carousel Logic ---
+        let currentSlide = 0;
+        const totalSlides = 2; // Fixed as per provided content
+
+        function updateCarousel() {
+            const track = document.getElementById('project-carousel');
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        // --- FAQ Accordion Logic ---
+        function toggleFAQ(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.faq-item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.faq-icon').className = 'fas fa-plus faq-icon transition-transform duration-300';
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                button.querySelector('.faq-icon').className = 'fas fa-minus faq-icon transition-transform duration-300';
+            }
+        }
+    </script>
+</body>
+</html>

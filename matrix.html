@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Software Development - Kỷ Nguyên Mới của Hiệu Suất</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'matrix-green': '#00FF41',
+                        'neon-green': '#00FF9F',
+                        'deep-navy': '#0A1428',
+                        'glass-bg': 'rgba(10, 20, 40, 0.7)',
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['"Times New Roman"', 'serif'],
+                        mono: ['Courier New', 'monospace'],
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        glow: {
+                            'from': { boxShadow: '0 0 5px #00FF9F, 0 0 10px #00FF9F' },
+                            'to': { boxShadow: '0 0 20px #00FF9F, 0 0 30px #00FF9F' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .glass {
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .neon-text {
+            color: #00FF9F;
+            text-shadow: 0 0 10px rgba(0, 255, 159, 0.5);
+        }
+
+        .neon-button {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #00FF9F;
+        }
+
+        .neon-button:hover {
+            background: #00FF9F;
+            color: #000;
+            box-shadow: 0 0 20px #00FF9F;
+        }
+
+        .fade-rise {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-rise.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .carousel-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+        
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 500px;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .justify-text {
+            text-align: justify;
+        }
+
+        /* 3D Transform for Vision Section */
+        .perspective-container {
+            perspective: 1000px;
+        }
+        
+        .mac-rotate {
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .mac-rotate:hover {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        #scroll-to-top {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Matrix Background -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="fixed w-full z-50 transition-all duration-300 px-6 py-4" id="main-header">
+        <nav class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-3">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-neon-green rounded-lg flex items-center justify-center">
+                    <span class="text-black font-extrabold text-xl font-display">AI</span>
+                </div>
+                <span class="text-xl font-display font-bold tracking-tighter">FUTURE<span class="text-neon-green">SOFT</span></span>
+            </div>
+            
+            <ul class="hidden md:flex items-center gap-8 font-display text-sm font-semibold tracking-widest uppercase">
+                <li><a href="#hero" class="hover:text-neon-green transition-colors">Trang Chủ</a></li>
+                <li><a href="#vision" class="hover:text-neon-green transition-colors">Tầm Nhìn</a></li>
+                <li><a href="#projects" class="hover:text-neon-green transition-colors">Dự Án</a></li>
+                <li><a href="#faq" class="hover:text-neon-green transition-colors">Hỏi Đáp</a></li>
+                <li><a href="#footer" class="hover:text-neon-green transition-colors">Liên Hệ</a></li>
+            </ul>
+
+            <button id="menu-btn" class="md:hidden text-white focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] glass flex flex-col items-center justify-center gap-8 md:hidden">
+        <button id="close-menu" class="absolute top-8 right-8 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <a href="#hero" class="text-3xl font-display font-bold hover:text-neon-green" onclick="toggleMenu()">TRANG CHỦ</a>
+        <a href="#vision" class="text-3xl font-display font-bold hover:text-neon-green" onclick="toggleMenu()">TẦM NHÌN</a>
+        <a href="#projects" class="text-3xl font-display font-bold hover:text-neon-green" onclick="toggleMenu()">DỰ ÁN</a>
+        <a href="#faq" class="text-3xl font-display font-bold hover:text-neon-green" onclick="toggleMenu()">HỎI ĐÁP</a>
+        <a href="#footer" class="text-3xl font-display font-bold hover:text-neon-green" onclick="toggleMenu()">LIÊN HỆ</a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-20">
+            <div class="max-w-4xl w-full glass p-12 md:p-20 rounded-[3rem] text-center fade-rise">
+                <h1 class="text-5xl md:text-8xl font-display font-extrabold mb-6 leading-tight">
+                    KIẾN TẠO <br> <span class="neon-text">KỶ NGUYÊN AI</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-10 text-gray-300 font-light max-w-2xl mx-auto">
+                    Chúng tôi không chỉ viết code, chúng tôi thiết kế tương lai thông qua những giải pháp trí tuệ nhân tạo đột phá, giúp doanh nghiệp bứt phá mọi giới hạn.
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                    <a href="#projects" class="neon-button px-10 py-4 rounded-full font-display font-bold text-lg w-full md:w-auto">
+                        Khám Phá Giải Pháp
+                    </a>
+                    <a href="#footer" class="glass px-10 py-4 rounded-full font-display font-bold text-lg hover:border-neon-green transition-all w-full md:w-auto">
+                        Liên Hệ Ngay
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Section -->
+        <section id="vision" class="py-24 px-6">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                <div class="fade-rise">
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-8 neon-text uppercase tracking-tighter">Tầm Nhìn Cốt Lõi</h2>
+                    <div class="space-y-6 text-lg leading-relaxed justify-text text-gray-200">
+                        <p>
+                            Tại <strong>FutureSoft AI</strong>, chúng tôi tin rằng trí tuệ nhân tạo không phải là một công cụ xa lạ, mà là người bạn đồng hành mật thiết trong hành trình phát triển của nhân loại. Tầm nhìn của chúng tôi là dân chủ hóa sức mạnh của AI, đưa những công nghệ phức tạp nhất vào tay các doanh nghiệp ở mọi quy mô.
+                        </p>
+                        <p>
+                            Chúng tôi cam kết xây dựng một hệ sinh thái số bền vững, nơi hiệu suất làm việc được tối ưu hóa bằng thuật toán, giải phóng con người khỏi những công việc lặp đi lặp lại để tập trung vào sự sáng tạo thuần túy.
+                        </p>
+                        <p>
+                            Mỗi dòng code chúng tôi viết ra đều hướng tới một mục tiêu duy nhất: <span class="text-neon-green italic">Sự Hoàn Hảo Trong Tự Động Hóa.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="perspective-container fade-rise">
+                    <div class="glass mac-rotate p-4 rounded-2xl aspect-square flex items-center justify-center border-2 border-neon-green/30 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 to-transparent opacity-50"></div>
+                        <div class="text-center z-10">
+                            <div class="text-8xl mb-4">⚡</div>
+                            <div class="text-neon-green font-display font-black text-2xl tracking-widest">ADVANCED AI ENGINE</div>
+                            <div class="mt-4 text-sm text-gray-400 font-mono">STATUS: OPERATIONAL</div>
+                        </div>
+                        <!-- Animated pulses -->
+                        <div class="absolute w-full h-full border border-neon-green/20 rounded-full animate-ping opacity-20"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects/Services Section -->
+        <section id="projects" class="py-24 px-6 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-end mb-12 fade-rise">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-display font-bold mb-2">Dịch Vụ & <span class="neon-text">Sản Phẩm</span></h2>
+                        <p class="text-gray-400 text-lg">Giải pháp tùy chỉnh cho mọi nhu cầu công nghệ.</p>
+                    </div>
+                    <div class="hidden md:flex gap-4">
+                        <button id="prevBtn" class="glass w-12 h-12 rounded-full flex items-center justify-center hover:bg-neon-green hover:text-black transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button id="nextBtn" class="glass w-12 h-12 rounded-full flex items-center justify-center hover:bg-neon-green hover:text-black transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="carousel-container flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory">
+                    <!-- Card 1 -->
+                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
+                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-neon-green/40">
+                            <div class="text-4xl mb-6">🧠</div>
+                            <h3 class="text-2xl font-display font-bold mb-4">Xử Lý Ngôn Ngữ Tự Nhiên</h3>
+                            <p class="text-gray-300 mb-8 flex-grow justify-text">Xây dựng Chatbot thông minh, hệ thống phân tích cảm xúc và dịch thuật tự động với độ chính xác vượt trội nhờ mô hình Transformer mới nhất.</p>
+                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
+                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
+                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-blue-400/40">
+                            <div class="text-4xl mb-6">👁️</div>
+                            <h3 class="text-2xl font-display font-bold mb-4">Thị Giác Máy Tính</h3>
+                            <p class="text-gray-300 mb-8 flex-grow justify-text">Nhận diện khuôn mặt, phân loại hình ảnh và giám sát an ninh thông minh tích hợp AI, giúp tăng cường kiểm soát thực tế.</p>
+                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
+                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
+                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-purple-400/40">
+                            <div class="text-4xl mb-6">📊</div>
+                            <h3 class="text-2xl font-display font-bold mb-4">Phân Tích Dữ Liệu Lớn</h3>
+                            <p class="text-gray-300 mb-8 flex-grow justify-text">Dự đoán xu hướng thị trường và hành vi khách hàng thông qua khai phá dữ liệu, giúp doanh nghiệp đưa ra quyết định dựa trên số liệu thực.</p>
+                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
+                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
+                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-orange-400/40">
+                            <div class="text-4xl mb-6">⚙️</div>
+                            <h3 class="text-2xl font-display font-bold mb-4">Tự Động Hóa Quy Trình (RPA)</h3>
+                            <p class="text-gray-300 mb-8 flex-grow justify-text">Thay thế các thao tác thủ công bằng robot phần mềm thông minh, tối ưu hóa quy trình làm việc và giảm thiểu sai sót do con người.</p>
+                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
+                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-24 px-6 bg-gradient-to-b from-transparent to-black/40">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-display font-bold mb-12 text-center fade-rise">Câu Hỏi <span class="neon-text">Thường Gặp</span></h2>
+                
+                <div class="space-y-4 fade-rise">
+                    <!-- FAQ 1 -->
+                    <div class="faq-item glass rounded-2xl overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-6 text-left hover:bg-white/5 transition-colors focus:outline-none">
+                            <span class="text-xl font-semibold font-display">Chi phí triển khai giải pháp AI là bao nhiêu?</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="faq-icon h-6 w-6 text-neon-green transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="faq-content px-6">
+                            <p class="text-gray-400 leading-relaxed italic">
+                                Chi phí phụ thuộc hoàn toàn vào quy mô dữ liệu và độ phức tạp của bài toán. Chúng tôi luôn cung cấp các gói tư vấn miễn phí để giúp doanh nghiệp định hình ngân sách phù hợp nhất trước khi bắt đầu.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="faq-item glass rounded-2xl overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-6 text-left hover:bg-white/5 transition-colors focus:outline-none">
+                            <span class="text-xl font-semibold font-display">Dữ liệu của chúng tôi có được bảo mật không?</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="faq-icon h-6 w-6 text-neon-green transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="faq-content px-6">
+                            <p class="text-gray-400 leading-relaxed italic">
+                                Tuyệt đối an toàn. Chúng tôi áp dụng các tiêu chuẩn bảo mật dữ liệu cấp quân sự (AES-256) và cam kết không chia sẻ dữ liệu huấn luyện của khách hàng cho bất kỳ bên thứ ba nào.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="faq-item glass rounded-2xl overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-6 text-left hover:bg-white/5 transition-colors focus:outline-none">
+                            <span class="text-xl font-semibold font-display">Thời gian triển khai một dự án AI thường mất bao lâu?</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="faq-icon h-6 w-6 text-neon-green transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="faq-content px-6">
+                            <p class="text-gray-400 leading-relaxed italic">
+                                Một dự án MVP (sản phẩm khả thi tối thiểu) thường mất từ 4-8 tuần. Các hệ thống phức tạp hơn tích hợp sâu vào hạ tầng doanh nghiệp có thể kéo dài từ 3-6 tháng.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="py-16 px-6 glass mt-20 border-t border-neon-green/20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-8 h-8 bg-neon-green rounded flex items-center justify-center">
+                        <span class="text-black font-extrabold text-lg">AI</span>
+                    </div>
+                    <span class="text-2xl font-display font-bold">FUTURESOFT</span>
+                </div>
+                <p class="text-gray-400 mb-8 max-w-sm justify-text">
+                    Tiên phong trong lĩnh vực phần mềm trí tuệ nhân tạo tại Việt Nam. Chúng tôi mang đến giải pháp tối ưu cho sự phát triển bền vững của doanh nghiệp.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-display font-bold text-lg mb-6 neon-text uppercase tracking-widest">Liên Kết</h4>
+                <ul class="space-y-4 text-gray-400 font-semibold">
+                    <li><a href="#hero" class="hover:text-neon-green">Trang Chủ</a></li>
+                    <li><a href="#vision" class="hover:text-neon-green">Tầm Nhìn</a></li>
+                    <li><a href="#projects" class="hover:text-neon-green">Dự Án</a></li>
+                    <li><a href="#faq" class="hover:text-neon-green">Hỏi Đáp</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-display font-bold text-lg mb-6 neon-text uppercase tracking-widest">Thông Tin</h4>
+                <ul class="space-y-4 text-gray-400">
+                    <li class="flex items-start gap-2">
+                        <span>📍</span>
+                        Tầng 88, Tòa Nhà Công Nghệ, Quận 1, TP. HCM
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span>📞</span>
+                        +84 900 123 456
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span>✉️</span>
+                        contact@futuresoft.ai
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 w-14 h-14 glass rounded-full flex items-center justify-center text-neon-green shadow-2xl z-40 border-2 border-neon-green/50 animate-glow">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+
+    <script>
+        // Matrix Digital Rain
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        let columns;
+        let drops;
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789アカサタナハマヤラワガザダバパ";
+        const fontSize = 16;
+
+        function initMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Math.floor(canvas.width / fontSize);
+            drops = new Array(columns).fill(1);
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00FF41';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+
+        window.addEventListener('resize', () => {
+            initMatrix();
+        });
+
+        initMatrix();
+        drawMatrix();
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-rise').forEach(el => observer.observe(el));
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-item button').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Carousel Controls
+        const carousel = document.querySelector('.carousel-container');
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            carousel.scrollBy({ left: 350, behavior: 'smooth' });
+        });
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            carousel.scrollBy({ left: -350, behavior: 'smooth' });
+        });
+
+        // Scroll to Top & Header Visibility
+        const scrollTopBtn = document.getElementById('scroll-to-top');
+        const header = document.getElementById('main-header');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+                header.classList.add('py-2');
+                header.querySelector('nav').classList.remove('rounded-2xl');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+                header.classList.remove('py-2');
+                header.querySelector('nav').classList.add('rounded-2xl');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenu = document.getElementById('close-menu');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+
+        // Smooth scrolling for all anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

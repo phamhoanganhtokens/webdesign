@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHÁT TRIỂN PHẦN MỀM AI - Bảng Điều Khiển Kiểm Thử</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0a0f1e',
+                            deepBlue: '#1a2a44',
+                            accent: '#64ffda',
+                            teal: '#2dd4bf',
+                            lavender: '#a78bfa',
+                        },
+                    },
+                    fontFamily: {
+                        'serif': ['"Times New Roman"', 'Times', 'serif'],
+                        'display': ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-color: #2dd4bf;
+        }
+
+        body {
+            background-color: #050810;
+            color: #e2e8f0;
+            font-family: "Times New Roman", Times, serif !important;
+            overflow-x: hidden;
+        }
+
+        p, .text-justify {
+            text-align: justify !important;
+            line-height: 1.8;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .fade-rise {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-rise.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* macOS-style Carousel */
+        .carousel-container {
+            perspective: 1000px;
+            overflow: visible;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .carousel-item {
+            flex: 0 0 350px;
+            transition: transform 0.6s, opacity 0.6s;
+            cursor: pointer;
+        }
+
+        .carousel-item.active {
+            transform: scale(1.1) translateZ(50px);
+            z-index: 10;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0f1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #2dd4bf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 4.8 17 6 19 6a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                <span class="text-xl font-bold tracking-tight">PHÁT TRIỂN PHẦN MỀM AI</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest font-medium">
+                <a href="#hero" class="nav-link">Trang Chủ</a>
+                <a href="#services" class="nav-link">Giải Pháp</a>
+                <a href="#vision" class="nav-link">Tầm Nhìn</a>
+                <a href="#project" class="nav-link">Dữ Liệu</a>
+                <a href="#contact" class="nav-link">Liên Hệ</a>
+            </div>
+            <button class="bg-brand-teal/10 hover:bg-brand-teal/20 text-brand-teal border border-brand-teal/30 px-6 py-2 rounded-full text-sm font-semibold transition-all">
+                Bảng Điều Khiển
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-20 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center z-10">
+            <div class="fade-rise" data-delay="0">
+                <span class="inline-block px-4 py-1 rounded-full border border-brand-teal/30 bg-brand-teal/5 text-brand-teal text-xs font-semibold tracking-widest uppercase mb-6">
+                    Hệ Thống Kiểm Thử Thế Hệ Mới
+                </span>
+                <h1 class="text-5xl md:text-7xl font-display font-bold leading-tight mb-8 gradient-text">
+                    Tối Ưu Hóa Chất Lượng Phần Mềm Bằng Trí Tuệ Nhân Tạo
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto italic">
+                    Nền tảng Test App Dashboard quản lý và giám sát dữ liệu kiểm thử theo thời gian thực, hỗ trợ doanh nghiệp tăng tốc quy trình đảm bảo chất lượng và đạt ngưỡng tin cậy tối đa cho sản phẩm.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <a href="#project" class="px-8 py-4 bg-brand-teal text-brand-dark font-bold rounded-xl hover:scale-105 transition-transform shadow-lg shadow-brand-teal/20">
+                        Bảng Điều Khiển Hệ Thống
+                    </a>
+                    <a href="#services" class="px-8 py-4 glass-card font-bold border border-white/20 hover:border-brand-teal/50 transition-colors">
+                        Khám Phá Giải Pháp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 fade-rise">
+                <h2 class="text-4xl font-display font-bold mb-6">Giải Pháp Kiểm Thử Toàn Diện</h2>
+                <div class="h-1 w-20 bg-brand-teal mx-auto mb-8"></div>
+                <p class="max-w-2xl mx-auto text-slate-400 text-lg">
+                    Chúng tôi cung cấp hệ thống công cụ tiên tiến giúp quý khách kiểm soát toàn diện mọi khía cạnh của quy trình phát triển và kiểm thử phần mềm.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-10 fade-rise" data-delay="100">
+                    <div class="w-14 h-14 bg-brand-teal/10 rounded-2xl flex items-center justify-center mb-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Phân Tích Xu Hướng Lỗi</h3>
+                    <p class="text-slate-400 text-sm italic">
+                        Sử dụng trí tuệ nhân tạo (AI) và tập dữ liệu lịch sử để dự đoán các khu vực có nguy cơ cao, từ đó tối ưu hóa nỗ lực kiểm thử vào đúng trọng tâm.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-10 fade-rise" data-delay="200">
+                    <div class="w-14 h-14 bg-brand-lavender/10 rounded-2xl flex items-center justify-center mb-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Giám Sát Môi Trường</h3>
+                    <p class="text-slate-400 text-sm italic">
+                        Theo dõi hạ tầng Staging và Production 24/7. Cảnh báo tức thời khi có sự cố hiệu năng hoặc gián đoạn kết nối hệ thống.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-10 fade-rise" data-delay="300">
+                    <div class="w-14 h-14 bg-brand-teal/10 rounded-2xl flex items-center justify-center mb-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14.5 2 14.5 8 20 8"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Báo Cáo Tự Động</h3>
+                    <p class="text-slate-400 text-sm italic">
+                        Tổng hợp kết quả từ hàng ngàn ca kiểm thử tự động, xuất báo cáo chuyên sâu chỉ với một cú nhấp chuột cho các cấp quản lý.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section id="vision" class="py-32 bg-brand-dark/50">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="fade-rise">
+                <h2 class="text-sm font-bold tracking-[0.3em] text-brand-teal uppercase mb-4">Khát Vọng</h2>
+                <h3 class="text-4xl md:text-5xl font-display font-bold mb-8 uppercase tracking-tighter">ĐỊNH HÌNH TƯƠNG LAI NGÀNH KIỂM THỬ</h3>
+                <p class="text-slate-300 mb-8 italic">
+                    Chúng tôi không chỉ dừng lại ở việc phát hiện lỗi. Tầm nhìn của chúng tôi là tái định nghĩa quy trình đảm bảo chất lượng bằng Machine Learning, hướng tới mục tiêu "Zero-defect" thông qua việc dự báo và ngăn chặn sai sót ngay từ giai đoạn viết mã nguồn.
+                </p>
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 bg-brand-teal/20 p-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <p class="italic text-sm"><strong class="text-white">Tự động hóa thông minh và linh hoạt:</strong> Hệ thống tự điều chỉnh kịch bản dựa trên thay đổi của UI/UX.</p>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 bg-brand-teal/20 p-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <p class="italic text-sm"><strong class="text-white">Học máy dựa trên mô thức lỗi:</strong> Nhận diện các lỗi logic phức tạp mà con người dễ bỏ sót.</p>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 bg-brand-teal/20 p-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <p class="italic text-sm"><strong class="text-white">Tối ưu hóa quy trình theo thời gian thực:</strong> Phản hồi ngay lập tức cho các bên liên quan.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="relative group fade-rise" data-delay="200">
+                <div class="absolute -inset-4 bg-gradient-to-r from-brand-teal/20 to-brand-lavender/20 blur-2xl rounded-[3rem] opacity-50 group-hover:opacity-80 transition-opacity"></div>
+                <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" alt="Technology background" class="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="project" class="py-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 fade-rise">
+                <h2 class="text-4xl font-display font-bold mb-6">DỮ LIỆU KIỂM THỬ THỰC TẾ</h2>
+                <p class="text-slate-400 max-w-2xl italic">Tổng hợp các dự án tiêu biểu và biểu đồ phân tích dữ liệu trực quan từ hệ thống.</p>
+            </div>
+
+            <div class="carousel-container relative">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Project 1 -->
+                    <div class="carousel-item glass-card p-8 active">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-bold text-brand-teal uppercase tracking-widest">QA System</span>
+                            <span class="text-xs text-slate-500">2024-03-20</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">Dự án Alpha</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Tỉ lệ thành công</span>
+                                <span class="text-brand-teal">92%</span>
+                            </div>
+                            <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                <div class="bg-brand-teal h-full" style="width: 92%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Tỉ lệ lỗi</span>
+                                <span class="text-red-400">8%</span>
+                            </div>
+                        </div>
+                        <p class="text-xs italic text-slate-500">Phân tích chuyên sâu về độ ổn định lõi hệ thống ứng dụng tài chính.</p>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="carousel-item glass-card p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-bold text-brand-lavender uppercase tracking-widest">Staging Env</span>
+                            <span class="text-xs text-slate-500">2024-03-21</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">Ứng dụng TMĐT</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Tổng số Test Case</span>
+                                <span class="text-white font-bold">1,240</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Thời gian hoàn thành</span>
+                                <span class="text-white font-bold">45 Phút</span>
+                            </div>
+                        </div>
+                        <p class="text-xs italic text-slate-500">Môi trường thử nghiệm ổn định, sẵn sàng cho giai đoạn phát hành.</p>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="carousel-item glass-card p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-bold text-yellow-500 uppercase tracking-widest">Production</span>
+                            <span class="text-xs text-slate-500">2024-03-22</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">Ngân hàng số</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Tần suất lỗi</span>
+                                <span class="text-yellow-500">Thấp</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Cảnh báo hệ thống</span>
+                                <span class="text-white font-bold">02</span>
+                            </div>
+                        </div>
+                        <p class="text-xs italic text-slate-500">Giám sát tải thực tế và độ trễ giao dịch ngân hàng.</p>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="carousel-item glass-card p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">API Testing</span>
+                            <span class="text-xs text-slate-500">2024-03-23</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">Chatbot AI</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Độ tin cậy hạ tầng</span>
+                                <span class="text-blue-400">99.9%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Số lượng Endpoint</span>
+                                <span class="text-white font-bold">42</span>
+                            </div>
+                        </div>
+                        <p class="text-xs italic text-slate-500">Kiểm tra khả năng phản hồi và tải trọng của các API ngôn ngữ.</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-12 gap-4">
+                    <button id="prev-btn" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button id="next-btn" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-32">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-4xl font-display font-bold mb-16 text-center">GIẢI ĐÁP THẮC MẮC (FAQ)</h2>
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass-card overflow-hidden">
+                    <button class="faq-trigger w-full px-8 py-6 flex justify-between items-center text-left">
+                        <span class="text-xl font-bold tracking-tight">Làm thế nào để tích hợp dashboard vào quy trình CI/CD hiện có?</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down transition-transform duration-300"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-8">
+                        <div class="pb-6 text-slate-400 italic">
+                            Hệ thống của chúng tôi hỗ trợ tích hợp linh hoạt qua Webhook và các bộ SDK chuyên dụng cho Jenkins, GitLab CI và GitHub Actions. Bạn chỉ cần cấu hình khóa API trong pipeline để tự động đẩy dữ liệu sau mỗi lượt build.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass-card overflow-hidden">
+                    <button class="faq-trigger w-full px-8 py-6 flex justify-between items-center text-left">
+                        <span class="text-xl font-bold tracking-tight">Dữ liệu kiểm thử của chúng tôi có được bảo mật tuyệt đối không?</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down transition-transform duration-300"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-8">
+                        <div class="pb-6 text-slate-400 italic">
+                            Bảo mật là ưu tiên hàng đầu. Mọi dữ liệu đều được mã hóa AES-256 ở trạng thái tĩnh và truyền tải qua giao thức TLS. Chúng tôi tuân thủ các tiêu chuẩn quốc tế và hỗ trợ triển khai on-premise cho các doanh nghiệp có yêu cầu đặc thù.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass-card overflow-hidden">
+                    <button class="faq-trigger w-full px-8 py-6 flex justify-between items-center text-left">
+                        <span class="text-xl font-bold tracking-tight">Chi phí đầu tư cho giải pháp AI này là bao nhiêu?</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down transition-transform duration-300"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-8">
+                        <div class="pb-6 text-slate-400 italic">
+                            Chúng tôi cung cấp các gói dịch vụ linh hoạt dựa trên quy mô dự án và số lượng request. Việc ứng dụng AI giúp giảm thiểu tối đa nguồn lực thủ công, mang lại tỷ suất hoàn vốn (ROI) cao chỉ sau 3-6 tháng triển khai.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-card p-12 lg:p-20 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-teal/5 blur-[100px] rounded-full"></div>
+                <div class="grid lg:grid-cols-2 gap-20 items-start">
+                    <div class="fade-rise">
+                        <h2 class="text-4xl font-display font-bold mb-8 uppercase tracking-tight">HỢP TÁC VÀ HỖ TRỢ CHIẾN LƯỢC</h2>
+                        <p class="text-slate-400 mb-10 text-lg italic">
+                            Quý đối tác quan tâm đến việc tối ưu hóa quy trình kiểm thử phần mềm bằng AI vui lòng để lại thông tin để nhận tư vấn chuyên sâu và bản dùng thử miễn phí.
+                        </p>
+                        <div class="space-y-8">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-brand-teal uppercase tracking-widest">Email Liên Hệ</h4>
+                                    <p class="text-lg">contact@phamhoanganhtokens.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-xl bg-brand-lavender/10 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-brand-lavender uppercase tracking-widest">Địa Chỉ Trụ Sở</h4>
+                                    <p class="text-lg italic">Tầng 12, Tòa nhà Công Nghệ AI, Hà Nội, Việt Nam.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="space-y-6 fade-rise" data-delay="200" onsubmit="event.preventDefault(); alert('Cảm ơn bạn! Thông tin đã được gửi đi thành công.');">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Họ và Tên</label>
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 focus:border-brand-teal outline-none transition-colors italic" placeholder="Nguyễn Văn A">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Email Doanh Nghiệp</label>
+                                <input type="email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 focus:border-brand-teal outline-none transition-colors italic" placeholder="name@company.com">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Lĩnh Vực Tư Vấn</label>
+                            <select class="w-full bg-brand-dark border border-white/10 rounded-xl px-4 py-4 focus:border-brand-teal outline-none transition-colors italic appearance-none">
+                                <option>Dashboard Giám Sát</option>
+                                <option>Phân Tích Dữ Liệu AI</option>
+                                <option>Tự Động Hóa CI/CD</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-500">Tin Nhắn</label>
+                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 focus:border-brand-teal outline-none transition-colors italic" placeholder="Mô tả nhu cầu của quý đối tác..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-5 bg-brand-teal text-brand-dark font-black tracking-widest uppercase rounded-xl hover:shadow-[0_0_30px_rgba(45,212,191,0.3)] transition-all">
+                            ĐĂNG KÝ TRẢI NGHIỆM BẢN DÙNG THỬ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Content (In-body since actual footer is restricted) -->
+    <div class="border-t border-white/5 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 4.8 17 6 19 6a1 1 0 0 1 1 1z"/></svg>
+                <span class="font-bold tracking-widest text-sm">PHÁT TRIỂN PHẦM MỀM AI</span>
+            </div>
+            <div class="flex gap-10 text-sm text-slate-500">
+                <a href="#" class="hover:text-brand-teal transition-colors">Facebook</a>
+                <a href="#" class="hover:text-brand-teal transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-brand-teal transition-colors">GitHub</a>
+            </div>
+            <div class="text-xs text-slate-500 italic">
+                © 2026 Phát Triển Phần Mềm AI. Bản quyền đã được bảo hộ.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Background
+        function initThreeJS() {
+            const canvas = document.querySelector('#bg-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Torus Knot
+            const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x2dd4bf,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
+
+            // Particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCnt = 1000;
+            const posArray = new Float32Array(particlesCnt * 3);
+            for(let i = 0; i < particlesCnt * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 100;
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                color: 0xa78bfa,
+                transparent: true,
+                opacity: 0.5
+            });
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0x2dd4bf, 2);
+            pointLight.position.set(20, 20, 20);
+            scene.add(pointLight);
+
+            camera.position.z = 30;
+
+            // Mouse Interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 5;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 5;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                torusKnot.rotation.x += 0.001;
+                torusKnot.rotation.y += 0.002;
+                particlesMesh.rotation.y += 0.0005;
+
+                camera.position.x += (mouseX - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Fade Rise Intersection Observer
+        function initFadeRise() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = entry.target.getAttribute('data-delay') || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, delay);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-rise').forEach(el => observer.observe(el));
+        }
+
+        // macOS Style Carousel
+        function initCarousel() {
+            const track = document.getElementById('carousel-track');
+            const items = Array.from(track.children);
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            let currentIndex = 0;
+
+            function updateCarousel() {
+                const itemWidth = items[0].offsetWidth + 32; // width + gap
+                const containerWidth = track.parentElement.offsetWidth;
+                const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * itemWidth);
+                
+                track.style.transform = `translateX(${offset}px)`;
+                
+                items.forEach((item, index) => {
+                    item.classList.toggle('active', index === currentIndex);
+                    const diff = index - currentIndex;
+                    const rotateY = diff * -15;
+                    const scale = 1 - Math.abs(diff) * 0.15;
+                    const opacity = 1 - Math.abs(diff) * 0.3;
+                    item.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+                    item.style.opacity = opacity;
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < items.length - 1) currentIndex++;
+                updateCarousel();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) currentIndex--;
+                updateCarousel();
+            });
+
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+
+            window.addEventListener('resize', updateCarousel);
+            updateCarousel();
+        }
+
+        // FAQ Accordion
+        function initFAQ() {
+            const triggers = document.querySelectorAll('.faq-trigger');
+            triggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const content = trigger.nextElementSibling;
+                    const icon = trigger.querySelector('svg');
+                    const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+
+                    // Close others
+                    document.querySelectorAll('.faq-content').forEach(c => c.style.maxHeight = '0px');
+                    document.querySelectorAll('.faq-trigger svg').forEach(i => i.style.transform = 'rotate(0deg)');
+
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            initFadeRise();
+            initCarousel();
+            initFAQ();
+        });
+    </script>
+</body>
+</html>

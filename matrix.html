@@ -64,6 +64,23 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
+        .glass-card {
+            background: rgba(10, 20, 40, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 159, 0.25);
+            border-radius: 1.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(10, 20, 40, 0.75);
+            border-color: rgba(0, 255, 159, 0.45);
+            transform: translateY(-8px);
+            box-shadow: 0 0 35px rgba(0, 255, 159, 0.2);
+        }
+
         .neon-text {
             color: #00FF9F;
             text-shadow: 0 0 10px rgba(0, 255, 159, 0.5);
@@ -122,7 +139,6 @@
             text-align: justify;
         }
 
-        /* 3D Transform for Vision Section */
         .perspective-container {
             perspective: 1000px;
         }
@@ -155,6 +171,61 @@
         #mobile-menu.open {
             transform: translateX(0);
         }
+/* Ẩn thanh cuộn ngang hoàn toàn */
+.carousel-track {
+    scrollbar-width: none;           /* Firefox */
+    -ms-overflow-style: none;        /* IE và Edge */
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;                   /* Chrome, Safari, Opera */
+}
+
+/* Tăng khoảng cách an toàn cho mobile */
+.carousel-container {
+    padding-bottom: 20px;
+}
+.carousel-container {
+    perspective: 1200px;
+    overflow: visible;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.carousel-item {
+    flex: 0 0 350px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.carousel-item.active {
+    transform: scale(1.08) translateZ(60px);
+    z-index: 20;
+    opacity: 1;
+}
+.carousel-container {
+    background: transparent;
+}
+
+.carousel-track {
+    background: transparent;
+}
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background: transparent;   /* Thêm dòng này nếu chưa có */
+}
     </style>
 </head>
 <body class="antialiased">
@@ -248,83 +319,151 @@
                             <div class="text-neon-green font-display font-black text-2xl tracking-widest">ADVANCED AI ENGINE</div>
                             <div class="mt-4 text-sm text-gray-400 font-mono">STATUS: OPERATIONAL</div>
                         </div>
-                        <!-- Animated pulses -->
                         <div class="absolute w-full h-full border border-neon-green/20 rounded-full animate-ping opacity-20"></div>
                     </div>
                 </div>
             </div>
-        </section>
+<!-- Projects Section - DỮ LIỆU KIỂM THỬ THỰC TẾ -->
+<section id="project" class="py-32 overflow-hidden bg-transparent">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- Tiêu đề section -->
+        <div class="mb-16 fade-rise">
+            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-center md:text-left">
+                DỮ LIỆU KIỂM THỬ THỰC TẾ
+            </h2>
+            <p class="text-slate-400 max-w-2xl mx-auto md:mx-0 italic text-lg text-center md:text-left">
+                Tổng hợp các dự án tiêu biểu và biểu đồ phân tích dữ liệu trực quan từ hệ thống kiểm thử AI
+            </p>
+        </div>
 
-        <!-- Projects/Services Section -->
-        <section id="projects" class="py-24 px-6 overflow-hidden">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex justify-between items-end mb-12 fade-rise">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-display font-bold mb-2">Dịch Vụ & <span class="neon-text">Sản Phẩm</span></h2>
-                        <p class="text-gray-400 text-lg">Giải pháp tùy chỉnh cho mọi nhu cầu công nghệ.</p>
+        <!-- Carousel Container -->
+        <div class="carousel-container relative">
+            <div class="carousel-track" id="carousel-track">
+
+                <!-- Project Card 1 -->
+                <div class="carousel-item glass-card p-8 active">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-xs font-bold text-brand-teal uppercase tracking-widest">QA System</span>
+                        <span class="text-xs text-slate-500">20/03/2024</span>
                     </div>
-                    <div class="hidden md:flex gap-4">
-                        <button id="prevBtn" class="glass w-12 h-12 rounded-full flex items-center justify-center hover:bg-neon-green hover:text-black transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <button id="nextBtn" class="glass w-12 h-12 rounded-full flex items-center justify-center hover:bg-neon-green hover:text-black transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
+                    <h4 class="text-2xl font-bold mb-4">Dự án Alpha - Hệ thống Tài chính</h4>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tỉ lệ thành công</span>
+                            <span class="text-brand-teal font-semibold">92%</span>
+                        </div>
+                        <div class="w-full bg-white/5 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-brand-teal h-full rounded-full" style="width: 92%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tỉ lệ lỗi</span>
+                            <span class="text-red-400 font-semibold">8%</span>
+                        </div>
                     </div>
+                    <p class="text-xs italic text-slate-500 leading-relaxed">
+                        Phân tích chuyên sâu về độ ổn định lõi hệ thống ứng dụng tài chính. AI dự đoán chính xác 87% các khu vực dễ phát sinh lỗi.
+                    </p>
                 </div>
 
-                <div class="carousel-container flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory">
-                    <!-- Card 1 -->
-                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
-                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-neon-green/40">
-                            <div class="text-4xl mb-6">🧠</div>
-                            <h3 class="text-2xl font-display font-bold mb-4">Xử Lý Ngôn Ngữ Tự Nhiên</h3>
-                            <p class="text-gray-300 mb-8 flex-grow justify-text">Xây dựng Chatbot thông minh, hệ thống phân tích cảm xúc và dịch thuật tự động với độ chính xác vượt trội nhờ mô hình Transformer mới nhất.</p>
-                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
-                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
-                            </a>
+                <!-- Project Card 2 -->
+                <div class="carousel-item glass-card p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-xs font-bold text-brand-lavender uppercase tracking-widest">Staging Env</span>
+                        <span class="text-xs text-slate-500">21/03/2024</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Ứng dụng Thương mại Điện tử</h4>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tổng số Test Case</span>
+                            <span class="text-white font-bold">1,240</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Thời gian hoàn thành</span>
+                            <span class="text-white font-bold">45 phút</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tỉ lệ pass</span>
+                            <span class="text-emerald-400 font-semibold">96.8%</span>
                         </div>
                     </div>
-                    <!-- Card 2 -->
-                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
-                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-blue-400/40">
-                            <div class="text-4xl mb-6">👁️</div>
-                            <h3 class="text-2xl font-display font-bold mb-4">Thị Giác Máy Tính</h3>
-                            <p class="text-gray-300 mb-8 flex-grow justify-text">Nhận diện khuôn mặt, phân loại hình ảnh và giám sát an ninh thông minh tích hợp AI, giúp tăng cường kiểm soát thực tế.</p>
-                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
-                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
-                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-purple-400/40">
-                            <div class="text-4xl mb-6">📊</div>
-                            <h3 class="text-2xl font-display font-bold mb-4">Phân Tích Dữ Liệu Lớn</h3>
-                            <p class="text-gray-300 mb-8 flex-grow justify-text">Dự đoán xu hướng thị trường và hành vi khách hàng thông qua khai phá dữ liệu, giúp doanh nghiệp đưa ra quyết định dựa trên số liệu thực.</p>
-                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
-                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="carousel-item flex-shrink-0 w-full md:w-1/3 snap-center">
-                        <div class="glass p-8 rounded-[2rem] h-full flex flex-col border-t-2 border-orange-400/40">
-                            <div class="text-4xl mb-6">⚙️</div>
-                            <h3 class="text-2xl font-display font-bold mb-4">Tự Động Hóa Quy Trình (RPA)</h3>
-                            <p class="text-gray-300 mb-8 flex-grow justify-text">Thay thế các thao tác thủ công bằng robot phần mềm thông minh, tối ưu hóa quy trình làm việc và giảm thiểu sai sót do con người.</p>
-                            <a href="#" class="text-neon-green font-bold flex items-center gap-2 group">
-                                Xem chi tiết <span class="group-hover:translate-x-2 transition-transform">→</span>
-                            </a>
-                        </div>
-                    </div>
+                    <p class="text-xs italic text-slate-500 leading-relaxed">
+                        Môi trường thử nghiệm ổn định, sẵn sàng cho giai đoạn phát hành production.
+                    </p>
                 </div>
+
+                <!-- Project Card 3 -->
+                <div class="carousel-item glass-card p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-xs font-bold text-yellow-500 uppercase tracking-widest">Production</span>
+                        <span class="text-xs text-slate-500">22/03/2024</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Ngân hàng số - Core Banking</h4>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tần suất lỗi</span>
+                            <span class="text-yellow-500 font-semibold">Thấp</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Cảnh báo hệ thống</span>
+                            <span class="text-white font-bold">02</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Thời gian phản hồi trung bình</span>
+                            <span class="text-emerald-400 font-semibold">187ms</span>
+                        </div>
+                    </div>
+                    <p class="text-xs italic text-slate-500 leading-relaxed">
+                        Giám sát tải thực tế và độ trễ giao dịch ngân hàng dưới áp lực cao.
+                    </p>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="carousel-item glass-card p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">API Testing</span>
+                        <span class="text-xs text-slate-500">23/03/2024</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Chatbot AI &amp; Voice Assistant</h4>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Độ tin cậy hạ tầng</span>
+                            <span class="text-blue-400 font-semibold">99.9%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Số lượng Endpoint</span>
+                            <span class="text-white font-bold">42</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-400">Tỷ lệ lỗi API</span>
+                            <span class="text-red-400 font-semibold">0.3%</span>
+                        </div>
+                    </div>
+                    <p class="text-xs italic text-slate-500 leading-relaxed">
+                        Kiểm tra khả năng phản hồi và tải trọng của các API xử lý ngôn ngữ tự nhiên.
+                    </p>
+                </div>
+
             </div>
-        </section>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-center mt-12 gap-4">
+                <button id="prev-btn" 
+                        class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-brand-teal transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                </button>
+                <button id="next-btn" 
+                        class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-brand-teal transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- FAQ Section -->
         <section id="faq" class="py-24 px-6 bg-gradient-to-b from-transparent to-black/40">
@@ -546,7 +685,6 @@
                 const item = button.parentElement;
                 const isActive = item.classList.contains('active');
                 
-                // Close all other items
                 document.querySelectorAll('.faq-item').forEach(otherItem => {
                     otherItem.classList.remove('active');
                 });
@@ -558,13 +696,20 @@
         });
 
         // Carousel Controls
-        const carousel = document.querySelector('.carousel-container');
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            carousel.scrollBy({ left: 350, behavior: 'smooth' });
-        });
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            carousel.scrollBy({ left: -350, behavior: 'smooth' });
-        });
+        const carouselTrack = document.getElementById('carousel-track');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        function scrollCarousel(direction) {
+            const cardWidth = carouselTrack.querySelector('.carousel-item').offsetWidth + 24; // gap = 24px
+            carouselTrack.scrollBy({
+                left: direction * cardWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        prevBtn.addEventListener('click', () => scrollCarousel(-1));
+        nextBtn.addEventListener('click', () => scrollCarousel(1));
 
         // Scroll to Top & Header Visibility
         const scrollTopBtn = document.getElementById('scroll-to-top');
@@ -612,5 +757,62 @@
             });
         });
     </script>
+<script>
+// macOS Style 3D Carousel
+function initCarousel() {
+    const track = document.getElementById('carousel-track');
+    const items = Array.from(track.children);
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        const itemWidth = items[0].offsetWidth + 32; // gap = 2rem = 32px
+        const containerWidth = track.parentElement.offsetWidth;
+        const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * itemWidth);
+        
+        track.style.transform = `translateX(${offset}px)`;
+        
+        items.forEach((item, index) => {
+            const diff = index - currentIndex;
+            const rotateY = diff * -18;
+            const scale = 1 - Math.abs(diff) * 0.12;
+            const opacity = 1 - Math.abs(diff) * 0.25;
+
+            item.classList.toggle('active', index === currentIndex);
+            item.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+            item.style.opacity = opacity;
+        });
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < items.length - 1) {
+            currentIndex++;
+            updateCarousel();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
+    });
+
+    // Click vào card để chọn
+    items.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            currentIndex = index;
+            updateCarousel();
+        });
+    });
+
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel(); // Khởi tạo lần đầu
+}
+
+// Gọi hàm khi trang load
+document.addEventListener('DOMContentLoaded', initCarousel);
+</script>
 </body>
 </html>

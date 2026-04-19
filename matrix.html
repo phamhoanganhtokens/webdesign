@@ -171,61 +171,40 @@
         #mobile-menu.open {
             transform: translateX(0);
         }
-/* Ẩn thanh cuộn ngang hoàn toàn */
-.carousel-track {
-    scrollbar-width: none;           /* Firefox */
-    -ms-overflow-style: none;        /* IE và Edge */
-}
 
-.carousel-track::-webkit-scrollbar {
-    display: none;                   /* Chrome, Safari, Opera */
-}
+        .carousel-track {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
 
-/* Tăng khoảng cách an toàn cho mobile */
-.carousel-container {
-    padding-bottom: 20px;
-}
-.carousel-container {
-    perspective: 1200px;
-    overflow: visible;
-}
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
 
-.carousel-track {
-    display: flex;
-    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    gap: 2rem;
-    padding: 2rem 0;
-}
+        .carousel-container {
+            perspective: 1200px;
+            overflow: visible;
+        }
 
-.carousel-item {
-    flex: 0 0 350px;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    cursor: pointer;
-    opacity: 0.85;
-}
+        .carousel-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            gap: 2rem;
+            padding: 2rem 0;
+        }
 
-.carousel-item.active {
-    transform: scale(1.08) translateZ(60px);
-    z-index: 20;
-    opacity: 1;
-}
-.carousel-container {
-    background: transparent;
-}
+        .carousel-item {
+            flex: 0 0 350px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            opacity: 0.85;
+        }
 
-.carousel-track {
-    background: transparent;
-}
-#bg-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    background: transparent;   /* Thêm dòng này nếu chưa có */
-}
+        .carousel-item.active {
+            transform: scale(1.08) translateZ(60px);
+            z-index: 20;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -323,147 +302,148 @@
                     </div>
                 </div>
             </div>
-<!-- Projects Section - DỮ LIỆU KIỂM THỬ THỰC TẾ -->
-<section id="project" class="py-32 overflow-hidden bg-transparent">
-    <div class="max-w-7xl mx-auto px-6">
-        
-        <!-- Tiêu đề section -->
-        <div class="mb-16 fade-rise">
-            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-center md:text-left">
-                DỮ LIỆU KIỂM THỬ THỰC TẾ
-            </h2>
-            <p class="text-slate-400 max-w-2xl mx-auto md:mx-0 italic text-lg text-center md:text-left">
-                Tổng hợp các dự án tiêu biểu và biểu đồ phân tích dữ liệu trực quan từ hệ thống kiểm thử AI
-            </p>
-        </div>
+        </section>
 
-        <!-- Carousel Container -->
-        <div class="carousel-container relative">
-            <div class="carousel-track" id="carousel-track">
-
-                <!-- Project Card 1 -->
-                <div class="carousel-item glass-card p-8 active">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-xs font-bold text-brand-teal uppercase tracking-widest">QA System</span>
-                        <span class="text-xs text-slate-500">20/03/2024</span>
-                    </div>
-                    <h4 class="text-2xl font-bold mb-4">Dự án Alpha - Hệ thống Tài chính</h4>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tỉ lệ thành công</span>
-                            <span class="text-brand-teal font-semibold">92%</span>
-                        </div>
-                        <div class="w-full bg-white/5 h-2.5 rounded-full overflow-hidden">
-                            <div class="bg-brand-teal h-full rounded-full" style="width: 92%"></div>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tỉ lệ lỗi</span>
-                            <span class="text-red-400 font-semibold">8%</span>
-                        </div>
-                    </div>
-                    <p class="text-xs italic text-slate-500 leading-relaxed">
-                        Phân tích chuyên sâu về độ ổn định lõi hệ thống ứng dụng tài chính. AI dự đoán chính xác 87% các khu vực dễ phát sinh lỗi.
+        <!-- Projects Section - ĐÃ SỬA ID -->
+        <section id="projects" class="py-32 overflow-hidden bg-transparent">
+            <div class="max-w-7xl mx-auto px-6">
+                <!-- Tiêu đề section -->
+                <div class="mb-16 fade-rise">
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-center md:text-left">
+                        DỮ LIỆU KIỂM THỬ THỰC TẾ
+                    </h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto md:mx-0 italic text-lg text-center md:text-left">
+                        Tổng hợp các dự án tiêu biểu và biểu đồ phân tích dữ liệu trực quan từ hệ thống kiểm thử AI
                     </p>
                 </div>
 
-                <!-- Project Card 2 -->
-                <div class="carousel-item glass-card p-8">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-xs font-bold text-brand-lavender uppercase tracking-widest">Staging Env</span>
-                        <span class="text-xs text-slate-500">21/03/2024</span>
-                    </div>
-                    <h4 class="text-2xl font-bold mb-4">Ứng dụng Thương mại Điện tử</h4>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tổng số Test Case</span>
-                            <span class="text-white font-bold">1,240</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Thời gian hoàn thành</span>
-                            <span class="text-white font-bold">45 phút</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tỉ lệ pass</span>
-                            <span class="text-emerald-400 font-semibold">96.8%</span>
-                        </div>
-                    </div>
-                    <p class="text-xs italic text-slate-500 leading-relaxed">
-                        Môi trường thử nghiệm ổn định, sẵn sàng cho giai đoạn phát hành production.
-                    </p>
-                </div>
+                <!-- Carousel Container -->
+                <div class="carousel-container relative">
+                    <div class="carousel-track" id="carousel-track">
 
-                <!-- Project Card 3 -->
-                <div class="carousel-item glass-card p-8">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-xs font-bold text-yellow-500 uppercase tracking-widest">Production</span>
-                        <span class="text-xs text-slate-500">22/03/2024</span>
-                    </div>
-                    <h4 class="text-2xl font-bold mb-4">Ngân hàng số - Core Banking</h4>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tần suất lỗi</span>
-                            <span class="text-yellow-500 font-semibold">Thấp</span>
+                        <!-- Project Card 1 -->
+                        <div class="carousel-item glass-card p-8 active">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">QA System</span>
+                                <span class="text-xs text-slate-500">20/03/2024</span>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-4">Dự án Alpha - Hệ thống Tài chính</h4>
+                            <div class="space-y-4 mb-6">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tỉ lệ thành công</span>
+                                    <span class="text-emerald-400 font-semibold">92%</span>
+                                </div>
+                                <div class="w-full bg-white/5 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-400 h-full rounded-full" style="width: 92%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tỉ lệ lỗi</span>
+                                    <span class="text-red-400 font-semibold">8%</span>
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-slate-500 leading-relaxed">
+                                Phân tích chuyên sâu về độ ổn định lõi hệ thống ứng dụng tài chính. AI dự đoán chính xác 87% các khu vực dễ phát sinh lỗi.
+                            </p>
                         </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Cảnh báo hệ thống</span>
-                            <span class="text-white font-bold">02</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Thời gian phản hồi trung bình</span>
-                            <span class="text-emerald-400 font-semibold">187ms</span>
-                        </div>
-                    </div>
-                    <p class="text-xs italic text-slate-500 leading-relaxed">
-                        Giám sát tải thực tế và độ trễ giao dịch ngân hàng dưới áp lực cao.
-                    </p>
-                </div>
 
-                <!-- Project Card 4 -->
-                <div class="carousel-item glass-card p-8">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">API Testing</span>
-                        <span class="text-xs text-slate-500">23/03/2024</span>
-                    </div>
-                    <h4 class="text-2xl font-bold mb-4">Chatbot AI &amp; Voice Assistant</h4>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Độ tin cậy hạ tầng</span>
-                            <span class="text-blue-400 font-semibold">99.9%</span>
+                        <!-- Project Card 2 -->
+                        <div class="carousel-item glass-card p-8">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-xs font-bold text-violet-400 uppercase tracking-widest">Staging Env</span>
+                                <span class="text-xs text-slate-500">21/03/2024</span>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-4">Ứng dụng Thương mại Điện tử</h4>
+                            <div class="space-y-4 mb-6">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tổng số Test Case</span>
+                                    <span class="text-white font-bold">1,240</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Thời gian hoàn thành</span>
+                                    <span class="text-white font-bold">45 phút</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tỉ lệ pass</span>
+                                    <span class="text-emerald-400 font-semibold">96.8%</span>
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-slate-500 leading-relaxed">
+                                Môi trường thử nghiệm ổn định, sẵn sàng cho giai đoạn phát hành production.
+                            </p>
                         </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Số lượng Endpoint</span>
-                            <span class="text-white font-bold">42</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Tỷ lệ lỗi API</span>
-                            <span class="text-red-400 font-semibold">0.3%</span>
-                        </div>
-                    </div>
-                    <p class="text-xs italic text-slate-500 leading-relaxed">
-                        Kiểm tra khả năng phản hồi và tải trọng của các API xử lý ngôn ngữ tự nhiên.
-                    </p>
-                </div>
 
+                        <!-- Project Card 3 -->
+                        <div class="carousel-item glass-card p-8">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-xs font-bold text-yellow-500 uppercase tracking-widest">Production</span>
+                                <span class="text-xs text-slate-500">22/03/2024</span>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-4">Ngân hàng số - Core Banking</h4>
+                            <div class="space-y-4 mb-6">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tần suất lỗi</span>
+                                    <span class="text-yellow-500 font-semibold">Thấp</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Cảnh báo hệ thống</span>
+                                    <span class="text-white font-bold">02</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Thời gian phản hồi trung bình</span>
+                                    <span class="text-emerald-400 font-semibold">187ms</span>
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-slate-500 leading-relaxed">
+                                Giám sát tải thực tế và độ trễ giao dịch ngân hàng dưới áp lực cao.
+                            </p>
+                        </div>
+
+                        <!-- Project Card 4 -->
+                        <div class="carousel-item glass-card p-8">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">API Testing</span>
+                                <span class="text-xs text-slate-500">23/03/2024</span>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-4">Chatbot AI &amp; Voice Assistant</h4>
+                            <div class="space-y-4 mb-6">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Độ tin cậy hạ tầng</span>
+                                    <span class="text-blue-400 font-semibold">99.9%</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Số lượng Endpoint</span>
+                                    <span class="text-white font-bold">42</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Tỷ lệ lỗi API</span>
+                                    <span class="text-red-400 font-semibold">0.3%</span>
+                                </div>
+                            </div>
+                            <p class="text-xs italic text-slate-500 leading-relaxed">
+                                Kiểm tra khả năng phản hồi và tải trọng của các API xử lý ngôn ngữ tự nhiên.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-center mt-12 gap-4">
+                        <button id="prev-btn" 
+                                class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-emerald-400 transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button id="next-btn" 
+                                class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-emerald-400 transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <!-- Navigation Buttons -->
-            <div class="flex justify-center mt-12 gap-4">
-                <button id="prev-btn" 
-                        class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-brand-teal transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m15 18-6-6 6-6"/>
-                    </svg>
-                </button>
-                <button id="next-btn" 
-                        class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-brand-teal transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m9 18 6-6-6-6"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
 
         <!-- FAQ Section -->
         <section id="faq" class="py-24 px-6 bg-gradient-to-b from-transparent to-black/40">
@@ -533,57 +513,44 @@
                 <p class="text-gray-400 mb-8 max-w-sm justify-text">
                     Tiên phong trong lĩnh vực phần mềm trí tuệ nhân tạo tại Việt Nam. Chúng tôi mang đến giải pháp tối ưu cho sự phát triển bền vững của doanh nghiệp.
                 </p>
-<div class="flex gap-4">
-    <!-- Twitter / X -->
-    <a href="https://x.com/VGA82017" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-        </svg>
-    </a>
+                <div class="flex gap-4">
+                    <!-- Twitter / X -->
+                    <a href="https://x.com/VGA82017" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
 
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/sssssphamhoanganhsssss" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-        </svg>
-    </a>
+                    <!-- Facebook, YouTube, Telegram, LinkedIn giữ nguyên -->
+                    <a href="https://www.facebook.com/sssssphamhoanganhsssss" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
 
-    <!-- YouTube -->
-    <a href="https://www.youtube.com/@thanlongcoins" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-    </a>
+                    <a href="https://www.youtube.com/@thanlongcoins" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
 
-    <!-- Telegram (logo đã chỉnh sửa - hình máy bay giấy) -->
-    <a href="https://t.me/phamhoanganhtokens" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.688 7.96c-.124.58-.46.72-.936.448L12 14.25l-2.25 2.16c-.248.248-.456.116-.456-.224l.48-3.84 7.008-6.72c.312-.288.168-.432-.432-.144L6.75 13.5l-2.25-.72c-.48-.16-.492-.48.096-.72L17.25 7.5c.336-.144.624.192.312.748z"/>
-        </svg>
-    </a>
+                    <a href="https://t.me/phamhoanganhtokens" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.688 7.96c-.124.58-.46.72-.936.448L12 14.25l-2.25 2.16c-.248.248-.456.116-.456-.224l.48-3.84 7.008-6.72c.312-.288.168-.432-.432-.144L6.75 13.5l-2.25-.72c-.48-.16-.492-.48.096-.72L17.25 7.5c.336-.144.624.192.312.748z"/>
+                        </svg>
+                    </a>
 
-    <!-- LinkedIn (logo chính thức) -->
-    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-        </svg>
-    </a>
-</div>
+                    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-neon-green transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
             <div>
                 <h4 class="font-display font-bold text-lg mb-6 neon-text uppercase tracking-widest">Liên Kết</h4>
@@ -665,10 +632,7 @@
         drawMatrix();
 
         // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1
-        };
-
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -695,21 +659,57 @@
             });
         });
 
-        // Carousel Controls
-        const carouselTrack = document.getElementById('carousel-track');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
+        // Carousel 3D (macOS Style)
+        function initCarousel() {
+            const track = document.getElementById('carousel-track');
+            const items = Array.from(track.children);
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            let currentIndex = 0;
 
-        function scrollCarousel(direction) {
-            const cardWidth = carouselTrack.querySelector('.carousel-item').offsetWidth + 24; // gap = 24px
-            carouselTrack.scrollBy({
-                left: direction * cardWidth,
-                behavior: 'smooth'
+            function updateCarousel() {
+                const itemWidth = items[0].offsetWidth + 32;
+                const containerWidth = track.parentElement.offsetWidth;
+                const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * itemWidth);
+                
+                track.style.transform = `translateX(${offset}px)`;
+                
+                items.forEach((item, index) => {
+                    const diff = index - currentIndex;
+                    const rotateY = diff * -18;
+                    const scale = 1 - Math.abs(diff) * 0.12;
+                    const opacity = 1 - Math.abs(diff) * 0.25;
+
+                    item.classList.toggle('active', index === currentIndex);
+                    item.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+                    item.style.opacity = opacity;
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < items.length - 1) {
+                    currentIndex++;
+                    updateCarousel();
+                }
             });
-        }
 
-        prevBtn.addEventListener('click', () => scrollCarousel(-1));
-        nextBtn.addEventListener('click', () => scrollCarousel(1));
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+
+            window.addEventListener('resize', updateCarousel);
+            updateCarousel();
+        }
 
         // Scroll to Top & Header Visibility
         const scrollTopBtn = document.getElementById('scroll-to-top');
@@ -756,63 +756,9 @@
                 }
             });
         });
+
+        // Khởi tạo Carousel khi trang load
+        document.addEventListener('DOMContentLoaded', initCarousel);
     </script>
-<script>
-// macOS Style 3D Carousel
-function initCarousel() {
-    const track = document.getElementById('carousel-track');
-    const items = Array.from(track.children);
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    let currentIndex = 0;
-
-    function updateCarousel() {
-        const itemWidth = items[0].offsetWidth + 32; // gap = 2rem = 32px
-        const containerWidth = track.parentElement.offsetWidth;
-        const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * itemWidth);
-        
-        track.style.transform = `translateX(${offset}px)`;
-        
-        items.forEach((item, index) => {
-            const diff = index - currentIndex;
-            const rotateY = diff * -18;
-            const scale = 1 - Math.abs(diff) * 0.12;
-            const opacity = 1 - Math.abs(diff) * 0.25;
-
-            item.classList.toggle('active', index === currentIndex);
-            item.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
-            item.style.opacity = opacity;
-        });
-    }
-
-    nextBtn.addEventListener('click', () => {
-        if (currentIndex < items.length - 1) {
-            currentIndex++;
-            updateCarousel();
-        }
-    });
-
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    });
-
-    // Click vào card để chọn
-    items.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            currentIndex = index;
-            updateCarousel();
-        });
-    });
-
-    window.addEventListener('resize', updateCarousel);
-    updateCarousel(); // Khởi tạo lần đầu
-}
-
-// Gọi hàm khi trang load
-document.addEventListener('DOMContentLoaded', initCarousel);
-</script>
 </body>
 </html>

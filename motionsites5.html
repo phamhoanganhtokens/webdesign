@@ -453,28 +453,87 @@
         <span class="text-white/30">%</span>
     </div>
 
-    <script>
-        // JavaScript cho scroll progress và smooth scroll
-        function updateScrollProgress() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            
-            document.getElementById('scrollProgress').style.width = scrolled + '%';
-            document.getElementById('scrollPercent').textContent = Math.round(scrolled).toString().padStart(2, '0');
+<script>
+    // ========== SCROLL TO TOP BUTTON ==========
+    const scrollTopBtn = document.getElementById('scroll-to-top');
+
+    function toggleScrollTopButton() {
+        if (!scrollTopBtn) return;   // Bảo vệ lỗi null
+
+        if (window.scrollY > 500) {
+            scrollTopBtn.classList.add('opacity-100', 'visible');
+            scrollTopBtn.classList.remove('opacity-0', 'invisible');
+        } else {
+            scrollTopBtn.classList.remove('opacity-100', 'visible');
+            scrollTopBtn.classList.add('opacity-0', 'invisible');
         }
+    }
 
-        window.addEventListener('scroll', updateScrollProgress);
-        window.addEventListener('load', updateScrollProgress);
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                if (this.getAttribute('href') !== '#') {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-                }
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
-    </script>
+    }
+
+    // ========== SCROLL PROGRESS ==========
+    function updateScrollProgress() {
+        const progressBar = document.getElementById('scrollProgress');
+        const percentText = document.getElementById('scrollPercent');
+
+        if (!progressBar || !percentText) return;
+
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        
+        if (height <= 0) return;
+
+        const scrolled = (winScroll / height) * 100;
+        const rounded = Math.round(scrolled);
+
+        progressBar.style.width = rounded + '%';
+        percentText.textContent = rounded.toString().padStart(2, '0');
+    }
+
+    // ========== COMBINED SCROLL EVENT (Tối ưu) ==========
+    function handleScroll() {
+        updateScrollProgress();
+        toggleScrollTopButton();
+    }
+
+    // Khởi tạo
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('load', () => {
+        updateScrollProgress();
+        toggleScrollTopButton();
+    });
+
+    // ========== SMOOTH SCROLL CHO CÁC LINK ==========
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            e.preventDefault();
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
+        <!-- NÚT SCROLL TO TOP - MŨI TÊN XANH NEON -->
+    <button id="scroll-to-top" 
+            class="fixed bottom-8 right-8 z-50 w-14 h-14 bg-transparent border-2 border-[#00FF9F] rounded-2xl flex items-center justify-center text-[#00FF9F] hover:bg-[#00FF9F] hover:text-black transition-all duration-300 shadow-lg shadow-[#00FF9F]/30 group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 transition-transform group-active:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7" />
+        </svg>
+    </button>
+    
 </body>
 </html>

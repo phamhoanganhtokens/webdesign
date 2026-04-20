@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEX | Shaping Tomorrow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        vex: {
+                            black: '#000000',
+                            charcoal: '#1A1A1A',
+                            accent: '#00FFFF',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .liquid-glass:hover::before {
+            left: 100%;
+        }
+
+        .char-anim {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(-18px);
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .char-anim.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .delay-fade {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+
+        .delay-fade.visible {
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        pre code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- HERO SECTION -->
+    <section class="relative w-full h-screen overflow-hidden flex flex-col">
+        <!-- Video Background -->
+        <video 
+            class="absolute top-0 left-0 w-full h-full object-cover z-0"
+            autoplay 
+            loop 
+            muted 
+            playsinline
+        >
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4" type="video/mp4">
+        </video>
+
+        <!-- Navbar -->
+        <nav class="relative z-20 pt-6 px-6 md:px-12 lg:px-16">
+            <div class="liquid-glass rounded-xl px-6 py-3 flex items-center justify-between">
+                <div class="text-2xl font-semibold tracking-tight text-white">VEX</div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#story" class="text-sm text-gray-300 hover:text-white transition-colors">Story</a>
+                    <a href="#investing" class="text-sm text-gray-300 hover:text-white transition-colors">Investing</a>
+                    <a href="#building" class="text-sm text-gray-300 hover:text-white transition-colors">Building</a>
+                    <a href="#advisory" class="text-sm text-gray-300 hover:text-white transition-colors">Advisory</a>
+                </div>
+                <button class="bg-white text-black px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all">
+                    Start a Chat
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Content Container -->
+        <div class="relative z-10 flex-1 flex flex-col justify-end pb-12 lg:pb-16 px-6 md:px-12 lg:px-16">
+            <div class="lg:grid lg:grid-cols-2 lg:items-end gap-12">
+                <!-- Left Column -->
+                <div>
+                    <h1 id="hero-heading" class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-6 leading-tight" style="letter-spacing: -0.04em;">
+                        <!-- Animated text inserted by JS -->
+                    </h1>
+                    <p class="delay-fade text-base md:text-lg text-gray-300 mb-8 max-w-lg" style="transition-delay: 800ms;">
+                        We back visionaries and craft ventures that define what comes next.
+                    </p>
+                    <div class="delay-fade flex flex-wrap gap-4" style="transition-delay: 1200ms;">
+                        <button class="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-200 transition-all">
+                            Start a Chat
+                        </button>
+                        <button class="liquid-glass border border-white/20 text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-black transition-all">
+                            Explore Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="flex items-end justify-start lg:justify-end mt-12 lg:mt-0">
+                    <div class="delay-fade liquid-glass px-8 py-4 rounded-2xl" style="transition-delay: 1400ms;">
+                        <p class="text-lg md:text-xl lg:text-2xl font-light text-white/90">
+                            Investing. Building. Advisory.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENT SECTION: DESIGN PLAN -->
+    <main class="relative z-10 bg-vex-black px-6 md:px-12 lg:px-16 py-24 max-w-7xl mx-auto">
+        
+        <header class="mb-20 text-center">
+            <span class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4 block">Documentation</span>
+            <h1 class="text-5xl md:text-6xl font-semibold mb-6">Website Design Plan</h1>
+            <div class="h-1 w-24 bg-white mx-auto"></div>
+        </header>
+
+        <!-- Summary Section -->
+        <section class="mb-24">
+            <h2 class="text-3xl font-medium mb-8 flex items-center gap-4">
+                <span class="w-8 h-[1px] bg-white/30"></span>
+                Tóm tắt thiết kế tổng thể
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="liquid-glass p-8 rounded-2xl">
+                    <h3 class="text-xl font-medium mb-4 text-white">Visual Concept</h3>
+                    <p class="text-gray-400 leading-relaxed">Modern, high-tech, and professional. Evoking a futuristic AI-powered aesthetic with functional minimalism.</p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl">
+                    <h3 class="text-xl font-medium mb-4 text-white">UX Focus</h3>
+                    <p class="text-gray-400 leading-relaxed">Smooth animations, sharp typography, and spatial layering using liquid glass effects for premium feel.</p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl">
+                    <h3 class="text-xl font-medium mb-4 text-white">Core Value</h3>
+                    <p class="text-gray-400 leading-relaxed">Digitized future with an organic and luxurious feel, prioritizing core brand messaging and readability.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Color & Typography -->
+        <section class="mb-24">
+            <h2 class="text-3xl font-medium mb-8 flex items-center gap-4">
+                <span class="w-8 h-[1px] bg-white/30"></span>
+                Color Palette & Typography
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-6 p-4 bg-white/5 rounded-xl border border-white/10">
+                        <div class="w-16 h-16 rounded-lg bg-black border border-white/20"></div>
+                        <div>
+                            <p class="font-mono text-sm">#000000</p>
+                            <p class="text-gray-400 text-sm">Primary Background (Depth & Mystery)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6 p-4 bg-white/5 rounded-xl border border-white/10">
+                        <div class="w-16 h-16 rounded-lg bg-white"></div>
+                        <div>
+                            <p class="font-mono text-sm">#FFFFFF</p>
+                            <p class="text-gray-400 text-sm">Main Text (Transparency & Modernity)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6 p-4 bg-white/5 rounded-xl border border-white/10">
+                        <div class="w-16 h-16 rounded-lg bg-gray-400"></div>
+                        <div>
+                            <p class="font-mono text-sm">#D1D5DB</p>
+                            <p class="text-gray-400 text-sm">Secondary Text (Readability)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl">
+                    <h3 class="text-xl mb-4 font-medium">Typography: Inter</h3>
+                    <p class="text-4xl mb-4 font-light tracking-tight">The quick brown fox jumps over the lazy dog.</p>
+                    <p class="text-gray-400 leading-relaxed">Weights: 300, 400, 500, 600. Clean, readable at all sizes, high-tech feel. Rendered with -webkit-font-smoothing for maximum sharpness.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Sections -->
+        <section class="mb-24">
+            <h2 class="text-3xl font-medium mb-8 flex items-center gap-4">
+                <span class="w-8 h-[1px] bg-white/30"></span>
+                Chi tiết từng Section
+            </h2>
+            <div class="space-y-4">
+                <div class="group p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all border-l-2 border-transparent hover:border-white">
+                    <h4 class="text-lg font-medium text-white mb-2">01 Home (Hero)</h4>
+                    <p class="text-gray-400">First impression with 4K video background, smooth text animation, and primary CTA.</p>
+                </div>
+                <div class="group p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all border-l-2 border-transparent hover:border-white">
+                    <h4 class="text-lg font-medium text-white mb-2">02 Story</h4>
+                    <p class="text-gray-400">Exploration of VEX philosophy and the vision for an AI-integrated future.</p>
+                </div>
+                <div class="group p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all border-l-2 border-transparent hover:border-white">
+                    <h4 class="text-lg font-medium text-white mb-2">03 Investing</h4>
+                    <p class="text-gray-400">Showcase of portfolio projects and the strategy for backing visionaries.</p>
+                </div>
+                <div class="group p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all border-l-2 border-transparent hover:border-white">
+                    <h4 class="text-lg font-medium text-white mb-2">04 Building</h4>
+                    <p class="text-gray-400">Venture Studio process: from real-world technology implementation to platforms.</p>
+                </div>
+                <div class="group p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all border-l-2 border-transparent hover:border-white">
+                    <h4 class="text-lg font-medium text-white mb-2">05 Advisory</h4>
+                    <p class="text-gray-400">Strategic consulting services for comprehensive digital transformation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reusable Components Code -->
+        <section class="mb-24">
+            <h2 class="text-3xl font-medium mb-8 flex items-center gap-4">
+                <span class="w-8 h-[1px] bg-white/30"></span>
+                Reusable Components & Code
+            </h2>
+            
+            <div class="space-y-12">
+                <!-- Liquid Glass CSS -->
+                <div>
+                    <h3 class="text-xl font-medium mb-4 text-gray-300">Liquid Glass CSS</h3>
+                    <pre class="p-6 bg-vex-charcoal rounded-xl border border-white/10 overflow-x-auto text-cyan-400"><code>.liquid-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transition: 0.5s;
+}</code></pre>
+                </div>
+
+                <!-- React Hero Structure -->
+                <div>
+                    <h3 class="text-xl font-medium mb-4 text-gray-300">VEX Hero Implementation (React)</h3>
+                    <pre class="p-6 bg-vex-charcoal rounded-xl border border-white/10 overflow-x-auto text-emerald-400"><code>const VEXHero = () => {
+  return (
+    &lt;section className="relative w-full h-screen overflow-hidden bg-black font-sans"&gt;
+      &lt;video autoPlay loop muted playsInline className="object-cover"&gt;
+        &lt;source src={HERO_VIDEO_URL} /&gt;
+      &lt;/video&gt;
+      
+      &lt;Navbar className="liquid-glass" /&gt;
+      
+      &lt;div className="hero-content flex-1 flex flex-col justify-end"&gt;
+        &lt;div className="lg:grid lg:grid-cols-2"&gt;
+          &lt;AnimatedHeading text="Shaping tomorrow\nwith vision and action." /&gt;
+          &lt;FadeIn delay={1400}&gt;
+            &lt;LiquidCard&gt;Investing. Building. Advisory.&lt;/LiquidCard&gt;
+          &lt;/FadeIn&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Character Animation Setup
+        const headingText = "Shaping tomorrow\nwith vision and action.";
+        const headingContainer = document.getElementById('hero-heading');
+        const initialDelay = 200;
+        const charDuration = 30;
+
+        headingText.split('\n').forEach((line, lineIndex, linesArray) => {
+            const lineSpan = document.createElement('span');
+            lineSpan.className = 'block';
+            
+            let previousCharsCount = 0;
+            for(let i = 0; i < lineIndex; i++) {
+                previousCharsCount += linesArray[i].length;
+            }
+
+            line.split('').forEach((char, charIndex) => {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'char-anim';
+                charSpan.textContent = char === ' ' ? '\u00A0' : char;
+                
+                const totalCharIndex = previousCharsCount + charIndex;
+                const delay = initialDelay + (totalCharIndex * charDuration);
+                
+                charSpan.style.transitionDelay = `${delay}ms`;
+                lineSpan.appendChild(charSpan);
+            });
+
+            headingContainer.appendChild(lineSpan);
+        });
+
+        // Trigger animations after load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Animate Heading Characters
+            const chars = document.querySelectorAll('.char-anim');
+            chars.forEach(char => {
+                setTimeout(() => {
+                    char.classList.add('visible');
+                }, 50);
+            });
+
+            // Animate Fades
+            const fades = document.querySelectorAll('.delay-fade');
+            fades.forEach(fade => {
+                setTimeout(() => {
+                    fade.classList.add('visible');
+                }, 50);
+            });
+        });
+
+        // Add scroll animation triggers for page content
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            if (section.closest('main')) {
+                section.style.opacity = '0';
+                observer.observe(section);
+            }
+        });
+    </script>
+</body>
+</html>

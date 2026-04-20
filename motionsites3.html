@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotionSites | The Fluidity of Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'hsl(240 10% 3.9%)',
+                        foreground: 'hsl(0 0% 98%)',
+                        primary: 'hsl(0 0% 98%)',
+                        muted: 'hsl(240 3.7% 15.9%)',
+                        accent: '#00FFFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Times New Roman', 'serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'fade-rise': 'fadeRise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeRise: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            background-color: hsl(240 10% 3.9%);
+            color: hsl(0 0% 98%);
+            overflow-x: hidden;
+        }
+
+        .font-tnr { font-family: 'Times New Roman', Times, serif; }
+        
+        .liquid-glass {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .text-justify-custom {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: hsl(240 10% 3.9%); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="grain"></div>
+
+    <!-- Background Video -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <video 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            class="w-full h-full object-cover opacity-30"
+        >
+            <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/multi.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-8 flex justify-between items-center mix-blend-difference">
+        <div class="text-2xl font-serif tracking-tighter opacity-0 animate-fade-rise">
+            MOTION®SITES
+        </div>
+        <div class="flex gap-8 items-center opacity-0 animate-fade-rise delay-1">
+            <button class="px-6 py-2 border border-white/20 hover:bg-white hover:text-black transition-all duration-500 font-serif text-sm uppercase tracking-widest">
+                Enquire
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-7xl w-full">
+            <div class="liquid-glass p-8 md:p-20 border-white/5 opacity-0 animate-fade-rise delay-1">
+                <h1 class="text-6xl md:text-[10rem] font-serif font-medium leading-none mb-12 tracking-tight">
+                    Motion<br><span class="ml-[10%] italic">Sites</span>
+                </h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+                    <div class="md:col-span-7">
+                        <p class="text-xl md:text-2xl font-serif text-justify-custom leading-relaxed text-white/80 opacity-0 animate-fade-rise delay-2">
+                            A cinematic digital experience where the fluidity of intelligence meets high-tech precision. We engineer AI agents that transcend standard automation, creating a seamless bridge between data and intuition.
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 flex md:justify-end">
+                        <button class="group relative px-12 py-6 bg-white text-black font-serif font-bold text-lg overflow-hidden transition-all hover:pr-16 opacity-0 animate-fade-rise delay-3">
+                            <span class="relative z-10">START CONSULTATION</span>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section (Bento Layout) -->
+    <section class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <span class="text-accent font-mono text-sm tracking-[0.3em] uppercase block mb-4">01 / Concept</span>
+                <h2 class="text-4xl md:text-6xl font-serif italic">The Fluidity of Intelligence</h2>
+            </div>
+
+            <div class="bento-grid">
+                <div class="md:col-span-2 md:row-span-2 liquid-glass p-10 flex flex-col justify-end group hover:border-accent/50 transition-colors">
+                    <h3 class="text-3xl font-serif mb-4">Cinematic Visual Language</h3>
+                    <p class="text-white/60 text-justify-custom leading-relaxed">
+                        We prioritize immediate visual engagement using 4K slow-motion textures and deep-space aesthetics. Every pixel serves a purpose in telling the story of your AI ecosystem.
+                    </p>
+                </div>
+                
+                <div class="md:col-span-2 liquid-glass p-10 group hover:border-accent/50 transition-colors">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center text-accent">◈</div>
+                        <span class="font-mono text-xs opacity-40">EST. 2024</span>
+                    </div>
+                    <h3 class="text-2xl font-serif mb-2">Premium Minimalism</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Focus on negative space and a rigorous grid system.</p>
+                </div>
+
+                <div class="md:col-span-1 liquid-glass p-8 group hover:border-accent/50 transition-colors">
+                    <h4 class="text-accent font-mono text-xs mb-4">CORE PILLAR</h4>
+                    <p class="font-serif italic text-lg leading-snug">Intelligent Interaction</p>
+                </div>
+
+                <div class="md:col-span-1 liquid-glass p-8 group hover:border-accent/50 transition-colors">
+                    <h4 class="text-accent font-mono text-xs mb-4">TECH STACK</h4>
+                    <p class="font-serif italic text-lg leading-snug">Neural Networks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Solutions Section -->
+    <section class="py-32 bg-white/5 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+                <div class="max-w-2xl">
+                    <span class="text-accent font-mono text-sm tracking-[0.3em] uppercase block mb-4">02 / Capabilities</span>
+                    <h2 class="text-5xl md:text-7xl font-serif">Engineered Solutions</h2>
+                </div>
+                <div class="md:w-1/3 text-white/50 text-sm italic font-serif">
+                    Defining the future of enterprise software through the lens of autonomous intelligence and strategic consult.
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-1px bg-white/10 border border-white/10">
+                <!-- Service 1 -->
+                <div class="bg-background p-12 hover:bg-muted/30 transition-all group">
+                    <span class="font-mono text-xs text-white/30 block mb-12">02.1</span>
+                    <h3 class="text-3xl font-serif mb-6 group-hover:text-accent transition-colors">Enterprise AI Agents</h3>
+                    <p class="text-white/60 font-serif text-justify-custom leading-relaxed mb-8">
+                        Custom-built autonomous entities designed to handle complex logic, multi-step reasoning, and real-time decision making within your ecosystem.
+                    </p>
+                    <div class="h-px w-full bg-white/10 group-hover:bg-accent/50 transition-all"></div>
+                </div>
+                <!-- Service 2 -->
+                <div class="bg-background p-12 hover:bg-muted/30 transition-all group">
+                    <span class="font-mono text-xs text-white/30 block mb-12">02.2</span>
+                    <h3 class="text-3xl font-serif mb-6 group-hover:text-accent transition-colors">AI Tokenization</h3>
+                    <p class="text-white/60 font-serif text-justify-custom leading-relaxed mb-8">
+                        Advanced data structuring and token-based logic implementation for high-speed, cost-effective model performance and integration.
+                    </p>
+                    <div class="h-px w-full bg-white/10 group-hover:bg-accent/50 transition-all"></div>
+                </div>
+                <!-- Service 3 -->
+                <div class="bg-background p-12 hover:bg-muted/30 transition-all group">
+                    <span class="font-mono text-xs text-white/30 block mb-12">02.3</span>
+                    <h3 class="text-3xl font-serif mb-6 group-hover:text-accent transition-colors">Strategic Consulting</h3>
+                    <p class="text-white/60 font-serif text-justify-custom leading-relaxed mb-8">
+                        Expert guidance on AI adoption, architecture planning, and long-term digital transformation strategies for modern enterprises.
+                    </p>
+                    <div class="h-px w-full bg-white/10 group-hover:bg-accent/50 transition-all"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs / Code Preview Section -->
+    <section class="py-32 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="liquid-glass p-1 rounded-sm">
+                <div class="bg-zinc-900/50 p-6 border-b border-white/5 flex items-center justify-between">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                    </div>
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-white/40">MotionSites_Engine.ts</span>
+                </div>
+                <div class="p-8 font-mono text-sm overflow-x-auto">
+                    <pre class="leading-relaxed"><code><span class="text-purple-400">interface</span> <span class="text-blue-300">AIEngine</span> {
+  fluidity: <span class="text-yellow-200">number</span>;
+  cinematic: <span class="text-yellow-200">boolean</span>;
+  intelligence: <span class="text-yellow-200">'autonomous'</span>;
+}
+
+<span class="text-purple-400">const</span> <span class="text-blue-300">motionSites</span> = <span class="text-purple-400">async</span> () => {
+  <span class="text-gray-500">// Initialize the Fluidity of Intelligence</span>
+  <span class="text-purple-400">const</span> instance = <span class="text-purple-400">await</span> Agent.deploy({
+    theme: <span class="text-green-300">'cinematic'</span>,
+    vision: <span class="text-green-300">'4K_Slow_Motion'</span>,
+    scaling: <span class="text-green-300">'infinite'</span>
+  });
+  
+  <span class="text-blue-300">console</span>.<span class="text-white">log</span>(<span class="text-green-300">"Intelligence Activated."</span>);
+};</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-40 px-6 text-center overflow-hidden relative">
+        <div class="absolute inset-0 bg-accent/5 blur-[120px] rounded-full translate-y-1/2"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <span class="text-accent font-mono text-sm tracking-[0.3em] uppercase block mb-12 animate-pulse-slow">Awaiting Command</span>
+            <h2 class="text-6xl md:text-8xl font-serif italic mb-16 leading-tight">Ready to evolve <br>your digital DNA?</h2>
+            
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <button class="w-full md:w-auto px-16 py-6 bg-white text-black font-serif font-bold text-xl hover:bg-accent transition-colors">
+                    CONTACT CORE
+                </button>
+                <button class="w-full md:w-auto px-16 py-6 border border-white/20 font-serif font-bold text-xl hover:border-white transition-colors">
+                    VIEW REEL
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini Progress / Step Counter Overlay -->
+    <div class="fixed bottom-10 left-10 hidden md:block z-40">
+        <div class="flex items-center gap-4 font-mono text-xs tracking-tighter text-white/30">
+            <span>SCROLLING</span>
+            <div class="w-20 h-px bg-white/10 relative overflow-hidden">
+                <div id="scrollProgress" class="absolute top-0 left-0 h-full bg-accent transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="scrollPercent">01</span>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll progress indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+            
+            const step = Math.ceil(scrolled / 25) || 1;
+            document.getElementById('scrollPercent').innerText = '0' + step;
+        });
+
+        // Intersection Observer for fade-in elements
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-rise');
+                    entry.target.style.opacity = "1";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = "0";
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

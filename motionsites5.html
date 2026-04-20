@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureSoft AI - Kỷ Nguyên Mới Của Trí Tuệ Nhân Tạo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0A0A0F',
+                        foreground: '#FAFAFA',
+                        primary: '#00FF9F',
+                        muted: '#1A1A2E',
+                        accent: '#00FF9F',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        serif: ['"Times New Roman"', 'serif'],
+                        mono: ['Courier New', 'monospace'],
+                    },
+                    animation: {
+                        'fade-rise': 'fadeRise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeRise: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0A0A0F;
+            color: #FAFAFA;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display { font-family: 'Outfit', sans-serif; }
+        .font-tnr { font-family: 'Times New Roman', Times, serif; }
+
+        .liquid-glass {
+            backdrop-filter: blur(15px);
+            background: rgba(10, 20, 40, 0.65);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,255,159,0.4), transparent);
+        }
+
+        .neon-text {
+            color: #00FF9F;
+            text-shadow: 0 0 15px rgba(0, 255, 159, 0.6);
+        }
+
+        .text-justify-custom {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .architecture-layer {
+            transition: all 0.4s ease;
+        }
+        .architecture-layer:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(0, 255, 159, 0.25);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="grain"></div>
+
+    <!-- Background Video -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-30">
+            <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/multi.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-8 flex justify-between items-center mix-blend-difference">
+        <div class="flex items-center gap-3 text-2xl font-display tracking-tighter">
+            <div class="w-9 h-9 bg-[#00FF9F] rounded-lg flex items-center justify-center text-black font-bold">AI</div>
+            <span>FUTURESOFT</span>
+        </div>
+        <div class="flex gap-8 items-center">
+            <a href="#architecture" class="text-sm uppercase tracking-widest hover:text-[#00FF9F] transition-colors">Kiến Trúc</a>
+            <button onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})" 
+                    class="px-8 py-3 border border-[#00FF9F]/50 hover:bg-[#00FF9F] hover:text-black transition-all duration-300 font-display text-sm uppercase tracking-widest">
+                Liên Hệ Ngay
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-7xl w-full">
+            <div class="liquid-glass p-8 md:p-20 rounded-3xl">
+                <h1 class="text-6xl md:text-[9rem] font-display font-bold leading-none mb-10 tracking-tighter">
+                    KIẾN TẠO<br><span class="neon-text">KỶ NGUYÊN AI</span>
+                </h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+                    <div class="md:col-span-7">
+                        <p class="text-xl md:text-2xl font-serif text-justify-custom leading-relaxed text-white/80">
+                            Chúng tôi không chỉ phát triển phần mềm. Chúng tôi kiến tạo tương lai bằng những giải pháp Trí tuệ Nhân tạo đột phá, giúp doanh nghiệp Việt Nam bứt phá giới hạn và dẫn đầu kỷ nguyên số.
+                        </p>
+                    </div>
+                    <div class="md:col-span-5 flex md:justify-end">
+                        <a href="#projects" 
+                           class="group relative px-12 py-6 bg-[#00FF9F] text-black font-display font-bold text-lg overflow-hidden transition-all hover:pr-16 inline-block">
+                            <span class="relative z-10">KHÁM PHÁ GIẢI PHÁP</span>
+                            <span class="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <span class="text-[#00FF9F] font-mono text-sm tracking-[0.3em] uppercase block mb-4">01 / TẦM NHÌN</span>
+                <h2 class="text-4xl md:text-6xl font-display">Sự Hoàn Hảo Trong Tự Động Hóa</h2>
+            </div>
+
+            <div class="bento-grid">
+                <div class="md:col-span-2 md:row-span-2 liquid-glass p-10 flex flex-col justify-end group hover:border-[#00FF9F]/50 transition-colors">
+                    <h3 class="text-3xl font-display mb-6">Kiến Trúc AI Tiên Tiến</h3>
+                    <p class="text-white/70 text-justify-custom leading-relaxed">
+                        Phân tầng rõ ràng, kết hợp Agentic AI, RAG và hạ tầng Cloud Native giúp hệ thống linh hoạt, an toàn và dễ dàng mở rộng theo nhu cầu doanh nghiệp.
+                    </p>
+                </div>
+                
+                <div class="md:col-span-2 liquid-glass p-10 group hover:border-[#00FF9F]/50 transition-colors">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center text-[#00FF9F]">⚡</div>
+                        <span class="font-mono text-xs opacity-40">2026</span>
+                    </div>
+                    <h3 class="text-2xl font-display mb-3">Tối Ưu Hiệu Suất</h3>
+                    <p class="text-white/70 text-sm leading-relaxed">Giải phóng con người khỏi công việc lặp lại, tập trung vào sáng tạo và chiến lược.</p>
+                </div>
+
+                <div class="md:col-span-1 liquid-glass p-8 group hover:border-[#00FF9F]/50 transition-colors">
+                    <h4 class="text-[#00FF9F] font-mono text-xs mb-4">GIÁ TRỊ CỐT LÕI</h4>
+                    <p class="font-display text-lg leading-snug">Dân chủ hóa AI</p>
+                </div>
+
+                <div class="md:col-span-1 liquid-glass p-8 group hover:border-[#00FF9F]/50 transition-colors">
+                    <h4 class="text-[#00FF9F] font-mono text-xs mb-4">CÔNG NGHỆ</h4>
+                    <p class="font-display text-lg leading-snug">LLM • RAG • Agentic AI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kiến Trúc Hệ Thống -->
+    <section id="architecture" class="py-32 px-6 bg-white/5 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-[#00FF9F] font-mono text-sm tracking-[0.3em] uppercase">03 / KIẾN TRÚC</span>
+                <h2 class="text-5xl md:text-7xl font-display mt-4">Kiến Trúc Hệ Thống AI</h2>
+                <p class="mt-6 text-xl text-white/70 max-w-2xl mx-auto">
+                    Kiến trúc phân tầng hiện đại, được thiết kế dành riêng cho doanh nghiệp Việt Nam
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="liquid-glass p-8">
+                        <h3 class="text-2xl font-display mb-6 text-[#00FF9F]">Phân Tầng Thông Minh</h3>
+                        <ul class="space-y-6">
+                            <li class="flex gap-4">
+                                <span class="font-mono text-[#00FF9F] font-bold">01</span>
+                                <div>
+                                    <strong>Tầng Trình Bày</strong><br>
+                                    <span class="text-sm text-white/60">Giao diện hiện đại, AI-driven UI/UX</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-[#00FF9F] font-bold">02</span>
+                                <div>
+                                    <strong>Tầng Ứng Dụng &amp; AI Agents</strong><br>
+                                    <span class="text-sm text-white/60">Logic kinh doanh, tự động hóa thông minh</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-[#00FF9F] font-bold">03</span>
+                                <div>
+                                    <strong>Tầng AI Core</strong><br>
+                                    <span class="text-sm text-white/60">LLM, RAG, Machine Learning, Fine-tuning</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-[#00FF9F] font-bold">04</span>
+                                <div>
+                                    <strong>Tầng Dữ Liệu</strong><br>
+                                    <span class="text-sm text-white/60">Vector DB, Data Lake, bảo mật AES-256</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="liquid-glass p-10">
+                    <div class="space-y-6">
+                        <div class="architecture-layer bg-gradient-to-r from-[#00FF9F]/10 to-transparent border border-[#00FF9F]/30 p-6 rounded-2xl flex items-center gap-4">
+                            <div class="w-5 h-5 bg-[#00FF9F] rounded-full"></div>
+                            <div class="flex-1 font-display">Presentation Layer</div>
+                        </div>
+                        <div class="architecture-layer bg-gradient-to-r from-[#00FF9F]/10 to-transparent border border-[#00FF9F]/30 p-6 rounded-2xl flex items-center gap-4 ml-8">
+                            <div class="w-5 h-5 bg-[#00FF9F] rounded-full"></div>
+                            <div class="flex-1 font-display">Application &amp; AI Agents</div>
+                        </div>
+                        <div class="architecture-layer bg-gradient-to-r from-[#00FF9F]/10 to-transparent border border-[#00FF9F]/30 p-6 rounded-2xl flex items-center gap-4 ml-16">
+                            <div class="w-5 h-5 bg-[#00FF9F] rounded-full"></div>
+                            <div class="flex-1 font-display">AI Core Engine</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 ml-24">
+                            <div class="architecture-layer bg-gradient-to-r from-[#00FF9F]/10 to-transparent border border-[#00FF9F]/30 p-6 rounded-2xl text-center">Data Layer</div>
+                            <div class="architecture-layer bg-gradient-to-r from-[#00FF9F]/10 to-transparent border border-[#00FF9F]/30 p-6 rounded-2xl text-center">Infrastructure</div>
+                        </div>
+                    </div>
+                    <div class="mt-10 text-center text-xs font-mono text-[#00FF9F]/70">SCALABLE • SECURE • AI-NATIVE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div>
+                    <span class="text-[#00FF9F] font-mono text-sm tracking-[0.3em] uppercase block mb-4">04 / GIẢI PHÁP</span>
+                    <h2 class="text-5xl md:text-7xl font-display">Giải Pháp Thông Minh</h2>
+                </div>
+                <div class="md:w-1/3 text-white/60 text-lg font-serif">
+                    Mang trí tuệ nhân tạo vào mọi quy trình kinh doanh, giúp doanh nghiệp vận hành hiệu quả và cạnh tranh bền vững.
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="liquid-glass p-10 hover:border-[#00FF9F]/50 transition-all group">
+                    <span class="font-mono text-xs text-white/40 block mb-8">04.1</span>
+                    <h3 class="text-3xl font-display mb-6 group-hover:text-[#00FF9F]">AI Agents Doanh Nghiệp</h3>
+                    <p class="text-white/70 leading-relaxed">
+                        Các tác nhân trí tuệ tự trị xử lý logic phức tạp, ra quyết định thời gian thực và tự động hóa quy trình kinh doanh.
+                    </p>
+                </div>
+                <div class="liquid-glass p-10 hover:border-[#00FF9F]/50 transition-all group">
+                    <span class="font-mono text-xs text-white/40 block mb-8">04.2</span>
+                    <h3 class="text-3xl font-display mb-6 group-hover:text-[#00FF9F]">Tối Ưu Hóa Dữ Liệu &amp; RAG</h3>
+                    <p class="text-white/70 leading-relaxed">
+                        Xây dựng hệ thống Retrieval-Augmented Generation giúp AI trả lời chính xác, dựa trên dữ liệu nội bộ của doanh nghiệp.
+                    </p>
+                </div>
+                <div class="liquid-glass p-10 hover:border-[#00FF9F]/50 transition-all group">
+                    <span class="font-mono text-xs text-white/40 block mb-8">04.3</span>
+                    <h3 class="text-3xl font-display mb-6 group-hover:text-[#00FF9F]">Tư Vấn Chuyển Đổi Số</h3>
+                    <p class="text-white/70 leading-relaxed">
+                        Hỗ trợ doanh nghiệp xây dựng chiến lược AI toàn diện, từ đánh giá đến triển khai và tối ưu lâu dài.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-40 px-6 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-[#00FF9F]/5 blur-[150px]"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <span class="text-[#00FF9F] font-mono text-sm tracking-[0.3em] uppercase block mb-8">Sẵn sàng cho bước nhảy vọt?</span>
+            <h2 class="text-6xl md:text-8xl font-display leading-tight mb-12">
+                Hãy để AI dẫn dắt<br>doanh nghiệp của bạn
+            </h2>
+            
+            <a href="#footer" 
+               class="inline-block px-16 py-6 bg-[#00FF9F] text-black font-display font-bold text-xl hover:scale-105 transition-transform">
+                LIÊN HỆ TƯ VẤN MIỄN PHÍ
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="py-20 px-6 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-[#00FF9F] rounded-xl flex items-center justify-center text-black font-bold text-2xl">AI</div>
+                    <span class="text-3xl font-display tracking-tighter">FUTURESOFT AI</span>
+                </div>
+                <p class="text-white/60 max-w-md">
+                    Tiên phong phát triển giải pháp Trí tuệ Nhân tạo tại Việt Nam. Kiến tạo tương lai số bền vững cho doanh nghiệp.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#00FF9F]">Liên Kết</h4>
+                <ul class="space-y-3 text-white/60">
+                    <li><a href="#" class="hover:text-white">Tầm Nhìn</a></li>
+                    <li><a href="#architecture" class="hover:text-white">Kiến Trúc</a></li>
+                    <li><a href="#" class="hover:text-white">Giải Pháp</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#00FF9F]">Thông Tin</h4>
+                <ul class="space-y-3 text-white/60">
+                    <li>Quận 7, TP. Hồ Chí Minh</li>
+                    <li>+84 90 334 4551</li>
+                    <li>www.phamhoanganhtokens.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="text-center text-xs text-white/30 mt-20">
+            © 2026 FutureSoft AI - Kỷ nguyên mới của hiệu suất
+        </div>
+    </footer>
+
+    <script>
+        // Scroll progress (giữ nguyên từ template gốc)
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            // Có thể thêm progress bar nếu cần
+        });
+
+        // Smooth scroll cho tất cả anchor
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

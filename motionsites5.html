@@ -133,31 +133,36 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center px-6 pt-20">
-        <div class="max-w-7xl w-full">
-            <div class="liquid-glass p-8 md:p-20 rounded-3xl">
-                <h1 class="text-6xl md:text-[9rem] font-display font-bold leading-none mb-10 tracking-tighter">
-                    KIẾN TẠO<br><span class="neon-text">KỶ NGUYÊN AI</span>
-                </h1>
-                
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
-                    <div class="md:col-span-7">
-                        <p class="text-xl md:text-2xl font-serif text-justify-custom leading-relaxed text-white/80">
-                            Chúng tôi không chỉ phát triển phần mềm. Chúng tôi kiến tạo tương lai bằng những giải pháp Trí tuệ Nhân tạo đột phá, giúp doanh nghiệp Việt Nam bứt phá giới hạn và dẫn đầu kỷ nguyên số.
-                        </p>
-                    </div>
-                    <div class="md:col-span-5 flex md:justify-end">
-                        <a href="#projects" 
-                           class="group relative px-12 py-6 bg-[#00FF9F] text-black font-display font-bold text-lg overflow-hidden transition-all hover:pr-16 inline-block">
-                            <span class="relative z-10">KHÁM PHÁ GIẢI PHÁP</span>
-                            <span class="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">→</span>
-                        </a>
-                    </div>
-                </div>
+<!-- ==================== HERO SECTION - TRONG SUỐT ==================== -->
+<section class="min-h-screen flex items-center justify-center px-6 pt-20 relative overflow-hidden">
+    <!-- Overlay tối nhẹ -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-[-1]"></div>
+
+    <div class="max-w-7xl w-full text-center relative z-10">
+        <div class="space-y-10">
+            <h1 class="text-6xl md:text-[9.5rem] font-display font-bold leading-none tracking-[-4px] neon-text">
+                KIẾN TẠO<br>
+                <span class="block text-white drop-shadow-[0_0_50px_rgba(0,255,159,0.85)]">KỶ NGUYÊN AI</span>
+            </h1>
+            
+            <p class="max-w-3xl mx-auto text-xl md:text-2xl font-light text-white/90 leading-relaxed">
+                Chúng tôi không chỉ phát triển phần mềm.<br>
+                Chúng tôi kiến tạo tương lai bằng những giải pháp Trí tuệ Nhân tạo đột phá.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center pt-6">
+                <a href="#architecture" 
+                   class="group px-14 py-6 bg-[#00FF9F] text-black font-display font-bold text-lg rounded-2xl hover:scale-105 transition-all">
+                    KHÁM PHÁ KIẾN TRÚC
+                </a>
+                <a href="#footer" 
+                   class="group px-14 py-6 border-2 border-white/70 hover:border-[#00FF9F] text-white font-display font-bold text-lg rounded-2xl transition-all">
+                    LIÊN HỆ NGAY
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Overview Section -->
     <section class="py-32 px-6">
@@ -431,6 +436,39 @@
                     document.querySelector(this.getAttribute('href')).scrollIntoView({
                         behavior: 'smooth'
                     });
+                }
+            });
+        });
+    </script>
+        <!-- === SCROLL PROGRESS INDICATOR === -->
+    <div class="fixed bottom-8 left-8 z-50 hidden md:flex items-center gap-4 font-mono text-xs tracking-[2px] text-white/50">
+        <span class="uppercase">SCROLL</span>
+        <div class="w-28 h-px bg-white/20 relative overflow-hidden">
+            <div id="scrollProgress" class="absolute top-0 left-0 h-full bg-[#00FF9F] transition-all duration-200" style="width: 0%"></div>
+        </div>
+        <span id="scrollPercent" class="w-8 text-right text-[#00FF9F]">00</span>
+        <span class="text-white/30">%</span>
+    </div>
+
+    <script>
+        // JavaScript cho scroll progress và smooth scroll
+        function updateScrollProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+            document.getElementById('scrollPercent').textContent = Math.round(scrolled).toString().padStart(2, '0');
+        }
+
+        window.addEventListener('scroll', updateScrollProgress);
+        window.addEventListener('load', updateScrollProgress);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });

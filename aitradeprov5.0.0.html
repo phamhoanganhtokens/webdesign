@@ -94,15 +94,20 @@
     <nav class="fixed top-0 w-full z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center liquid-glass px-8 py-3 rounded-full">
             <div class="text-2xl font-bold tracking-tighter">AI TRADE PRO™</div>
+            
             <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest opacity-75">
                 <a href="#overview" class="hover:opacity-100 transition-opacity">Tổng quan</a>
                 <a href="#agents" class="hover:opacity-100 transition-opacity">Multi-AI Agents</a>
                 <a href="#chart" class="hover:opacity-100 transition-opacity">Biểu đồ Thị trường</a>
                 <a href="#version" class="hover:opacity-100 transition-opacity">Phiên bản</a>
             </div>
-            <button class="text-sm font-medium px-6 py-2.5 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all">
+
+            <!-- Nút Kết nối & Giao dịch - Đã thêm liên kết -->
+            <a href="https://phamhoanganhtokens.github.io/aitradepro/v5.0.0.html" 
+               target="_blank"
+               class="text-sm font-medium px-6 py-2.5 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all duration-300">
                 Kết nối & Giao dịch
-            </button>
+            </a>
         </div>
     </nav>
 
@@ -123,7 +128,7 @@
             </div>
         </div>
 
-        <!-- Terminal -->
+        <!-- Terminal Status -->
         <div id="terminal" class="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-70 font-mono-tech text-xs tracking-widest">
             <div>
                 [ STATUS: MULTI-AI SYSTEM ACTIVE ]<br>
@@ -208,7 +213,6 @@
                 <h2 class="text-4xl font-light tracking-tight accent-gradient">BIỂU ĐỒ THỊ TRƯỜNG THỜI GIAN THỰC</h2>
             </div>
             <div class="liquid-glass p-6 rounded-3xl overflow-hidden" style="height: 620px;">
-                <!-- TradingView Market Overview Widget - Chỉ Vàng, Dầu, Bitcoin -->
                 <div class="tradingview-widget-container h-full">
                     <div class="tradingview-widget-container__widget h-full"></div>
                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
@@ -273,17 +277,19 @@
         // Thời gian thực (múi giờ Việt Nam)
         function updateLiveTime() {
             const now = new Date();
-            const options = { timeZone: 'Asia/Ho_Chi_Minh', 
-                              year: 'numeric', month: '2-digit', day: '2-digit',
-                              hour: '2-digit', minute: '2-digit', second: '2-digit', 
-                              hour12: false };
+            const options = { 
+                timeZone: 'Asia/Ho_Chi_Minh', 
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit', 
+                hour12: false 
+            };
             const str = new Intl.DateTimeFormat('vi-VN', options).format(now);
             document.getElementById('live-time').innerHTML = `[ THỜI GIAN THỰC: ${str} ICT ]`;
         }
         setInterval(updateLiveTime, 1000);
         updateLiveTime();
 
-        // Smooth scroll cho menu
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();

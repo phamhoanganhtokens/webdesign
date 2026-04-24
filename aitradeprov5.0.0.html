@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trade Pro - Multi-AI Agent Trading System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: 240 10% 3.9%;
+        }
+
+        body {
+            background-color: hsl(240 10% 3.9%);
+            color: hsl(0 0% 98%);
+            font-family: 'Inter', system-ui, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        @keyframes fade-rise {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-rise {
+            animation: fade-rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        .accent-gradient {
+            background: linear-gradient(to right, #60a5fa, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.25;
+            filter: grayscale(80%) contrast(110%);
+            pointer-events: none;
+        }
+
+        section {
+            position: relative;
+        }
+
+        .text-justify { text-align: justify; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+    </style>
+</head>
+<body class="selection:bg-blue-500/20">
+
+    <!-- Video Background toàn trang -->
+    <video class="video-bg" autoplay loop muted playsinline>
+        <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/multi.mp4" type="video/mp4">
+    </video>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center liquid-glass px-8 py-3 rounded-full">
+            <div class="text-2xl font-bold tracking-tighter">AI TRADE PRO™</div>
+            <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest opacity-75">
+                <a href="#overview" class="hover:opacity-100 transition-opacity">Tổng quan</a>
+                <a href="#agents" class="hover:opacity-100 transition-opacity">Multi-AI Agents</a>
+                <a href="#chart" class="hover:opacity-100 transition-opacity">Biểu đồ Thị trường</a>
+                <a href="#version" class="hover:opacity-100 transition-opacity">Phiên bản</a>
+            </div>
+            <button class="text-sm font-medium px-6 py-2.5 rounded-full border border-white/30 hover:bg-white hover:text-black transition-all">
+                Kết nối & Giao dịch
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-screen flex flex-col items-center justify-center text-center px-6">
+        <div class="relative z-10 max-w-5xl">
+            <h1 class="text-[11vw] md:text-[9rem] font-light tracking-[-0.05em] leading-none animate-fade-rise delay-1">
+                AI TRADE<br>PRO™
+            </h1>
+            <p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-justify">
+                Nền tảng giao dịch thông minh sử dụng hệ thống <span class="accent-gradient font-medium">Multi-AI Agent</span>. 
+                Phân tích kỹ thuật, tin tức và rủi ro thời gian thực để hỗ trợ quyết định chính xác và kỷ luật.
+            </p>
+            <div class="mt-12 animate-fade-rise delay-3">
+                <a href="#content" class="liquid-glass inline-block px-12 py-4 text-sm tracking-[0.125em] uppercase hover:bg-white hover:text-black transition-all duration-700 rounded-full">
+                    Khám phá ngay
+                </a>
+            </div>
+        </div>
+
+        <!-- Terminal -->
+        <div id="terminal" class="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-70 font-mono-tech text-xs tracking-widest">
+            <div>
+                [ STATUS: MULTI-AI SYSTEM ACTIVE ]<br>
+                [ AI AGENTS: 4 SYNCHRONIZED ]
+            </div>
+            <div class="text-right">
+                <div id="live-time" class="font-mono-tech text-[10px]"></div>
+                [ VERSION: v5.0.0 - BETA TEST ]<br>
+                [ MULTI-AI PERFORMANCE: EXCELLENT ]
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="content" class="max-w-6xl mx-auto px-6 py-24 space-y-32 relative">
+
+        <!-- Section 1: Tổng quan -->
+        <section id="overview" class="space-y-10">
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono-tech opacity-40">01</span>
+                <div class="h-px flex-1 bg-white/10"></div>
+                <h2 class="text-4xl font-light tracking-tight accent-gradient">TỔNG QUAN HỆ THỐNG</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-6 text-lg">
+                    <p class="text-justify">
+                        AI Trade Pro là nền tảng giao dịch chuyên nghiệp được hỗ trợ bởi hệ thống Multi-AI Agent tiên tiến. 
+                        Hệ thống giúp nhà đầu tư từ mới bắt đầu đến chuyên nghiệp nhận được khuyến nghị chính xác, minh bạch và có quản lý rủi ro chặt chẽ.
+                    </p>
+                    <p class="text-justify opacity-75">
+                        Các AI Agent hoạt động độc lập, liên tục phân tích dữ liệu và tổng hợp thành khuyến nghị cuối cùng với điểm số tin cậy rõ ràng.
+                    </p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl">
+                    <h3 class="text-xl font-semibold mb-6">Điểm nổi bật</h3>
+                    <ul class="space-y-5 text-sm">
+                        <li class="flex gap-4"><span class="text-emerald-400">●</span> Phân tích đa chiều từ 4 AI Agent</li>
+                        <li class="flex gap-4"><span class="text-emerald-400">●</span> Streaming logs minh bạch (Observability)</li>
+                        <li class="flex gap-4"><span class="text-emerald-400">●</span> Tạm dừng / Hủy tác vụ bất kỳ lúc nào</li>
+                        <li class="flex gap-4"><span class="text-emerald-400">●</span> Chế độ Lite cho người mới & Pro cho chuyên gia</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Multi-AI Agents -->
+        <section id="agents" class="space-y-10">
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono-tech opacity-40">02</span>
+                <div class="h-px flex-1 bg-white/10"></div>
+                <h2 class="text-4xl font-light tracking-tight accent-gradient">MULTI-AI AGENT SYSTEM</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="liquid-glass p-8 rounded-2xl space-y-6">
+                    <h3 class="text-2xl font-medium">1. Agent Phân tích Kỹ thuật</h3>
+                    <p class="text-justify opacity-75">Phân tích biểu đồ, chỉ báo RSI, MACD, Bollinger Bands, mô hình giá và mức hỗ trợ/kháng cự.</p>
+                    <p class="text-emerald-400 text-sm">→ Tín hiệu mua/bán • Dự báo xu hướng • Mục tiêu giá</p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl space-y-6">
+                    <h3 class="text-2xl font-medium">2. Agent Phân tích Tin tức & Cơ bản</h3>
+                    <p class="text-justify opacity-75">Thu thập tin tức thị trường, báo cáo tài chính, dữ liệu vĩ mô và phân tích tâm lý từ mạng xã hội.</p>
+                    <p class="text-emerald-400 text-sm">→ Tóm tắt tác động • Cảnh báo sự kiện quan trọng</p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl space-y-6">
+                    <h3 class="text-2xl font-medium">3. Agent Quản lý Rủi ro</h3>
+                    <p class="text-justify opacity-75">Đánh giá rủi ro vị thế, đề xuất kích thước lot, Stop Loss và Take Profit phù hợp với khẩu vị rủi ro của bạn.</p>
+                    <p class="text-emerald-400 text-sm">→ Cảnh báo rủi ro danh mục thời gian thực</p>
+                </div>
+                <div class="liquid-glass p-8 rounded-2xl space-y-6">
+                    <h3 class="text-2xl font-medium">4. Agent Tổng hợp & Khuyến nghị</h3>
+                    <p class="text-justify opacity-75">Tổng hợp kết quả từ các agent khác, đưa ra khuyến nghị giao dịch cuối cùng kèm giải thích chi tiết và độ tin cậy.</p>
+                    <p class="text-emerald-400 text-sm">→ Điểm vào lệnh • Điểm thoát lệnh • Lý do rõ ràng</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Biểu đồ TradingView -->
+        <section id="chart" class="space-y-10">
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono-tech opacity-40">03</span>
+                <div class="h-px flex-1 bg-white/10"></div>
+                <h2 class="text-4xl font-light tracking-tight accent-gradient">BIỂU ĐỒ THỊ TRƯỜNG THỜI GIAN THỰC</h2>
+            </div>
+            <div class="liquid-glass p-6 rounded-3xl overflow-hidden" style="height: 620px;">
+                <!-- TradingView Market Overview Widget - Chỉ Vàng, Dầu, Bitcoin -->
+                <div class="tradingview-widget-container h-full">
+                    <div class="tradingview-widget-container__widget h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                    {
+                      "colorTheme": "dark",
+                      "dateRange": "1D",
+                      "showChart": true,
+                      "locale": "vi_VN",
+                      "width": "100%",
+                      "height": "100%",
+                      "isTransparent": true,
+                      "showSymbolLogo": true,
+                      "showFloatingTooltip": true,
+                      "plotLineColorGrowing": "rgba(74, 222, 128, 1)",
+                      "plotLineColorFalling": "rgba(248, 113, 113, 1)",
+                      "gridLineColor": "rgba(255,255,255,0.05)",
+                      "scaleFontColor": "rgba(163, 163, 163, 1)",
+                      "tabs": [
+                        {
+                          "title": "Tài sản chính",
+                          "symbols": [
+                            { "s": "TVC:GOLD", "d": "Vàng (XAUUSD)" },
+                            { "s": "TVC:USOIL", "d": "Dầu thô WTI" },
+                            { "s": "BINANCE:BTCUSDT", "d": "Bitcoin" }
+                          ]
+                        }
+                      ]
+                    }
+                    </script>
+                </div>
+            </div>
+            <p class="text-center text-xs opacity-50 font-mono-tech">Dữ liệu được cung cấp bởi TradingView • Cập nhật thời gian thực</p>
+        </section>
+
+        <!-- Section 4: Phiên bản -->
+        <section id="version" class="space-y-10">
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono-tech opacity-40">04</span>
+                <div class="h-px flex-1 bg-white/10"></div>
+                <h2 class="text-4xl font-light tracking-tight accent-gradient">PHIÊN BẢN & TRẠNG THÁI</h2>
+            </div>
+            <div class="liquid-glass p-10 rounded-3xl">
+                <div class="flex flex-wrap gap-8 justify-center text-center">
+                    <div><span class="block text-3xl font-bold text-white/80">v1.0</span><span class="text-xs opacity-50">Ra mắt</span></div>
+                    <div><span class="block text-3xl font-bold text-white/80">v2.0</span><span class="text-xs opacity-50">Cải tiến UI</span></div>
+                    <div><span class="block text-3xl font-bold text-white/80">v3.0</span><span class="text-xs opacity-50">Thêm AI News</span></div>
+                    <div><span class="block text-3xl font-bold text-white/80">v4.0</span><span class="text-xs opacity-50">Risk Management</span></div>
+                    <div class="relative"><span class="block text-3xl font-bold text-emerald-400">v5.0.0</span>
+                        <span class="absolute -top-1 -right-1 text-[10px] bg-emerald-500/90 text-black px-2.5 py-0.5 rounded-full font-medium">BETA</span>
+                        <span class="text-xs opacity-50 block mt-1">Đang thử nghiệm</span>
+                    </div>
+                </div>
+                <p class="text-center mt-10 text-lg opacity-80 text-justify max-w-2xl mx-auto">
+                    Phiên bản <strong>v5.0.0</strong> đang chạy thử nghiệm. Hệ thống Multi-AI Agent báo cáo kết quả xử lý tốt và sẵn sàng triển khai rộng rãi cho cộng đồng nhà đầu tư.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Thời gian thực (múi giờ Việt Nam)
+        function updateLiveTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Ho_Chi_Minh', 
+                              year: 'numeric', month: '2-digit', day: '2-digit',
+                              hour: '2-digit', minute: '2-digit', second: '2-digit', 
+                              hour12: false };
+            const str = new Intl.DateTimeFormat('vi-VN', options).format(now);
+            document.getElementById('live-time').innerHTML = `[ THỜI GIAN THỰC: ${str} ICT ]`;
+        }
+        setInterval(updateLiveTime, 1000);
+        updateLiveTime();
+
+        // Smooth scroll cho menu
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Animation khi scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-rise');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>

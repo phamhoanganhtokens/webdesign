@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opal AI - Kế hoạch Thiết kế Hệ sinh thái AI Cao cấp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlack: '#000000',
+                        steelGrey: '#505050',
+                        offWhite: '#F8F8F8',
+                        pulseGreen: 'rgba(90, 225, 76, 0.89)',
+                        darkElement: '#0E1311',
+                        charcoal: '#1A1A1A',
+                        codeBg: '#2D2D2D'
+                    },
+                    fontFamily: {
+                        fustat: ['Fustat', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        schibsted: ['Schibsted Grotesk', 'sans-serif'],
+                        noto: ['Noto Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1A1A1A;
+            color: #E0E0E0;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #00FFFF, #9C27B0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        pre {
+            scrollbar-width: thin;
+            scrollbar-color: #505050 transparent;
+        }
+        .hero-video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 115%;
+            min-height: 115%;
+            object-fit: cover;
+            object-position: top;
+            opacity: 0;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #00FFFF;
+        }
+    </style>
+</head>
+<body class="font-inter">
+
+    <!-- HERO SECTION PREVIEW (THE DESIGN CONCEPT IMPLEMENTED) -->
+    <section class="hero-video-container">
+        <video id="hero-video" muted playsinline preload="auto">
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260329_050842_be71947f-f16e-4a14-810c-06e83d23ddb5.mp4" type="video/mp4">
+        </video>
+
+        <!-- Navigation Overlay -->
+        <nav class="absolute top-0 left-0 w-full flex items-center justify-between px-[120px] py-4 z-50 font-schibsted">
+            <div class="text-[24px] font-semibold tracking-[-1.44px] text-black">Logoipsum</div>
+            <div class="flex items-center gap-8 text-[16px] font-medium tracking-[-0.2px] text-black">
+                <a href="#" class="nav-link">Platform</a>
+                <div class="flex items-center gap-1 cursor-pointer nav-link">
+                    Features
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <a href="#" class="nav-link">Projects</a>
+                <a href="#" class="nav-link">Community</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="w-[82px] py-2 text-black font-medium">Sign Up</button>
+                <button class="w-[101px] py-2 bg-black text-white rounded-full font-medium">Log In</button>
+            </div>
+        </nav>
+
+        <!-- Hero Content Wrapper -->
+        <div class="relative z-10 flex flex-col items-center text-center -mt-[50px] px-4">
+            <!-- Badge -->
+            <div class="flex items-center bg-white rounded-full pl-1 pr-4 py-1 shadow-lg mb-[34px]">
+                <div class="bg-darkElement text-white flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-medium mr-2">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L14.39 8.26H22L15.81 12.75L18.19 20L12 15.52L5.81 20L8.19 12.75L2 8.26H9.61L12 1Z"/></svg>
+                    New
+                </div>
+                <span class="text-steelGrey text-[14px]">Discover what's possible</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="font-fustat font-bold text-[80px] tracking-[-4.8px] leading-tight text-black mb-[34px]">
+                Transform Data Quickly
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="font-fustat font-medium text-[20px] tracking-[-0.4px] text-steelGrey max-w-[736px] w-[542px] mb-[44px]">
+                Upload your information and get powerful insights right away. Work smarter and achieve goals effortlessly.
+            </p>
+
+            <!-- Search Input Box -->
+            <div class="w-full max-w-[728px] h-[200px] bg-black/20 backdrop-blur-md rounded-[18px] p-4 flex flex-col justify-between">
+                <!-- Top Row -->
+                <div class="flex justify-between items-center text-[12px] font-schibsted font-medium text-white px-2">
+                    <div class="flex items-center gap-2">
+                        60/450 credits
+                        <button class="bg-pulseGreen/90 text-black px-2 py-0.5 rounded-sm">Upgrade</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.85 9.21L22 12L14.85 14.79L12 22L9.15 14.79L2 12L9.15 9.21L12 2Z"/></svg>
+                        Powered by GPT-4o
+                    </div>
+                </div>
+
+                <!-- Main Input Area -->
+                <div class="bg-white rounded-[12px] shadow-sm flex items-center p-2 mx-1">
+                    <input type="text" placeholder="Type question..." class="flex-1 bg-transparent border-none outline-none px-4 text-black placeholder-black/60 font-inter">
+                    <button class="w-[36px] h-[36px] bg-black rounded-full flex items-center justify-center text-white">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- Bottom Row -->
+                <div class="flex justify-between items-center px-1">
+                    <div class="flex gap-2">
+                        <button class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-[6px] text-white flex items-center gap-2 text-[12px]">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                            Attach
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-[6px] text-white flex items-center gap-2 text-[12px]">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                            Voice
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-[6px] text-white flex items-center gap-2 text-[12px]">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            Prompts
+                        </button>
+                    </div>
+                    <div class="text-[12px] text-white/60 font-inter">0/3,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCUMENTATION CONTENT -->
+    <main class="max-w-[1100px] mx-auto py-24 px-8">
+        <header class="mb-16">
+            <h1 class="font-fustat font-bold text-5xl md:text-6xl text-gradient mb-6">KẾ HOẠCH THIẾT KẾ WEBSITE:<br>HỆ SINH THÁI AI CAO CẤP</h1>
+            <p class="text-steelGrey text-xl max-w-2xl font-fustat">Bản thảo chi tiết cho Opal AI Designer - Định hướng trải nghiệm công nghệ tương lai thông qua ngôn ngữ thiết kế hiện đại.</p>
+        </header>
+
+        <!-- Section 1: Concept -->
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-0.5 bg-pulseGreen"></div>
+                <h2 class="text-3xl font-fustat font-bold text-white uppercase tracking-wider">1. Tóm tắt Ý tưởng Thiết kế (Design Concept)</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 hover:bg-white/5 transition-all">
+                    <h3 class="text-pulseGreen font-bold mb-4">Theme</h3>
+                    <p class="text-offWhite/80 leading-relaxed">"The Pulse of Intelligence" (Nhịp đập Trí tuệ). Một giao diện phản hồi theo thời gian thực.</p>
+                </div>
+                <div class="glass-card p-8 hover:bg-white/5 transition-all">
+                    <h3 class="text-pulseGreen font-bold mb-4">Focus</h3>
+                    <p class="text-offWhite/80 leading-relaxed">Sự giao thoa giữa dữ liệu phức tạp và giao diện người dùng tối giản, tinh gọn.</p>
+                </div>
+                <div class="glass-card p-8 hover:bg-white/5 transition-all">
+                    <h3 class="text-pulseGreen font-bold mb-4">Style</h3>
+                    <p class="text-offWhite/80 leading-relaxed">Luxury Minimalism: Sử dụng Glassmorphism, khoảng trắng và hoạt ảnh mượt mà.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Visual Identity -->
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-0.5 bg-pulseGreen"></div>
+                <h2 class="text-3xl font-fustat font-bold text-white uppercase tracking-wider">2. Hệ thống Nhận diện Thị giác</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-6 text-white/90">Bảng màu (Color Palette)</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-16 h-16 rounded-xl bg-deepBlack border border-white/20 shadow-xl group-hover:scale-105 transition-transform"></div>
+                            <div>
+                                <p class="font-bold text-white">Deep Black (#000000)</p>
+                                <p class="text-sm text-steelGrey">Màu chủ đạo, tạo chiều sâu và sự sang trọng.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-16 h-16 rounded-xl bg-steelGrey border border-white/10 group-hover:scale-105 transition-transform"></div>
+                            <div>
+                                <p class="font-bold text-white">Steel Grey (#505050)</p>
+                                <p class="text-sm text-steelGrey">Sử dụng cho các tiêu đề phụ và văn bản bổ trợ.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-16 h-16 rounded-xl bg-offWhite border border-white/10 group-hover:scale-105 transition-transform"></div>
+                            <div>
+                                <p class="font-bold text-black bg-white inline-block px-1">Off-White (#F8F8F8)</p>
+                                <p class="text-sm text-steelGrey">Nền cho các vùng sáng, đảm bảo khả năng đọc nội dung.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-16 h-16 rounded-xl bg-[#5AE14C] border border-white/10 shadow-[0_0_20px_rgba(90,225,76,0.3)] group-hover:scale-105 transition-transform"></div>
+                            <div>
+                                <p class="font-bold text-pulseGreen">Pulse Green (rgba(90, 225, 76, 0.89))</p>
+                                <p class="text-sm text-steelGrey">Màu nhấn cho các nút hành động quan trọng (CTA).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-6 text-white/90">Hệ thống Kiểu chữ (Typography)</h3>
+                    <div class="space-y-6">
+                        <div class="p-4 rounded-lg bg-white/5 border-l-4 border-pulseGreen">
+                            <p class="font-fustat font-bold text-2xl text-white">Fustat Bold</p>
+                            <p class="text-sm text-steelGrey">Tiêu đề lớn, hình học hiện đại.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-white/5 border-l-4 border-white/30">
+                            <p class="font-schibsted font-medium text-xl text-white">Schibsted Grotesk</p>
+                            <p class="text-sm text-steelGrey">Thanh điều hướng và UI elements.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-white/5 border-l-4 border-white/30">
+                            <p class="font-inter text-lg text-white">Inter Regular</p>
+                            <p class="text-sm text-steelGrey">Nội dung chi tiết và nhãn thông tin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Code Implementation -->
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-0.5 bg-pulseGreen"></div>
+                <h2 class="text-3xl font-fustat font-bold text-white uppercase tracking-wider">5. Mã nguồn Hero Section (React Component)</h2>
+            </div>
+            
+            <div class="rounded-2xl overflow-hidden bg-codeBg border border-white/10 shadow-2xl">
+                <div class="bg-black/40 px-6 py-3 flex items-center justify-between border-b border-white/5">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <span class="text-xs font-mono text-white/40">HeroSection.tsx</span>
+                </div>
+                <pre class="p-6 overflow-x-auto text-sm font-mono leading-relaxed text-blue-300"><code><span class="text-purple-400">import</span> React, { useEffect, useRef } <span class="text-purple-400">from</span> <span class="text-green-400">'react'</span>;
+
+<span class="text-gray-400">// Custom High-Performance Fade System</span>
+<span class="text-purple-400">const</span> HeroSection = () => {
+  <span class="text-purple-400">const</span> videoRef = useRef&lt;HTMLVideoElement&gt;(<span class="text-white">null</span>);
+  <span class="text-purple-400">let</span> fadeAnimFrame: <span class="text-yellow-400">number</span>;
+
+  <span class="text-purple-400">const</span> fade = (target: <span class="text-yellow-400">number</span>, duration: <span class="text-yellow-400">number</span>) => {
+    <span class="text-purple-400">const</span> startOpacity = parseFloat(videoRef.current?.style.opacity || <span class="text-green-400">'0'</span>);
+    <span class="text-purple-400">const</span> startTime = performance.now();
+
+    <span class="text-purple-400">const</span> animate = (now: <span class="text-yellow-400">number</span>) => {
+      <span class="text-purple-400">const</span> elapsed = now - startTime;
+      <span class="text-purple-400">const</span> progress = Math.min(elapsed / duration, <span class="text-white">1</span>);
+      <span class="text-purple-400">if</span> (videoRef.current) {
+        videoRef.current.style.opacity = (startOpacity + (target - startOpacity) * progress).toString();
+      }
+      <span class="text-purple-400">if</span> (progress < <span class="text-white">1</span>) fadeAnimFrame = requestAnimationFrame(animate);
+    };
+    fadeAnimFrame = requestAnimationFrame(animate);
+  };
+
+  <span class="text-purple-400">return</span> (
+    &lt;<span class="text-red-400">div</span> <span class="text-yellow-400">className</span>=<span class="text-green-400">"relative h-screen overflow-hidden bg-black"</span>&gt;
+      &lt;<span class="text-red-400">video</span> 
+        <span class="text-yellow-400">ref</span>={videoRef}
+        <span class="text-yellow-400">className</span>=<span class="text-green-400">"absolute min-w-[115%] min-h-[115%] object-cover object-top opacity-0"</span>
+        <span class="text-yellow-400">autoPlay</span> <span class="text-yellow-400">muted</span>
+      &gt;
+        &lt;<span class="text-red-400">source</span> <span class="text-yellow-400">src</span>=<span class="text-green-400">"/path-to-ai-motion.mp4"</span> /&gt;
+      &lt;/<span class="text-red-400">video</span>&gt;
+      {<span class="text-gray-400">/* Content Layers... */</span>}
+    &lt;/<span class="text-red-400">div</span>&gt;
+  );
+};</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 4: Architecture -->
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-0.5 bg-pulseGreen"></div>
+                <h2 class="text-3xl font-fustat font-bold text-white uppercase tracking-wider">3. Kiến trúc Trang & Nội dung</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 border-l-4 border-pulseGreen">
+                    <h3 class="font-bold text-white mb-2">Platform (Nền tảng)</h3>
+                    <p class="text-sm text-steelGrey">Phân tích chuyên sâu về hạ tầng AI và khả năng tích hợp linh hoạt.</p>
+                </div>
+                <div class="glass-card p-6 border-l-4 border-pulseGreen">
+                    <h3 class="font-bold text-white mb-2">Features (Tính năng)</h3>
+                    <p class="text-sm text-steelGrey">Danh mục công cụ thông minh: Auto-ML, Computer Vision, NLP thế hệ mới.</p>
+                </div>
+                <div class="glass-card p-6 border-l-4 border-pulseGreen">
+                    <h3 class="font-bold text-white mb-2">Projects (Dự án)</h3>
+                    <p class="text-sm text-steelGrey">Các Case Studies thực tế và kết quả định lượng được từ doanh nghiệp.</p>
+                </div>
+                <div class="glass-card p-6 border-l-4 border-pulseGreen">
+                    <h3 class="font-bold text-white mb-2">Community (Cộng đồng)</h3>
+                    <p class="text-sm text-steelGrey">Tài liệu kỹ thuật, Blog chuyên gia và Diễn đàn thảo luận mở.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Reusable Components -->
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-0.5 bg-pulseGreen"></div>
+                <h2 class="text-3xl font-fustat font-bold text-white uppercase tracking-wider">6. Danh sách Component tái sử dụng</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="bg-darkElement p-4 rounded-xl border border-white/5 text-center group cursor-default hover:border-pulseGreen/50 transition-colors">
+                    <div class="text-pulseGreen mb-2 flex justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white">GlassCard</span>
+                </div>
+                <div class="bg-darkElement p-4 rounded-xl border border-white/5 text-center group cursor-default hover:border-pulseGreen/50 transition-colors">
+                    <div class="text-pulseGreen mb-2 flex justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white">SmartButton</span>
+                </div>
+                <div class="bg-darkElement p-4 rounded-xl border border-white/5 text-center group cursor-default hover:border-pulseGreen/50 transition-colors">
+                    <div class="text-pulseGreen mb-2 flex justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L3 18"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white">DataViz</span>
+                </div>
+                <div class="bg-darkElement p-4 rounded-xl border border-white/5 text-center group cursor-default hover:border-pulseGreen/50 transition-colors">
+                    <div class="text-pulseGreen mb-2 flex justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8l4 4-4 4M8 12h7"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white">AI-Badge</span>
+                </div>
+                <div class="bg-darkElement p-4 rounded-xl border border-white/5 text-center group cursor-default hover:border-pulseGreen/50 transition-colors">
+                    <div class="text-pulseGreen mb-2 flex justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white">RespNav</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const video = document.getElementById('hero-video');
+        let fadeRequest;
+        let isFadingOut = false;
+
+        function animateOpacity(target, duration, callback) {
+            cancelAnimationFrame(fadeRequest);
+            const startOpacity = parseFloat(window.getComputedStyle(video).opacity);
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentOpacity = startOpacity + (target - startOpacity) * progress;
+                video.style.opacity = currentOpacity;
+
+                if (progress < 1) {
+                    fadeRequest = requestAnimationFrame(step);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            fadeRequest = requestAnimationFrame(step);
+        }
+
+        function playVideo() {
+            video.currentTime = 0;
+            video.play();
+            isFadingOut = false;
+            animateOpacity(1, 250);
+        }
+
+        video.addEventListener('timeupdate', () => {
+            const timeLeft = video.duration - video.currentTime;
+            if (timeLeft <= 0.55 && !isFadingOut) {
+                isFadingOut = true;
+                animateOpacity(0, 250);
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            setTimeout(playVideo, 100);
+        });
+
+        // Initial Load
+        window.addEventListener('load', () => {
+            playVideo();
+        });
+    </script>
+</body>
+</html>
+

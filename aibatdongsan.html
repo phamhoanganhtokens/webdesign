@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Software Development - Giải pháp Bất động sản Thông minh</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A2540', // Dark Blue
+                        accent: '#D4AF37',  // Gold
+                        neutral: '#F8F9FA',
+                        darkGray: '#1A1A1A'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Times New Roman', 'serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0A2540;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        .glass-morphism {
+            background: rgba(10, 37, 64, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(to right, #D4AF37, #F9E29B, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #D4AF37;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(10, 37, 64, 0.4), rgba(10, 37, 64, 0.8));
+        }
+
+        .btn-gold {
+            background: linear-gradient(45deg, #D4AF37, #B8860B);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .property-card {
+            transition: all 0.5s ease;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0A2540;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 10px;
+        }
+
+        .feature-card {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .feature-card:hover {
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        #chat-window {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        #chat-window.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Header / Navbar -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 py-4 lg:px-12">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
+                    <i data-lucide="cpu" class="text-primary w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-tighter text-white">AI SOFTWARE <span class="text-accent">DEV</span></span>
+            </div>
+
+            <!-- Desktop Nav -->
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-semibold uppercase tracking-widest text-gray-300">
+                <a href="#" class="nav-link text-accent">Home</a>
+                <a href="#projects" class="nav-link">Featured Projects</a>
+                <a href="#listings" class="nav-link">Property Listings</a>
+                <a href="#consultation" class="nav-link">Consultation</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#news" class="nav-link">News & Market</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="lg:hidden text-white" id="menu-toggle">
+                <i data-lucide="menu"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-primary flex flex-col items-center justify-center space-y-8 text-2xl font-bold transition-transform duration-500 translate-x-full lg:hidden">
+        <button class="absolute top-8 right-8 text-accent" id="menu-close">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <a href="#" class="mobile-link">Home</a>
+        <a href="#projects" class="mobile-link">Featured Projects</a>
+        <a href="#listings" class="mobile-link">Property Listings</a>
+        <a href="#consultation" class="mobile-link">Consultation</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        
+        <!-- Hero Section -->
+        <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+            <!-- Background Video -->
+            <div class="absolute inset-0 z-0">
+                <video src="https://opal.google/board/blobs/82d54c4d-ebf6-4920-bc5d-df7f2193d79b" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                <div class="absolute inset-0 hero-overlay"></div>
+            </div>
+
+            <div class="relative z-10 text-center px-6 max-w-5xl">
+                <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-8xl font-extrabold mb-6 leading-tight gsap-reveal">
+                    AI SOFTWARE <br> <span class="text-gold-gradient">DEVELOPMENT</span>
+                </h1>
+                <p id="hero-subtitle" class="text-lg md:text-2xl font-light mb-10 tracking-widest text-gray-200 uppercase gsap-reveal">
+                    Giải pháp Bất động sản Thông minh
+                </p>
+                <div id="hero-cta" class="gsap-reveal">
+                    <a href="#consultation" class="btn-gold px-10 py-5 rounded-full text-white font-bold text-lg uppercase tracking-widest inline-flex items-center gap-3">
+                        Trải nghiệm AI Tư vấn Ngay
+                        <i data-lucide="chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Animated Scroll Down -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+                <i data-lucide="mouse-pointer-2" class="text-accent w-8 h-8"></i>
+            </div>
+        </section>
+
+        <!-- Advanced Search Filter (Floating) -->
+        <section class="relative z-20 -mt-16 px-6 lg:px-12 max-w-7xl mx-auto">
+            <div class="glass-morphism rounded-2xl p-8 lg:p-10 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                    <div class="space-y-2">
+                        <label class="text-xs uppercase font-bold tracking-widest text-accent">Vị trí dự án</label>
+                        <select class="w-full bg-primary/50 border border-accent/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                            <option>Tất cả khu vực</option>
+                            <option>TP. Hồ Chí Minh</option>
+                            <option>Hà Nội</option>
+                            <option>Đà Nẵng</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs uppercase font-bold tracking-widest text-accent">Loại hình</label>
+                        <select class="w-full bg-primary/50 border border-accent/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                            <option>Căn hộ thông minh</option>
+                            <option>Biệt thự nghỉ dưỡng</option>
+                            <option>Penthouses</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs uppercase font-bold tracking-widest text-accent">Phân khúc giá</label>
+                        <select class="w-full bg-primary/50 border border-accent/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                            <option>Trên 10 Tỷ VND</option>
+                            <option>20 - 50 Tỷ VND</option>
+                            <option>Trên 50 Tỷ VND</option>
+                        </select>
+                    </div>
+                    <button class="btn-gold w-full py-4 rounded-lg font-bold text-white uppercase tracking-widest flex items-center justify-center gap-2">
+                        <i data-lucide="sparkles"></i> Tìm với AI
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Features Section -->
+        <section id="services" class="py-32 px-6 lg:px-12 max-w-7xl mx-auto">
+            <div class="text-center mb-20 gsap-reveal">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-4 uppercase">AI Core Technologies</h2>
+                <div class="h-1 w-24 bg-accent mx-auto mb-6"></div>
+                <p class="font-serif text-xl text-gray-400 italic">Định hình tương lai bất động sản bằng trí tuệ nhân tạo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card glass-morphism p-10 rounded-3xl gsap-reveal">
+                    <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i data-lucide="gavel" class="text-accent w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-accent mb-4">AI Planning & Legal Consulting</h3>
+                    <p class="font-serif text-gray-300 leading-relaxed">Phân tích quy hoạch và tư vấn pháp lý tự động dựa trên cơ sở dữ liệu quốc gia thời gian thực.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card glass-morphism p-10 rounded-3xl gsap-reveal">
+                    <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i data-lucide="pen-tool" class="text-accent w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-accent mb-4">AI Design & Floor Plan Drawing</h3>
+                    <p class="font-serif text-gray-300 leading-relaxed">Kiến tạo không gian sống mơ ước chỉ với một vài câu lệnh. Tự động hóa bản vẽ kỹ thuật chính xác.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card glass-morphism p-10 rounded-3xl gsap-reveal">
+                    <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i data-lucide="ruler" class="text-accent w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-accent mb-4">AI Automatic Measurement</h3>
+                    <p class="font-serif text-gray-300 leading-relaxed">Đo đạc diện tích và thông số kỹ thuật qua hình ảnh và cảm biến LiDAR với độ chính xác tuyệt đối.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card glass-morphism p-10 rounded-3xl gsap-reveal">
+                    <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-8">
+                        <i data-lucide="trending-up" class="text-accent w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-accent mb-4">AI Automatic Property Valuation</h3>
+                    <p class="font-serif text-gray-300 leading-relaxed">Thuật toán phân tích thị trường thông minh, đưa ra định giá bất động sản minh bạch và chính xác.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card glass-morphism p-10 rounded-3xl lg:col-span-2 gsap-reveal">
+                    <div class="flex flex-col md:flex-row gap-10 items-center">
+                        <div class="w-16 h-16 shrink-0 bg-accent/10 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="vibrate" class="text-accent w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-accent mb-4">Virtual Tour & 3D Viewing</h3>
+                            <p class="font-serif text-gray-300 leading-relaxed">Trải nghiệm không gian thực tế ảo 360 độ từ mọi nơi trên thế giới. Tích hợp AI hướng dẫn viên ảo thuyết minh chi tiết từng góc cạnh của dự án.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects -->
+        <section id="projects" class="py-32 bg-darkGray/50">
+            <div class="px-6 lg:px-12 max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 gsap-reveal">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-extrabold mb-4 uppercase">Featured Projects</h2>
+                        <p class="font-serif text-xl text-gray-400 italic">Dự án tiêu biểu tích hợp hệ sinh thái AI toàn diện.</p>
+                    </div>
+                    <a href="#" class="text-accent border-b border-accent pb-1 font-bold tracking-widest uppercase text-sm hover:text-white hover:border-white transition-all">Xem tất cả</a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Project 1 -->
+                    <div class="property-card group relative overflow-hidden rounded-3xl gsap-reveal">
+                        <div class="aspect-[4/5] bg-primary relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent z-10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-gray-700 font-bold">PROJECT PREVIEW</div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                            <h4 class="text-2xl font-bold mb-2">The AI Quantum Towers</h4>
+                            <p class="text-accent font-semibold mb-4 tracking-wider">TP. Hồ Chí Minh</p>
+                            <div class="flex gap-4 text-xs font-bold uppercase text-gray-400">
+                                <span>Penthouses</span> • <span>AI Smart Home</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="property-card group relative overflow-hidden rounded-3xl gsap-reveal" style="transition-delay: 100ms;">
+                        <div class="aspect-[4/5] bg-primary relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent z-10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-gray-700 font-bold">PROJECT PREVIEW</div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                            <h4 class="text-2xl font-bold mb-2">Nova AI Riverside</h4>
+                            <p class="text-accent font-semibold mb-4 tracking-wider">Hà Nội</p>
+                            <div class="flex gap-4 text-xs font-bold uppercase text-gray-400">
+                                <span>Biệt thự</span> • <span>AI Security</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="property-card group relative overflow-hidden rounded-3xl gsap-reveal" style="transition-delay: 200ms;">
+                        <div class="aspect-[4/5] bg-primary relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent z-10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-gray-700 font-bold">PROJECT PREVIEW</div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                            <h4 class="text-2xl font-bold mb-2">Infinity AI Oasis</h4>
+                            <p class="text-accent font-semibold mb-4 tracking-wider">Đà Nẵng</p>
+                            <div class="flex gap-4 text-xs font-bold uppercase text-gray-400">
+                                <span>Resort</span> • <span>AI Concierge</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Map Section -->
+        <section class="relative h-[600px] w-full bg-primary overflow-hidden flex items-center justify-center group">
+            <div class="absolute inset-0 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000 flex items-center justify-center bg-darkGray">
+                <!-- Visual Map Placeholder Pattern -->
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.2"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+            <div class="relative z-10 text-center gsap-reveal">
+                <div class="inline-block p-4 rounded-full bg-accent/20 backdrop-blur-md mb-6 animate-pulse">
+                    <i data-lucide="map-pin" class="text-accent w-12 h-12"></i>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-6">Bản đồ quy hoạch AI Tương tác</h2>
+                <p class="max-w-2xl mx-auto font-serif text-lg text-gray-300 mb-8 italic px-6">Trải nghiệm hệ thống bản đồ quy hoạch thông minh tích hợp dữ liệu AI, giúp bạn phân tích tiềm năng tăng giá và hạ tầng xung quanh dự án chỉ trong nháy mắt.</p>
+                <button class="btn-gold px-12 py-5 rounded-full font-bold uppercase tracking-widest text-white shadow-xl">
+                    Khám phá ngay
+                </button>
+            </div>
+        </section>
+
+        <!-- Consultation Section -->
+        <section id="consultation" class="py-32 px-6 lg:px-12 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                <div class="gsap-reveal">
+                    <h2 class="text-3xl md:text-5xl font-extrabold mb-8 uppercase leading-tight">Cá nhân hóa trải nghiệm với <span class="text-accent">AI Advisor</span></h2>
+                    <p class="font-serif text-xl text-gray-400 mb-10 leading-relaxed italic">Chúng tôi tin rằng mỗi quyết định bất động sản đều quan trọng. Hãy để trí tuệ nhân tạo đồng hành cùng bạn để tìm ra giải pháp tối ưu nhất.</p>
+                    
+                    <div class="space-y-8">
+                        <div class="flex gap-6">
+                            <div class="shrink-0 w-12 h-12 border border-accent/50 rounded-full flex items-center justify-center text-accent font-bold">01</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Định giá tài sản tức thì</h4>
+                                <p class="text-gray-400 text-sm">Cung cấp báo cáo giá trị bất động sản dựa trên dữ liệu giao dịch thực tế nhất.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="shrink-0 w-12 h-12 border border-accent/50 rounded-full flex items-center justify-center text-accent font-bold">02</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Tư vấn quy hoạch chi tiết</h4>
+                                <p class="text-gray-400 text-sm">Cập nhật mọi thông tin thay đổi về hạ tầng và quy hoạch đô thị.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="shrink-0 w-12 h-12 border border-accent/50 rounded-full flex items-center justify-center text-accent font-bold">03</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Đội ngũ chuyên gia hỗ trợ</h4>
+                                <p class="text-gray-400 text-sm">Kết hợp trí tuệ nhân tạo và kinh nghiệm thực chiến từ các chuyên gia đầu ngành.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-morphism p-10 lg:p-12 rounded-3xl gsap-reveal">
+                    <h3 class="text-2xl font-bold mb-8 text-white uppercase tracking-widest text-center">Đăng ký tư vấn AI</h3>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs uppercase font-bold text-gray-400">Họ và Tên</label>
+                                <input type="text" placeholder="Nguyễn Văn A" class="w-full bg-primary border-b border-gray-700 py-3 text-white focus:outline-none focus:border-accent transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs uppercase font-bold text-gray-400">Số điện thoại</label>
+                                <input type="tel" placeholder="+84 000 000 000" class="w-full bg-primary border-b border-gray-700 py-3 text-white focus:outline-none focus:border-accent transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs uppercase font-bold text-gray-400">Dịch vụ quan tâm</label>
+                            <select class="w-full bg-primary border-b border-gray-700 py-3 text-white focus:outline-none focus:border-accent transition-colors">
+                                <option>Định giá tài sản</option>
+                                <option>Tư vấn quy hoạch</option>
+                                <option>Hợp tác phát triển AI</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs uppercase font-bold text-gray-400">Lời nhắn</label>
+                            <textarea rows="4" placeholder="Tôi muốn tìm hiểu về..." class="w-full bg-primary border-b border-gray-700 py-3 text-white focus:outline-none focus:border-accent transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="button" class="btn-gold w-full py-5 rounded-full font-extrabold uppercase tracking-[0.2em] text-white">
+                            Gửi yêu cầu ngay
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Info Section -->
+        <section id="contact" class="py-20 border-t border-accent/10">
+            <div class="px-6 lg:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="gsap-reveal">
+                    <i data-lucide="mail" class="text-accent w-10 h-10 mx-auto mb-4"></i>
+                    <h5 class="text-lg font-bold mb-2 uppercase tracking-widest">Email</h5>
+                    <p class="font-serif italic text-gray-400">business@aisoftware.dev</p>
+                </div>
+                <div class="gsap-reveal">
+                    <i data-lucide="map-pin" class="text-accent w-10 h-10 mx-auto mb-4"></i>
+                    <h5 class="text-lg font-bold mb-2 uppercase tracking-widest">Trụ sở</h5>
+                    <p class="font-serif italic text-gray-400">Vinhomes Central Park, TP.HCM</p>
+                </div>
+                <div class="gsap-reveal">
+                    <i data-lucide="phone" class="text-accent w-10 h-10 mx-auto mb-4"></i>
+                    <h5 class="text-lg font-bold mb-2 uppercase tracking-widest">Hotline</h5>
+                    <p class="font-serif italic text-gray-400">+84 900 AI DEV</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Chat Widget -->
+    <div class="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4">
+        <!-- Chat Window -->
+        <div id="chat-window" class="w-[350px] h-[500px] glass-morphism rounded-3xl overflow-hidden flex flex-col shadow-2xl border-accent/30">
+            <div class="bg-accent p-6 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <i data-lucide="bot" class="text-accent w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-primary font-bold text-sm">AI Concierge</h4>
+                        <p class="text-primary/70 text-xs font-semibold">Online | Hỗ trợ 24/7</p>
+                    </div>
+                </div>
+                <button id="chat-close" class="text-primary/70 hover:text-primary"><i data-lucide="minus"></i></button>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
+                <div class="bg-accent/10 p-4 rounded-2xl rounded-tl-none self-start max-w-[80%]">
+                    <p class="text-xs font-serif text-gray-300">Xin chào! Tôi là AI Concierge. Tôi có thể giúp gì cho quý khách trong việc tìm kiếm bất động sản không?</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-2xl rounded-tr-none self-end max-w-[80%]">
+                    <p class="text-xs font-serif text-white">Tôi muốn tìm hiểu về dự án The AI Quantum Towers.</p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-accent/20 flex gap-2">
+                <input type="text" placeholder="Nhập tin nhắn..." class="flex-1 bg-primary/30 border border-accent/30 rounded-full px-4 py-2 text-xs focus:outline-none focus:border-accent">
+                <button class="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-primary">
+                    <i data-lucide="send-horizontal" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Toggle Button -->
+        <button id="chat-toggle" class="w-16 h-16 btn-gold rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow">
+            <i data-lucide="message-square" class="text-white w-8 h-8" id="chat-icon"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // GSAP ScrollTrigger Registration
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('glass-morphism', 'py-4', 'shadow-2xl');
+                navbar.classList.remove('py-8');
+            } else {
+                navbar.classList.remove('glass-morphism', 'py-4', 'shadow-2xl');
+                navbar.classList.add('py-8');
+            }
+        });
+
+        // Animations on Load
+        window.addEventListener('load', () => {
+            gsap.from("#hero-title", {
+                duration: 1.5,
+                y: 100,
+                opacity: 0,
+                ease: "power4.out"
+            });
+            gsap.from("#hero-subtitle", {
+                duration: 1.5,
+                y: 50,
+                opacity: 0,
+                delay: 0.3,
+                ease: "power4.out"
+            });
+            gsap.from("#hero-cta", {
+                duration: 1.5,
+                y: 30,
+                opacity: 0,
+                delay: 0.6,
+                ease: "power4.out"
+            });
+
+            // Scroll Reveal Animations
+            const revealElements = document.querySelectorAll('.gsap-reveal');
+            revealElements.forEach((el) => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    duration: 1.2,
+                    y: 60,
+                    opacity: 0,
+                    ease: "power3.out"
+                });
+            });
+        });
+
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+        });
+
+        const closeMenu = () => {
+            mobileMenu.classList.add('translate-x-full');
+        };
+
+        menuClose.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+        // Chat Widget Toggle
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatWindow = document.getElementById('chat-window');
+        const chatClose = document.getElementById('chat-close');
+        const chatIcon = document.getElementById('chat-icon');
+
+        chatToggle.addEventListener('click', () => {
+            chatWindow.classList.toggle('active');
+            if(chatWindow.classList.contains('active')) {
+                chatIcon.innerHTML = '<i data-lucide="x"></i>';
+                lucide.createIcons();
+            } else {
+                chatIcon.innerHTML = '<i data-lucide="message-square"></i>';
+                lucide.createIcons();
+            }
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+            chatIcon.innerHTML = '<i data-lucide="message-square"></i>';
+            lucide.createIcons();
+        });
+
+    </script>
+</body>
+</html>
+

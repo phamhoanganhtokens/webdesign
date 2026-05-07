@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Bất Động Sản - Phân Tích Thông Minh Đầu Tư BĐS</title>
+    <title>AI BẤT ĐỘNG SẢN - Phân Tích Thông Minh Đầu Tư BĐS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -22,7 +22,6 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Outfit', 'sans-serif'],
-                        serif: ['"Times New Roman"', 'serif'],
                     }
                 }
             }
@@ -33,7 +32,7 @@
         body {
             background-color: #0A0A0F;
             color: #FAFAFA;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
@@ -43,18 +42,11 @@
             backdrop-filter: blur(15px);
             background: rgba(10, 20, 40, 0.75);
             border: 1px solid rgba(40, 167, 69, 0.25);
-            position: relative;
-            overflow: hidden;
         }
 
         .neon-text {
             color: #28a745;
             text-shadow: 0 0 20px rgba(40, 167, 69, 0.6);
-        }
-
-        .text-justify-custom {
-            text-align: justify;
-            text-justify: inter-word;
         }
 
         .grain {
@@ -74,9 +66,7 @@
         }
 
         @media (max-width: 768px) {
-            .bento-grid {
-                grid-template-columns: 1fr;
-            }
+            .bento-grid { grid-template-columns: 1fr; }
         }
 
         .architecture-layer {
@@ -87,9 +77,7 @@
             box-shadow: 0 0 30px rgba(40, 167, 69, 0.3);
         }
 
-        h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-        }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
     </style>
 </head>
 <body class="antialiased">
@@ -103,12 +91,16 @@
         </video>
     </div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-8 flex justify-between items-center mix-blend-difference">
+    <!-- ==================== HEADER / NAV ==================== -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-5 flex justify-between items-center mix-blend-difference bg-black/30 backdrop-blur-md border-b border-white/10">
         <div class="flex items-center gap-3 text-2xl font-display tracking-tighter">
             <div class="w-9 h-9 bg-[#28a745] rounded-lg flex items-center justify-center text-black font-bold">AI</div>
             <span class="text-white">BẤT ĐỘNG SẢN</span>
         </div>
+
+        <!-- Ngày giờ thực -->
+        <div id="datetime" class="hidden md:block text-sm font-mono text-white/70"></div>
+
         <div class="flex gap-8 items-center">
             <a href="#architecture" class="text-sm uppercase tracking-widest hover:text-[#28a745] transition-colors">Kiến Trúc</a>
             <button onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})" 
@@ -128,7 +120,8 @@
                     AI BẤT ĐỘNG SẢN
                 </h1>
                 
-                <p class="max-w-3xl mx-auto text-2xl md:text-3xl font-light text-white/90">
+                <!-- Tagline nhỏ, một hàng -->
+                <p class="max-w-3xl mx-auto text-lg md:text-xl font-light text-white/80 tracking-wide">
                     Phân tích chuyên sâu • Dự báo thông minh • Quyết định đầu tư tối ưu
                 </p>
 
@@ -202,31 +195,19 @@
                         <ul class="space-y-6 text-justify-custom">
                             <li class="flex gap-4">
                                 <span class="font-mono text-[#28a745] font-bold">01</span>
-                                <div>
-                                    <strong>Tầng Trình Bày</strong><br>
-                                    <span class="text-sm text-white/70">Giao diện báo cáo chuyên nghiệp, dễ hiểu</span>
-                                </div>
+                                <div><strong>Tầng Trình Bày</strong><br><span class="text-sm text-white/70">Giao diện báo cáo chuyên nghiệp, dễ hiểu</span></div>
                             </li>
                             <li class="flex gap-4">
                                 <span class="font-mono text-[#28a745] font-bold">02</span>
-                                <div>
-                                    <strong>Tầng Phân Tích &amp; AI Agents</strong><br>
-                                    <span class="text-sm text-white/70">Tính toán ROI, đòn bẩy tài chính, dự báo giá</span>
-                                </div>
+                                <div><strong>Tầng Phân Tích &amp; AI Agents</strong><br><span class="text-sm text-white/70">Tính toán ROI, đòn bẩy tài chính, dự báo giá</span></div>
                             </li>
                             <li class="flex gap-4">
                                 <span class="font-mono text-[#28a745] font-bold">03</span>
-                                <div>
-                                    <strong>Tầng AI Core</strong><br>
-                                    <span class="text-sm text-white/70">Machine Learning, Predictive Model, RAG</span>
-                                </div>
+                                <div><strong>Tầng AI Core</strong><br><span class="text-sm text-white/70">Machine Learning, Predictive Model, RAG</span></div>
                             </li>
                             <li class="flex gap-4">
                                 <span class="font-mono text-[#28a745] font-bold">04</span>
-                                <div>
-                                    <strong>Tầng Dữ Liệu</strong><br>
-                                    <span class="text-sm text-white/70">Big Data thị trường BĐS, Vector Database</span>
-                                </div>
+                                <div><strong>Tầng Dữ Liệu</strong><br><span class="text-sm text-white/70">Big Data thị trường BĐS, Vector Database</span></div>
                             </li>
                         </ul>
                     </div>
@@ -314,8 +295,8 @@
         </div>
     </section>
 
-    <!-- ==================== FOOTER (GIỮ NGUYÊN HOÀN TOÀN) ==================== -->
-    <footer id="footer" class="py-20 px-6 border-t border-white/10">
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="footer" class="py-20 px-6 border-t border-white/10 relative">
         <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
             <div class="md:col-span-5">
                 <div class="flex items-center gap-3 mb-6">
@@ -326,13 +307,13 @@
                     Tiên phong ứng dụng Trí tuệ Nhân tạo vào phân tích và đầu tư bất động sản tại Việt Nam.
                 </p>
 
-                <!-- Social Links (giữ nguyên) -->
+                <!-- Social Icons -->
                 <div class="flex gap-4 mt-10">
-                    <a href="https://x.com/VGA82017" target="_blank" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#28a745]">𝕏</a>
-                    <a href="https://www.facebook.com/sssssphamhoanganhsssss" target="_blank" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#28a745]">FB</a>
-                    <a href="https://www.youtube.com/@thanlongcoins" target="_blank" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#28a745]">YT</a>
-                    <a href="https://t.me/phamhoanganhtokens" target="_blank" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#28a745]">TG</a>
-                    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" target="_blank" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#28a745]">IN</a>
+                    <a href="https://x.com/VGA82017" target="_blank" class="w-11 h-11 border border-white/30 hover:border-[#28a745] rounded-2xl flex items-center justify-center transition-colors text-xl">𝕏</a>
+                    <a href="https://www.facebook.com/sssssphamhoanganhsssss" target="_blank" class="w-11 h-11 border border-white/30 hover:border-[#28a745] rounded-2xl flex items-center justify-center transition-colors text-2xl">f</a>
+                    <a href="https://www.youtube.com/@thanlongcoins" target="_blank" class="w-11 h-11 border border-white/30 hover:border-[#28a745] rounded-2xl flex items-center justify-center transition-colors text-2xl">▶</a>
+                    <a href="https://t.me/phamhoanganhtokens" target="_blank" class="w-11 h-11 border border-white/30 hover:border-[#28a745] rounded-2xl flex items-center justify-center transition-colors text-2xl">📨</a>
+                    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" target="_blank" class="w-11 h-11 border border-white/30 hover:border-[#28a745] rounded-2xl flex items-center justify-center transition-colors text-xl">in</a>
                 </div>
             </div>
 
@@ -367,10 +348,59 @@
         <div class="border-t border-white/10 mt-20 pt-8 text-center text-xs text-white/40">
             © 2026 AI Bất Động Sản • Tiên phong công nghệ Trí tuệ Nhân tạo trong lĩnh vực Bất động sản
         </div>
+
+        <!-- Nút Back to Top -->
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+                class="fixed bottom-8 right-8 w-14 h-14 bg-[#28a745] hover:bg-[#218838] text-black rounded-2xl flex items-center justify-center shadow-xl transition-all z-50">
+            ↑
+        </button>
     </footer>
 
-    <!-- Scroll Progress & To Top Button (giữ nguyên logic) -->
-    <!-- (Bạn có thể copy phần script từ code cũ nếu cần) -->
+    <!-- SCROLL INDICATOR -->
+    <div id="scroll-indicator" 
+         class="fixed bottom-8 left-8 font-mono text-xs tracking-widest text-white/40 z-50 hidden md:flex items-center gap-2">
+        <span>SCROLLING</span>
+        <span id="current-section" class="text-[#28a745] font-medium">01</span>
+    </div>
 
+    <script>
+        // Real-time Date & Time
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('vi-VN', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Scroll Section Indicator
+        const sections = [
+            { id: 'vision', num: '01' },
+            { id: 'architecture', num: '02' },
+            { id: 'solutions', num: '03' }
+        ];
+
+        window.addEventListener('scroll', () => {
+            let current = '01';
+            const scrollY = window.scrollY + 300;
+
+            for (let section of sections) {
+                const el = document.getElementById(section.id);
+                if (el && el.offsetTop <= scrollY) {
+                    current = section.num;
+                }
+            }
+            document.getElementById('current-section').textContent = current;
+        });
+    </script>
 </body>
 </html>

@@ -423,24 +423,39 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ========== SCROLL PROGRESS ==========
-        function updateScrollProgress() {
-            const progressBar = document.getElementById('scrollProgress');
-            const percentText = document.getElementById('scrollPercent');
+// ========== SCROLL PROGRESS ==========
+function updateScrollProgress() {
+    const progressBar = document.getElementById('scrollProgress');
+    const percentText = document.getElementById('scrollPercent');
 
-            if (!progressBar || !percentText) return;
+    if (!progressBar || !percentText) return;
 
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            if (height <= 0) return;
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-            const scrolled = (winScroll / height) * 100;
-            const rounded = Math.round(scrolled);
+    if (height <= 0) {
+        progressBar.style.width = '0%';
+        percentText.textContent = '00';
+        return;
+    }
 
-            progressBar.style.width = rounded + '%';
-            percentText.textContent = rounded.toString().padStart(2, '0');
-        }
+    let scrolled = (winScroll / height) * 100;
+    scrolled = Math.min(Math.max(scrolled, 0), 100); // Giới hạn 0-100
+
+    const rounded = Math.round(scrolled);
+
+    progressBar.style.width = rounded + '%';
+    percentText.textContent = rounded.toString().padStart(2, '0');
+}
+
+// Gắn event listener
+window.addEventListener('scroll', updateScrollProgress);
+
+// Gọi lần đầu khi load trang
+window.addEventListener('load', updateScrollProgress);
+
+// Optional: Gọi lại khi resize (đôi khi nội dung thay đổi chiều cao)
+window.addEventListener('resize', updateScrollProgress);
 
         // Back to Top
         const btn = document.getElementById('back-to-top');

@@ -537,11 +537,29 @@ window.addEventListener('resize', () => {
     updateScrollProgress();
 });
 
-                // Back to Top
-        const btn = document.getElementById('back-to-top');
-        window.addEventListener('scroll', () => {
-            btn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+
+// Back to Top Button
+const backToTop = document.getElementById('back-to-top');
+
+if (backToTop) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 600) {
+            backToTop.classList.remove('opacity-0', 'invisible');
+            backToTop.classList.add('opacity-100', 'visible');
+        } else {
+            backToTop.classList.add('opacity-0', 'invisible');
+            backToTop.classList.remove('opacity-100', 'visible');
+        }
+    });
+
+    // Click để scroll về đầu
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
+    });
+}
         
     </script>
 </body>

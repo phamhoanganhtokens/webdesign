@@ -372,6 +372,16 @@
             </div>
         </div>
     </section>
+
+    <!-- SCROLL PROGRESS INDICATOR -->
+    <div class="fixed bottom-8 left-8 z-50 hidden md:flex items-center gap-4 font-mono text-xs tracking-[2px] text-white/50">
+        <span class="uppercase">SCROLL</span>
+        <div class="w-28 h-px bg-white/20 relative overflow-hidden">
+            <div id="scrollProgress" class="absolute top-0 left-0 h-full bg-[#00FF9F] transition-all duration-200" style="width: 0%"></div>
+        </div>
+        <span id="scrollPercent" class="w-8 text-right text-[#00FF9F]">00</span>
+        <span class="text-white/30">%</span>
+    </div>
     
 <!-- ==================== FOOTER ==================== -->
     <footer id="footer" class="py-20 px-6 border-t border-white/10 relative">
@@ -472,6 +482,60 @@
             section.style.opacity = '0';
             observer.observe(section);
         });
+
+        // ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
+let lastScrollY = 0;
+let ticking = false;
+
+function updateScrollProgress() {
+    const progressBar = document.getElementById('scrollProgress');
+    const percentText = document.getElementById('scrollPercent');
+
+    if (!progressBar || !percentText) return;
+
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    if (height <= 0) {
+        progressBar.style.width = '0%';
+        percentText.textContent = '00.0';
+        return;
+    }
+
+    let scrolled = (winScroll / height) * 100;
+    scrolled = Math.min(Math.max(scrolled, 0), 100);   // Giới hạn 0-100
+
+    // Cập nhật thanh progress
+    progressBar.style.width = scrolled + '%';
+    
+    // Hiển thị % với 1 số thập phân (chi tiết hơn)
+    const displayPercent = scrolled.toFixed(1);
+    percentText.textContent = displayPercent;
+    
+    lastScrollY = winScroll;
+    ticking = false;
+}
+
+// Sử dụng requestAnimationFrame để mượt tối đa
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+    }
+}
+
+// Gắn event
+window.addEventListener('scroll', requestTick, { passive: true });
+
+// Khởi tạo ban đầu
+window.addEventListener('load', () => {
+    updateScrollProgress();
+});
+
+// Cập nhật lại khi resize cửa sổ
+window.addEventListener('resize', () => {
+    updateScrollProgress();
+});
     </script>
 </body>
 </html>

@@ -156,20 +156,23 @@
         </video>
     </div>
 
-    <!-- ==================== HEADER ==================== -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-5 flex justify-between items-center mix-blend-difference bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div class="flex items-center gap-3 text-3xl font-display tracking-tighter">
-            <div class="w-10 h-10 bg-[#28a745] rounded-xl flex items-center justify-center text-black font-bold text-2xl">AI</div>
-            <span class="rainbow-text">Software Development</span>
+<!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
+        <div class="flex items-baseline gap-2">
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic text-white">AI Software Development</span>
         </div>
-
+        
         <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80"></div>
 
-        <div class="flex gap-8 items-center">
-            <a href="#architecture" class="text-sm uppercase tracking-widest hover:text-[#28a745] transition-colors">Kiến Trúc</a>
-            <button onclick="document.getElementById('footer').scrollIntoView({behavior:'smooth'})" 
-                    class="px-8 py-3 border border-[#28a745]/50 hover:bg-[#28a745] hover:text-black transition-all duration-300 font-display text-sm uppercase tracking-widest">
-                Liên Hệ Ngay
+        <div class="flex items-center gap-4">
+            <a href="https://phamhoanganhtokens.github.io/truongtho/aisoftwaredevelopment.html" 
+               target="_blank" 
+               class="text-[10px] uppercase tracking-widest hover:text-neonCyan transition-colors opacity-70 hidden sm:block">
+                CỔNG NHÀ PHÁT TRIỂN
+            </a>
+            <button onclick="document.getElementById('activation').scrollIntoView({ behavior: 'smooth' })" 
+                    class="px-5 py-2 border border-white/20 text-[10px] uppercase tracking-widest hover:bg-white hover:text-cosmic transition-all duration-500 font-brand">
+                KHỞI TẠO HỆ THỐNG
             </button>
         </div>
     </nav>

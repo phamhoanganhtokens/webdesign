@@ -289,7 +289,36 @@
 
                 <div class="space-y-4">
                     <h3 class="text-2xl font-display">Glassmorphism CSS</h3>
-                    <pre class="code-block rounded-lg p-6 font-mono text-sm overflow-x-auto text-accent-glow/80"><code>.opal-liquid-glass { ... }</code></pre>
+                    <pre class="code-block rounded-lg p-6 font-mono text-sm overflow-x-auto text-accent-glow/80"><code>.opal-liquid-glass {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.05), 
+    rgba(255, 255, 255, 0.01)
+  );
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 
+              inset 0 0 10px rgba(255, 255, 255, 0.05);
+}</code></pre>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-display">Hero Component Structure</h3>
+                    <pre class="code-block rounded-lg p-6 font-mono text-sm overflow-x-auto text-foreground/80"><code>const HeroSection = () => {
+  return (
+    &lt;section className="relative h-screen flex items-center justify-center overflow-hidden"&gt;
+      &lt;video 
+        autoPlay loop muted playsInline
+        className="absolute w-full h-full object-cover"
+        src="https://huggingface.co/datasets/.../multi.mp4" 
+      /&gt;
+      &lt;div className="opal-liquid-glass p-12 text-center animate-fade-rise"&gt;
+        &lt;h1 className="font-display text-7xl"&gt;OPAL - NƠI TINH HOA SÁNG TẠO&lt;/h1&gt;
+        &lt;OpalButton&gt;BẮT ĐẦU HÀNH TRÌNH&lt;/OpalButton&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre>
                 </div>
             </div>
         </section>

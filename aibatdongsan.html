@@ -163,7 +163,7 @@
             <span class="rainbow-text">BẤT ĐỘNG SẢN</span>
         </div>
 
-        <div id="datetime" class="hidden md:block text-sm font-mono text-white/70"></div>
+        <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80"></div>
 
         <div class="flex gap-8 items-center">
             <a href="#architecture" class="text-sm uppercase tracking-widest hover:text-[#28a745] transition-colors">Kiến Trúc</a>
@@ -440,23 +440,14 @@
     </footer>
 
     <script>
-        // Real-time Date & Time
-        function updateDateTime() {
+        // Real-time Clock
+        function updateClock() {
+            const el = document.getElementById('real-time-clock');
             const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            document.getElementById('datetime').textContent = now.toLocaleDateString('vi-VN', options);
+            el.textContent = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} - ${now.toLocaleTimeString('vi-VN',{hour12:false})}`;
         }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+        setInterval(updateClock, 1000);
+        updateClock();
 
 // ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
 let lastScrollY = 0;

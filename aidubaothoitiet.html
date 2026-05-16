@@ -423,7 +423,10 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-// ========== SCROLL PROGRESS ==========
+// ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
+let lastScrollY = 0;
+let ticking = false;
+
 function updateScrollProgress() {
     const progressBar = document.getElementById('scrollProgress');
     const percentText = document.getElementById('scrollPercent');
@@ -435,27 +438,44 @@ function updateScrollProgress() {
 
     if (height <= 0) {
         progressBar.style.width = '0%';
-        percentText.textContent = '00';
+        percentText.textContent = '00.0';
         return;
     }
 
     let scrolled = (winScroll / height) * 100;
-    scrolled = Math.min(Math.max(scrolled, 0), 100); // Giới hạn 0-100
+    scrolled = Math.min(Math.max(scrolled, 0), 100);   // Giới hạn 0-100
 
-    const rounded = Math.round(scrolled);
-
-    progressBar.style.width = rounded + '%';
-    percentText.textContent = rounded.toString().padStart(2, '0');
+    // Cập nhật thanh progress
+    progressBar.style.width = scrolled + '%';
+    
+    // Hiển thị % với 1 số thập phân (chi tiết hơn)
+    const displayPercent = scrolled.toFixed(1);
+    percentText.textContent = displayPercent;
+    
+    lastScrollY = winScroll;
+    ticking = false;
 }
 
-// Gắn event listener
-window.addEventListener('scroll', updateScrollProgress);
+// Sử dụng requestAnimationFrame để mượt tối đa
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+    }
+}
 
-// Gọi lần đầu khi load trang
-window.addEventListener('load', updateScrollProgress);
+// Gắn event
+window.addEventListener('scroll', requestTick, { passive: true });
 
-// Optional: Gọi lại khi resize (đôi khi nội dung thay đổi chiều cao)
-window.addEventListener('resize', updateScrollProgress);
+// Khởi tạo ban đầu
+window.addEventListener('load', () => {
+    updateScrollProgress();
+});
+
+// Cập nhật lại khi resize cửa sổ
+window.addEventListener('resize', () => {
+    updateScrollProgress();
+});
 
         // Back to Top
         const btn = document.getElementById('back-to-top');

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cơ chế tự nhiên Autophagy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cosmic: '#0a0a1f',
+                        neonCyan: '#00f5ff',
+                        neonPurple: '#c026d3',
+                        goldAccent: '#facc15',
+                        charcoal: '#1A1A1A',
+                        glass: 'rgba(17, 25, 40, 0.4)',
+                    },
+                    fontFamily: {
+                        brand: ['Orbitron', 'sans-serif'],
+                        hero: ['"Times New Roman"', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { textShadow: '0 0 10px #00f5ff, 0 0 20px #00f5ff' },
+                            'to': { textShadow: '0 0 20px #c026d3, 0 0 40px #c026d3' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a1f;
+            color: #E0E0E0;
+            overflow-x: hidden;
+        }
+
+        .liquid-glass {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00f5ff, #c026d3, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textShine 5s ease infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        .hero-title {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+            letter-spacing: -0.05em;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a1f;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2D2D2D;
+            border-radius: 10px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            border-left: 4px solid #c026d3;
+        }
+        
+        .telomere-glow {
+            filter: drop-shadow(0 0 15px #00f5ff);
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: grayscale(20%) brightness(0.45);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 245, 255, 0.08), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="font-body custom-scrollbar">
+
+    <!-- Video Background -->
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/ai.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
+        <div class="flex items-baseline gap-2">
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic text-white">AI Software Development</span>
+        </div>
+        
+        <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80">
+            00/00/0000 - 00:00:00
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="#" target="_blank" class="text-[10px] uppercase tracking-widest hover:text-neonCyan transition-colors opacity-60 hidden sm:block">
+                Cổng AI Agent
+            </a>
+            <button onclick="scrollToSection('experience')" 
+                    class="px-5 py-2 border border-white/20 text-[10px] uppercase tracking-widest hover:bg-white hover:text-cosmic transition-all duration-500 font-brand">
+                Khởi Tạo Phác Đồ
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden px-6 content-wrapper">
+        <div class="relative z-10 max-w-6xl w-full text-center lg:text-left">
+            <p class="font-mono text-neonCyan text-xs uppercase tracking-[0.6em] mb-6 animate-pulse">
+                Trạng Thái Hệ Thống: AI Autophagy Agent Đang Hoạt Động
+            </p>
+            <h1 class="hero-title text-6xl md:text-8xl lg:text-9xl text-white leading-[0.85] mb-10 transition-all">
+                Cơ Chế Tự Nhiên<br>
+                <span class="gradient-text">Autophagy</span>
+            </h1>
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-start lg:items-center mt-12">
+                <div class="max-w-2xl border-l-2 border-neonPurple/50 pl-8">
+                    <p class="text-lg md:text-xl font-light text-gray-300 leading-relaxed uppercase tracking-wide">
+                        Kích Hoạt Tự Thực Bào • Tối Ưu AMPK &amp; mTOR • AI Agent Cá Nhân Hóa Phác Đồ Nhịn Ăn
+                    </p>
+                    <p class="mt-4 text-sm text-gray-400 uppercase tracking-widest leading-loose text-justify opacity-80">
+                        Sử dụng trí tuệ nhân tạo để phân tích dữ liệu sinh trắc học thời gian thực, xây dựng phác đồ Autophagy tối ưu, giúp tế bào tự dọn dẹp, tái tạo và chống lão hóa mạnh mẽ.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col gap-4">
+                    <div onclick="scrollToSection('bio-mechanism')" class="flex items-center gap-4 group cursor-pointer">
+                        <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonCyan transition-all"></div>
+                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Cơ Chế Tế Bào</span>
+                    </div>
+                    <div onclick="scrollToSection('activation')" class="flex items-center gap-4 group cursor-pointer">
+                        <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonPurple transition-all"></div>
+                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">AI Agent Tư Vấn</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+            <span class="text-[8px] uppercase tracking-[0.5em] text-white/40">Cuộn để Khám Phá</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-neonCyan to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-24 space-y-32 content-wrapper">
+
+        <!-- Section 1: Bio-Mechanism -->
+        <section id="bio-mechanism" class="space-y-12">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                <div>
+                    <h2 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter">Cơ Chế Sinh Học</h2>
+                    <p class="text-neonCyan font-mono text-xs mt-2 uppercase tracking-widest">Phần 01 // Tự Thực Bào</p>
+                </div>
+                <p class="max-w-md text-sm text-gray-400 text-right italic font-serif">
+                    "Autophagy là khả năng tự dọn dẹp và tái tạo của tế bào - Nobel Y học 2016"
+                </p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="col-span-1 lg:col-span-2 row-span-2 liquid-glass rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <svg width="200" height="200" viewBox="0 0 200 200" class="telomere-glow">
+                            <circle cx="100" cy="100" r="70" stroke="#00f5ff" fill="none" stroke-width="3" />
+                            <path d="M100 40 Q 130 70 100 130 Q 70 70 100 40" fill="none" stroke="#c026d3" stroke-width="4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-brand uppercase mb-4 text-white">Hệ Thống Tự Dọn Dẹp Tế Bào</h3>
+                        <p class="text-gray-400 leading-relaxed">AI Agent phân tích dữ liệu sinh trắc học thời gian thực (glucose, insulin, ketone) để xác định chính xác cửa sổ kích hoạt Autophagy mạnh nhất ở từng cá nhân.</p>
+                    </div>
+                    <div class="mt-12">
+                        <div class="flex justify-between items-end">
+                            <span class="text-4xl font-brand font-black text-neonCyan">96.8%</span>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Mức Độ Kích Hoạt</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 mt-4 overflow-hidden">
+                            <div class="h-full bg-neonCyan w-[96.8%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-1 lg:col-span-2 liquid-glass rounded-3xl p-8 border-l-4 border-neonPurple">
+                    <h3 class="text-xl font-brand uppercase mb-2 text-white">Tối Ưu AMPK &amp; ức chế mTOR</h3>
+                    <p class="text-sm text-gray-400">AI Agent đề xuất khung nhịn ăn cá nhân hóa (14:10, 16:8, 18:6 hoặc OMAD) dựa trên tuổi, BMI, mức độ hoạt động và dữ liệu glucose liên tục.</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                    <span class="text-xs font-mono text-goldAccent mb-2 uppercase">Thời Gian Nhịn Ăn</span>
+                    <span class="text-3xl font-brand text-white">16.5h</span>
+                    <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-tighter">Trung Bình Tối Ưu</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center bg-neonPurple/5">
+                    <span class="text-xs font-mono text-neonCyan mb-2 uppercase">Tái Tạo Tế Bào</span>
+                    <span class="text-3xl font-brand text-white">+142%</span>
+                    <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-tighter">Sau 72h Kích Hoạt</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Activation Code -->
+        <section id="activation" class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <div class="inline-block px-4 py-1 rounded-full border border-neonCyan/30 text-neonCyan text-[10px] font-mono uppercase tracking-[0.2em]">
+                    Phân Tích Mã Nguồn AI
+                </div>
+                <h2 class="font-brand text-4xl md:text-5xl font-black uppercase leading-tight text-white">AI Autophagy <br><span class="text-neonPurple">Agent</span></h2>
+                <div class="space-y-6 text-gray-400">
+                    <p class="leading-relaxed">Không còn phác đồ chung chung. <span class="text-white italic">Aether AI Agent</span> sẽ phân tích dữ liệu cá nhân của bạn để đưa ra giao thức Autophagy chính xác nhất theo thời gian thực.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                            <div class="mt-1.5 w-2 h-2 rounded-full bg-neonCyan"></div>
+                            <span><strong class="text-white">Phân tích đa thông số:</strong> Glucose, Ketone, HRV, Nhịp ngủ.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="mt-1.5 w-2 h-2 rounded-full bg-neonPurple"></div>
+                            <span><strong class="text-white">Điều chỉnh động:</strong> Thay đổi khung nhịn ăn theo phản hồi sinh học hàng ngày.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pt-6">
+                    <button onclick="window.open('https://youtu.be/-EKQk6SQoJc', '_blank')" 
+                            class="flex items-center gap-4 bg-white text-cosmic font-brand font-black px-8 py-4 uppercase text-xs tracking-widest hover:bg-neonCyan transition-colors">
+                        Khởi Động AI Agent
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="code-block rounded-2xl overflow-hidden shadow-2xl shadow-neonPurple/20">
+                    <div class="px-6 py-4 bg-white/5 border-b border-white/10 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <span class="font-mono text-[10px] uppercase text-gray-500 tracking-widest">AutophagyAgent.ts</span>
+                    </div>
+                    <pre class="p-6 text-xs md:text-sm font-mono overflow-x-auto text-gray-300 leading-relaxed custom-scrollbar">
+<code><span class="text-neonPurple">const</span> <span class="text-neonCyan">AutophagyAgent</span> = () => {
+  <span class="text-neonPurple">const</span> [fastingWindow, setFastingWindow] = useState(16.5);
+  <span class="text-neonPurple">const</span> [autophagyScore, setScore] = useState(0);
+
+  <span class="text-gray-500">// AI Phân tích thời gian thực</span>
+  useEffect(() => {
+    <span class="text-neonCyan">analyzeBiometrics</span>(glucose, ketone, hrv).then(data => {
+      setFastingWindow(data.optimalWindow);
+      setScore(data.autophagyLevel);
+    });
+  }, [biometrics]);
+
+  <span class="text-neonPurple">return</span> (
+    &lt;<span class="text-neonCyan">ProtocolEngine</span> 
+      window={fastingWindow}
+      mode="max-autophagy"
+      agent="Aether-v2"
+    /&gt;
+  );
+};</code></pre>
+                </div>
+                
+                <div class="absolute -bottom-8 -right-8 w-32 h-32 liquid-glass rounded-full border border-white/20 animate-float flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-neonCyan font-brand text-lg">16.5</div>
+                        <div class="text-[8px] uppercase tracking-tighter text-gray-500">Giờ Nhịn Ăn</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Neural Audio Engine → Đổi thành Autophagy Protocol Engine -->
+        <section id="experience" class="liquid-glass rounded-[3rem] p-12 relative overflow-hidden">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="font-brand text-3xl font-bold uppercase tracking-widest mb-4">Động Cơ Autophagy AI</h2>
+                <p class="text-sm text-gray-400">AI Agent theo dõi và điều chỉnh phác đồ tự thực bào theo thời gian thực. Đeo tai nghe để tối ưu trạng thái tập trung &amp; nhịn ăn.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="col-span-1 bg-white/5 rounded-2xl p-6 border border-white/10 flex flex-col items-center justify-center gap-6 group hover:border-neonCyan/50 transition-colors">
+                    <div class="w-16 h-16 rounded-full bg-neonCyan/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="text-3xl">🧬</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-brand text-sm uppercase tracking-widest text-white">16:8 Tối Ưu</p>
+                        <p class="text-[10px] font-mono text-gray-500 mt-1 uppercase">Giai Đoạn Cao Cấp</p>
+                    </div>
+                </div>
+
+                <div class="col-span-1 md:col-span-2 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <span class="text-neonCyan font-mono text-xs">01</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Phân Tích Sinh Trắc Học</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">AI liên tục theo dõi glucose, ketone và HRV để điều chỉnh cửa sổ nhịn ăn.</p>
+                        </div>
+                        <div>
+                            <span class="text-neonPurple font-mono text-xs">02</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Gợi Ý Cá Nhân Hóa</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Tạo phác đồ động dựa trên lối sống, tuổi tác và mục tiêu sức khỏe.</p>
+                        </div>
+                        <div>
+                            <span class="text-goldAccent font-mono text-xs">03</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Kích Hoạt Tế Bào</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Hướng dẫn chính xác thời điểm đạt đỉnh Autophagy.</p>
+                        </div>
+                        <div>
+                            <span class="text-white font-mono text-xs">04</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Báo Cáo Hàng Tuần</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Tóm tắt tiến bộ tái tạo tế bào và khuyến nghị điều chỉnh.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Science & Roadmap -->
+        <section class="grid lg:grid-cols-2 gap-24 border-t border-white/5 pt-24">
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-brand text-2xl uppercase text-white mb-6">Trích Dẫn Khoa Học</h3>
+                    <div class="space-y-6">
+                        <div class="p-6 border border-white/5 hover:border-white/20 transition-all rounded-xl">
+                            <p class="text-xs text-gray-500 font-mono mb-2">[NOBEL-2016]</p>
+                            <p class="text-sm italic text-gray-300">"Việc khám phá cơ chế Autophagy đã mở ra hướng điều trị mới cho nhiều bệnh mãn tính và lão hóa."</p>
+                            <a href="#" class="inline-block mt-4 text-[10px] text-neonCyan uppercase tracking-widest hover:underline">— Yoshinori Ohsumi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-12">
+                <h3 class="font-brand text-2xl uppercase text-white mb-6">Lộ Trình AI Autophagy</h3>
+                <div class="relative space-y-8 pl-8 border-l border-white/10">
+                    <div class="relative">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-neonCyan shadow-[0_0_10px_#00f5ff]"></div>
+                        <h4 class="font-brand text-sm text-white uppercase">Giai Đoạn 1: Phân Tích (Hiện Tại)</h4>
+                        <p class="text-xs text-gray-500 mt-2">AI thu thập dữ liệu và xây dựng giao thức cá nhân hóa.</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-neonPurple"></div>
+                        <h4 class="font-brand text-sm text-white uppercase">Giai Đoạn 2: Theo Dõi Liên Tục</h4>
+                        <p class="text-xs text-gray-500 mt-2">Aether Agent điều chỉnh động theo dữ liệu sinh trắc học.</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-charcoal border border-white/20"></div>
+                        <h4 class="font-brand text-sm text-white/40 uppercase">Giai Đoạn 3: Tích Hợp Thiết Bị</h4>
+                        <p class="text-xs text-gray-600 mt-2">Kết nối CGM, Oura Ring, EEG cho độ chính xác cao hơn.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Chat -->
+    <div class="fixed bottom-8 right-8 z-[100]">
+        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center cursor-pointer shadow-2xl hover:scale-110 transition-transform group">
+            <svg class="w-8 h-8 text-cosmic" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+            <div class="absolute bottom-full right-0 mb-4 w-64 liquid-glass p-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <p class="text-[10px] font-mono text-neonCyan uppercase mb-2">Aether AI v2.0</p>
+                <p class="text-xs text-white leading-relaxed">"Chào bạn, tôi là Aether. Hôm nay tôi sẽ giúp bạn tối ưu Autophagy như thế nào?"</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const clockElement = document.getElementById('real-time-clock');
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const time = now.toLocaleTimeString('vi-VN', { hour12: false });
+            clockElement.textContent = `${day}/${month}/${year} - ${time}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+
+        // Scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

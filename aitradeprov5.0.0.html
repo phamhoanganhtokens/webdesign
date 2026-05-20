@@ -116,6 +116,38 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #09090b; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+
+        .rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Hiệu ứng chuyển động cầu vồng (tùy chọn - rất đẹp) */
+.rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff, #ff0000
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 6s linear infinite;
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+        
     </style>
 </head>
 <body class="selection:bg-blue-500/20">
@@ -154,10 +186,9 @@
             AI TRADE PRO™
         </h1>
         
-        <p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-justify">
-            <span class="accent-gradient font-medium">Multi-AI Agent System</span>
-           
-        </p>
+<p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-center leading-relaxed">
+    <span class="rainbow-text font-medium">Multi-AI Agent System</span>
+</p>
         
         <div class="mt-12 animate-fade-rise delay-3">
 <a href="https://phamhoanganhtokens.github.io/aitradepro/v7.0.0/xau/4500.html" 

@@ -112,6 +112,38 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #09090b; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+
+        .rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Hiệu ứng chuyển động cầu vồng (tùy chọn - rất đẹp) */
+.rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff, #ff0000
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 6s linear infinite;
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+        
     </style>
 </head>
 <body class="selection:bg-blue-500/20">
@@ -149,17 +181,16 @@
                 AI CHIẾN LƯỢC
             </h1>
             
-            <p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-justify">
-                Nền tảng trí tuệ nhân tạo chuyên sâu phân tích và xây dựng <span class="accent-gradient font-medium">Kế hoạch Đầu tư Cá nhân hóa</span>. 
-                Kết hợp 5 AI Agent để đưa ra chiến lược tối ưu theo vốn, rủi ro và mục tiêu của bạn.
-            </p>
+<p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-center leading-relaxed">
+    <span class="rainbow-text font-medium">Cá nhân hóa Kế hoạch Đầu tư</span>
+</p>
             
             <div class="mt-12 animate-fade-rise delay-3">
 <a href="https://phamhoanganhtokens.github.io/aidautu/chienluoc/test.html" 
    target="_blank" 
    rel="noopener noreferrer"
    class="liquid-glass inline-block px-12 py-4 text-sm tracking-[0.125em] uppercase hover:bg-white hover:text-black transition-all duration-700 rounded-full">
-    KHẨU VỊ ĐẦU TƯ CÁ NHÂN
+    KHẨU VỊ ĐẦU TƯ CỦA BẠN
 </a>
             </div>
         </div>

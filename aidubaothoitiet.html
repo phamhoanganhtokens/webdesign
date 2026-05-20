@@ -130,6 +130,38 @@
             color: #0a0a1f;
             transform: scale(1.1);
         }
+
+        .rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Hiệu ứng chuyển động cầu vồng (tùy chọn - rất đẹp) */
+.rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff, #ff0000
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 6s linear infinite;
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+        
     </style>
 </head>
 <body class="font-body custom-scrollbar">
@@ -143,7 +175,7 @@
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
         <div class="flex items-baseline gap-2">
-            <span class="font-brand text-xl font-black tracking-tighter uppercase italic text-white">AI Software Development</span>
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic rainbow-text">AI Software Development</span>
         </div>
         
         <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80"></div>

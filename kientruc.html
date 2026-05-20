@@ -136,6 +136,38 @@
         .delay-100 { animation-delay: 100ms; }
         .delay-300 { animation-delay: 300ms; }
         .delay-500 { animation-delay: 500ms; }
+
+        .rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Hiệu ứng chuyển động cầu vồng (tùy chọn - rất đẹp) */
+.rainbow-text {
+    background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #00ff00, 
+        #00ffff, #0000ff, #8b00ff, #ff0000
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 6s linear infinite;
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+        
     </style>
 </head>
 <body class="antialiased">

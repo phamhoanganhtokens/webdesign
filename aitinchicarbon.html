@@ -249,14 +249,14 @@
                 </div>
                 
                 <div class="flex flex-col gap-4">
-                    <div onclick="scrollToSection('#bio-mechanism')" class="flex items-center gap-4 group cursor-pointer">
+                    <div onclick="scrollToSection('bio-mechanism')" class="flex items-center gap-4 group cursor-pointer">
                         <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonCyan transition-all"></div>
                         <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">MRV Thông Minh</span>
                     </div>
                     
-                    <div onclick="scrollToSection('#activation')" class="flex items-center gap-4 group cursor-pointer">
+                    <div onclick="scrollToSection('footer')" class="flex items-center gap-4 group cursor-pointer">
                         <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonPurple transition-all"></div>
-                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Khởi Tạo Dự Án</span>
+                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Thông Tin Liên Hệ</span>
                     </div>
                 </div>
             </div>
@@ -276,7 +276,7 @@
             <div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
                 <div>
                     <h2 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter">Cơ Chế AI MRV</h2>
-                    <p class="text-neonCyan font-mono text-xs mt-2 uppercase tracking-widest">Phần 01 // Nền Tảng Tín Chỉ Carbon</p>
+                    <p class="text-neonCyan font-mono text-xs mt-2 uppercase tracking-widest">Nền Tảng Tín Chỉ Carbon</p>
                 </div>
                 <p class="max-w-md text-sm text-gray-400 text-right italic font-serif">
                     "Tín chỉ carbon chất lượng cao bắt đầu từ công nghệ đo lường minh bạch."
@@ -572,6 +572,23 @@ window.addEventListener('scroll', () => {
         backToTopBtn.style.display = 'none';
     }
 });
+
+        <script>
+// ========== SCROLL TO SECTION FUNCTION ==========
+function scrollToSection(sectionId) {
+    const element = document.querySelector(sectionId);
+    if (element) {
+        const navHeight = 80; // Chiều cao của navbar fixed
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - navHeight;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+</script>
         
     </script>
 </body>

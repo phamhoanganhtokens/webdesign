@@ -498,17 +498,32 @@
     </footer>
         
     <script>
-
-        // Real-time Clock
+        
+        // Real-time clock
         function updateClock() {
-            const el = document.getElementById('real-time-clock');
+            const clockElement = document.getElementById('real-time-clock');
             const now = new Date();
-            el.textContent = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} - ${now.toLocaleTimeString('vi-VN',{hour12:false})}`;
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const time = now.toLocaleTimeString('vi-VN', { hour12: false });
+            clockElement.textContent = `${day}/${month}/${year} - ${time}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
-        
-// ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
+
+        // Hàm cuộn mượt đến section
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        }
+
+        // ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
 let lastScrollY = 0;
 let ticking = false;
 
@@ -561,35 +576,33 @@ window.addEventListener('load', () => {
 window.addEventListener('resize', () => {
     updateScrollProgress();
 });
+        
+        // Fake functions
+        function joinBeta() {
+            const email = document.querySelector('input[type="email"]').value;
+            if (email) {
+                alert("Cảm ơn bạn đã tham gia! Chúng tôi sẽ gửi Neural ID qua email sớm nhất.");
+            } else {
+                alert("Vui lòng nhập email của bạn.");
+            }
+        }
 
-        // Back to Top Functionality
-const backToTopBtn = document.getElementById('back-to-top');
+        // Scroll animation (giữ nguyên)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 600) {
-        backToTopBtn.style.display = 'flex';
-    } else {
-        backToTopBtn.style.display = 'none';
-    }
-});
-
-        <script>
-// ========== SCROLL TO SECTION FUNCTION ==========
-function scrollToSection(sectionId) {
-    const element = document.querySelector(sectionId);
-    if (element) {
-        const navHeight = 80; // Chiều cao của navbar fixed
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - navHeight;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
         });
-    }
-}
+        
 </script>
         
-    </script>
 </body>
 </html>

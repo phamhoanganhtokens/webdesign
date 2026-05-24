@@ -85,18 +85,34 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .video-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.25;
-            filter: grayscale(80%) contrast(110%);
-            pointer-events: none;
-        }
+.video-bg {
+    position: fixed;
+    inset: 0;                    /* thay cho top/left + width/height */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 1;                  /* giữ nguyên sáng, để filter xử lý */
+    filter: 
+        brightness(0.75)         /* tối lại một chút */
+        contrast(1.15)           /* tăng độ tương phản */
+        saturate(1.4)            /* tăng độ bão hòa màu aurora */
+        hue-rotate(10deg);       /* dịch nhẹ về xanh lá - tím */
+    pointer-events: none;
+}
+
+/* Overlay gradient - Aurora style */
+.overlay-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(16, 185, 129, 0.18), transparent 60%),   /* xanh lá */
+        radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.12), transparent 65%),  /* tím */
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.08), transparent 70%);   /* xanh dương */
+    pointer-events: none;
+    mix-blend-mode: screen;      /* quan trọng để màu sáng lên đẹp */
+}
 
         .rainbow-text {
             background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);

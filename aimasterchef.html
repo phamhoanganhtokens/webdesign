@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vua Đầu Bếp - Trợ Lý Ẩm Thực Việt Nam Thông Minh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cosmic: '#0a0a1f',
+                        neonOrange: '#ff9500',
+                        neonGreen: '#22c55e',
+                        goldAccent: '#facc15',
+                        charcoal: '#1A1A1A',
+                        glass: 'rgba(17, 25, 40, 0.4)',
+                    },
+                    fontFamily: {
+                        brand: ['Orbitron', 'sans-serif'],
+                        hero: ['"Times New Roman"', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { textShadow: '0 0 10px #ff9500, 0 0 20px #ff9500' },
+                            'to': { textShadow: '0 0 20px #22c55e, 0 0 40px #22c55e' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a1f;
+            color: #E0E0E0;
+            overflow-x: hidden;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .liquid-glass {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ff9500, #22c55e, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textShine 5s ease infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        .hero-title {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+            letter-spacing: -0.05em;
+            text-align: justify;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a1f;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2D2D2D;
+            border-radius: 10px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            border-left: 4px solid #ff9500;
+        }
+        
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: grayscale(30%) brightness(0.55);
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 149, 0, 0.08), transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .rainbow-text {
+            background: linear-gradient(90deg, #ff9500, #22c55e, #facc15, #ff9500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 400% 400%;
+            animation: rainbow 6s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="font-body custom-scrollbar">
+
+    <!-- Video Background -->
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/cooking.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
+        <div class="flex items-baseline gap-2">
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic rainbow-text">AI VUA ĐẦU BẾP</span>
+        </div>
+        
+        <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonOrange opacity-80">
+            00/00/0000 - 00:00:00
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="#" target="_blank" class="text-[10px] uppercase tracking-widest hover:text-neonOrange transition-colors opacity-60 hidden sm:block">
+                Cổng Ẩm Thực Việt
+            </a>
+            <button onclick="scrollToSection('activation')" 
+                    class="px-5 py-2 border border-white/20 text-[10px] uppercase tracking-widest hover:bg-white hover:text-cosmic transition-all duration-500 font-brand">
+                Khởi Tạo Công Thức
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden px-6 content-wrapper">
+        <div class="relative z-10 max-w-6xl w-full text-center lg:text-left">
+            <p class="font-mono text-neonOrange text-xs uppercase tracking-[0.6em] mb-6 animate-pulse">
+                Trạng Thái Hệ Thống: AI Vua Đầu Bếp Đang Hoạt Động
+            </p>
+            <h1 class="hero-title text-6xl md:text-8xl lg:text-9xl text-white leading-[0.85] mb-10 transition-all">
+                Nghệ Thuật Ẩm Thực<br>
+                <span class="gradient-text">Việt Nam Thông Minh</span>
+            </h1>
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-start lg:items-center mt-12">
+                <div class="max-w-2xl border-l-2 border-neonGreen/50 pl-8">
+                    <p class="text-lg md:text-xl font-light text-gray-300 leading-relaxed uppercase tracking-wide">
+                        Master Agent • Multi-Agent System • Công Thức Chuẩn Vị Việt
+                    </p>
+                    <p class="mt-4 text-sm text-gray-400 uppercase tracking-widest leading-loose text-justify opacity-80">
+                        Trợ lý AI ẩm thực Việt Nam hàng đầu. Phân tích yêu cầu, tối ưu công thức, hướng dẫn chi tiết từ truyền thống đến chef-level theo đúng chuẩn vị Việt.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col gap-4">
+                    <div onclick="scrollToSection('bio-mechanism')" class="flex items-center gap-4 group cursor-pointer">
+                        <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonOrange transition-all"></div>
+                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Cơ Chế Ẩm Thực</span>
+                    </div>
+                    <div onclick="scrollToSection('activation')" class="flex items-center gap-4 group cursor-pointer">
+                        <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonGreen transition-all"></div>
+                        <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Khởi Tạo Công Thức AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+            <span class="text-[8px] uppercase tracking-[0.5em] text-white/40">Cuộn để Khám Phá</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-neonOrange to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-24 space-y-32 content-wrapper">
+
+        <!-- Section 1: Bio-Mechanism -->
+        <section id="bio-mechanism" class="space-y-12">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                <div>
+                    <h2 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter">Cơ Chế Ẩm Thực</h2>
+                    <p class="text-neonOrange font-mono text-xs mt-2 uppercase tracking-widest">PHẦN 01 // MULTI-AGENT SYSTEM</p>
+                </div>
+                <p class="max-w-md text-sm text-gray-400 text-right italic font-serif">
+                    "Kết hợp trí tuệ nhân tạo với tinh hoa ẩm thực Việt Nam truyền thống"
+                </p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="col-span-1 lg:col-span-2 row-span-2 liquid-glass rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <svg width="200" height="200" viewBox="0 0 200 200" class="telomere-glow">
+                            <circle cx="100" cy="100" r="70" stroke="#ff9500" fill="none" stroke-width="3" />
+                            <path d="M100 40 Q 130 70 100 130 Q 70 70 100 40" fill="none" stroke="#22c55e" stroke-width="4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-brand uppercase mb-4 text-white">Hệ Thống Master Agent</h3>
+                        <p class="text-gray-400 leading-relaxed">AI Vua Đầu Bếp sử dụng Multi-Agent System thông minh để phân tích yêu cầu và tạo ra công thức hoàn hảo nhất cho từng cá nhân.</p>
+                    </div>
+                    <div class="mt-12">
+                        <div class="flex justify-between items-end">
+                            <span class="text-4xl font-brand font-black text-neonOrange">98.7%</span>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Độ Chính Xác Công Thức</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 mt-4 overflow-hidden">
+                            <div class="h-full bg-neonOrange w-[98.7%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-1 lg:col-span-2 liquid-glass rounded-3xl p-8 border-l-4 border-neonGreen">
+                    <h3 class="text-xl font-brand uppercase mb-2 text-white">5 Slave Agents Chuyên Sâu</h3>
+                    <p class="text-sm text-gray-400">Traditional • Chef-level • Dễ làm • Dinh dưỡng • Trình bày & Marketing</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                    <span class="text-xs font-mono text-goldAccent mb-2 uppercase">Thời Gian Nấu</span>
+                    <span class="text-3xl font-brand text-white">25-45 phút</span>
+                    <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-tighter">Trung Bình Tối Ưu</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center bg-neonGreen/5">
+                    <span class="text-xs font-mono text-neonOrange mb-2 uppercase">Độ Hài Lòng</span>
+                    <span class="text-3xl font-brand text-white">+185%</span>
+                    <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-tighter">So Với Công Thức Thường</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Activation Code -->
+        <section id="activation" class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <div class="inline-block px-4 py-1 rounded-full border border-neonOrange/30 text-neonOrange text-[10px] font-mono uppercase tracking-[0.2em]">
+                    Phân Tích Yêu Cầu Người Dùng
+                </div>
+                <h2 class="font-brand text-4xl md:text-5xl font-black uppercase leading-tight text-white">AI Vua Đầu Bếp <br><span class="text-neonGreen">Master Agent</span></h2>
+                <div class="space-y-6 text-gray-400">
+                    <p class="leading-relaxed">Không còn công thức chung chung. Hệ thống Multi-Agent sẽ phân tích yêu cầu của bạn để tạo ra công thức ẩm thực Việt Nam **chuẩn vị - dễ làm - tối ưu dinh dưỡng**.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                            <div class="mt-1.5 w-2 h-2 rounded-full bg-neonOrange"></div>
+                            <span><strong class="text-white">Phân tích sâu:</strong> Chay, ít calo, keto, trẻ em, người lớn tuổi, dị ứng...</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="mt-1.5 w-2 h-2 rounded-full bg-neonGreen"></div>
+                            <span><strong class="text-white">Điều chỉnh động:</strong> Theo nguyên liệu có sẵn, thiết bị bếp và ngân sách.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pt-6">
+                    <button onclick="alert('Chức năng khởi tạo công thức đang được phát triển. Bạn có thể bắt đầu hỏi món ăn ngay bây giờ!')" 
+                            class="flex items-center gap-4 bg-white text-cosmic font-brand font-black px-8 py-4 uppercase text-xs tracking-widest hover:bg-neonOrange transition-colors">
+                        KHỞI TẠO CÔNG THỨC NGAY
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="code-block rounded-2xl overflow-hidden shadow-2xl shadow-neonGreen/20">
+                    <div class="px-6 py-4 bg-white/5 border-b border-white/10 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <span class="font-mono text-[10px] uppercase text-gray-500 tracking-widest">MasterAgent.ts</span>
+                    </div>
+                    <pre class="p-6 text-xs md:text-sm font-mono overflow-x-auto text-gray-300 leading-relaxed custom-scrollbar">
+<code><span class="text-neonOrange">const</span> <span class="text-neonGreen">VuaDauBepAgent</span> = () => {
+  <span class="text-neonOrange">const</span> [recipe, setRecipe] = useState(null);
+  <span class="text-neonOrange">const</span> [difficulty, setDifficulty] = useState("Trung bình");
+
+  <span class="text-gray-500">// Multi-Agent Analysis</span>
+  useEffect(() => {
+    <span class="text-neonGreen">analyzeRequest</span>(userInput).then(result => {
+      setRecipe(result);
+    });
+  }, [userInput]);
+
+  <span class="text-neonOrange">return</span> (
+    &lt;<span class="text-neonGreen">RecipeEngine</span> 
+      recipe={recipe}
+      mode="vietnamese-authentic"
+      agent="VuaDauBep-v2"
+    /&gt;
+  );
+};</code></pre>
+                </div>
+                
+                <div class="absolute -bottom-8 -right-8 w-32 h-32 liquid-glass rounded-full border border-white/20 animate-float flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-neonOrange font-brand text-lg">👨‍🍳</div>
+                        <div class="text-[8px] uppercase tracking-tighter text-gray-500">AI Vua Đầu Bếp</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="liquid-glass rounded-[3rem] p-12 relative overflow-hidden">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="font-brand text-3xl font-bold uppercase tracking-widest mb-4">Hệ Thống Multi-Agent</h2>
+                <p class="text-sm text-gray-400">5 Slave Agents chuyên sâu hoạt động đồng thời để tạo ra công thức hoàn hảo nhất</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="col-span-1 bg-white/5 rounded-2xl p-6 border border-white/10 flex flex-col items-center justify-center gap-6 group hover:border-neonOrange/50 transition-colors">
+                    <div class="w-16 h-16 rounded-full bg-neonOrange/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="text-3xl">📜</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-brand text-sm uppercase tracking-widest text-white">Traditional</p>
+                        <p class="text-[10px] font-mono text-gray-500 mt-1 uppercase">Chuẩn Vị Việt</p>
+                    </div>
+                </div>
+
+                <div class="col-span-1 md:col-span-2 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <span class="text-neonOrange font-mono text-xs">01</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Phân Tích Yêu Cầu</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Xác định món ăn, chế độ ăn, kỹ năng nấu và nguyên liệu có sẵn.</p>
+                        </div>
+                        <div>
+                            <span class="text-neonGreen font-mono text-xs">02</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Tối Ưu Công Thức</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Kết hợp truyền thống với kỹ thuật hiện đại, điều chỉnh theo người dùng.</p>
+                        </div>
+                        <div>
+                            <span class="text-goldAccent font-mono text-xs">03</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Hướng Dẫn Chi Tiết</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Bước từng bước + mẹo hay + biến tấu phù hợp.</p>
+                        </div>
+                        <div>
+                            <span class="text-white font-mono text-xs">04</span>
+                            <h4 class="font-brand text-sm text-white uppercase mt-2 mb-2">Trình Bày & Dinh Dưỡng</h4>
+                            <p class="text-[11px] text-gray-400 leading-relaxed">Hướng dẫn chụp ảnh đẹp và giá trị dinh dưỡng chi tiết.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Chat -->
+    <div class="fixed bottom-8 right-8 z-[100]">
+        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center cursor-pointer shadow-2xl hover:scale-110 transition-transform group">
+            <span class="text-3xl">👨‍🍳</span>
+            <div class="absolute bottom-full right-0 mb-4 w-64 liquid-glass p-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <p class="text-[10px] font-mono text-neonOrange uppercase mb-2">AI Vua Đầu Bếp v2.0</p>
+                <p class="text-xs text-white leading-relaxed">"Chào bạn! Hôm nay bạn muốn nấu món gì ngon nào? 👨‍🍳"</p>
+            </div>
+        </div>
+    </div>
+
+  <!-- SCROLL PROGRESS INDICATOR -->
+    <div class="fixed bottom-8 left-8 z-50 hidden md:flex items-center gap-4 font-mono text-xs tracking-[2px] text-white/50">
+        <span class="uppercase">SCROLL</span>
+        <div class="w-28 h-px bg-white/20 relative overflow-hidden">
+            <div id="scrollProgress" class="absolute top-0 left-0 h-full bg-[#00FF9F] transition-all duration-200" style="width: 0%"></div>
+        </div>
+        <span id="scrollPercent" class="w-8 text-right text-[#00FF9F]">00</span>
+        <span class="text-white/30">%</span>
+    </div>
+
+  <!-- ==================== FOOTER ==================== -->
+    <footer id="footer" class="py-20 px-6 border-t border-white/10 relative">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-5">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-[#28a745] rounded-xl flex items-center justify-center text-black font-bold text-2xl">AI</div>
+                    <span class="text-3xl font-display tracking-tighter rainbow-text">Vua Đầu Bếp</span>
+                </div>
+                <p class="text-white/70 max-w-md text-lg leading-relaxed">
+                    Tiên phong ứng dụng Trí tuệ Nhân tạo tổng hợp công thức chế biến ẩm thực Việt Nam và quốc tế
+                </p>
+
+                <!-- Social Links -->
+                <div class="flex gap-4 mt-10">
+                    <a href="https://x.com/VGA82017" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.facebook.com/sssssphamhoanganhsssss" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.youtube.com/@thanlongcoins" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://t.me/phamhoanganhtokens" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.688 7.96c-.124.58-.46.72-.936.448L12 14.25l-2.25 2.16c-.248.248-.456.116-.456-.224l.48-3.84 7.008-6.72c.312-.288.168-.432-.432-.144L6.75 13.5l-2.25-.72c-.48-.16-.492-.48.096-.72L17.25 7.5c.336-.144.624.192.312.748z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="md:col-span-3">
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#28a745]">Khám phá</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li><a href="#mechanism" class="hover:text-[#28a745]">Cơ Chế AI</a></li>
+                    <li><a href="#activation" class="hover:text-[#28a745]">Hệ Thống AI Agent</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="md:col-span-4">
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#28a745]">Liên hệ</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li class="flex items-start gap-3">
+                        <span class="text-[#28a745] mt-1">📍</span>
+                        <span>Quán Ngon đường 39, Phường Tân Thuận, Quận 7, TP. Hồ Chí Minh</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-[#28a745]">📞</span>
+                        <span>+84 090 33 44 55 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-[#28a745]">✉️</span>
+                        <a href="https://www.phamhoanganhtokens.com" target="_blank" class="text-neonCyan hover:underline">www.phamhoanganhtokens.com</a>
+                    </li>
+                </ul>
+
+                <div class="mt-8">
+                    <h5 class="text-[#28a745] text-sm mb-3">Vị trí trên bản đồ</h5>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d622.5477281090639!2d106.71737901182837!3d10.74384443005467!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8de8e1c19b%3A0x96021b3d41b2a2ac!2zTmjDoCBIw6FuZyAzOSB8IE5ow6AgSMOgbmcgxJDhurdjIFPhuqNuIFF14bqtbiA3!5e1!3m2!1sen!2sus!4v1778843997201!5m2!1sen!2sus" 
+                            width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-white/10 mt-20 pt-8 text-center text-xs text-white/40">
+            © 2026 AI Vua Đầu Bếp • Tiên phong ứng dụng Trí tuệ Nhân tạo tổng hợp công thức chế biến ẩm thực Việt Nam và quốc tế
+        </div>
+    </footer>
+
+    <script>
+        function updateClock() {
+            const clockElement = document.getElementById('real-time-clock');
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const time = now.toLocaleTimeString('vi-VN', { hour12: false });
+            clockElement.textContent = `${day}/${month}/${year} - ${time}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+
+        // Scroll Progress
+        let lastScrollY = 0;
+        let ticking = false;
+
+        function updateScrollProgress() {
+            const progressBar = document.getElementById('scrollProgress');
+            const percentText = document.getElementById('scrollPercent');
+            if (!progressBar || !percentText) return;
+
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            scrolled = Math.min(Math.max(scrolled, 0), 100);
+
+            progressBar.style.width = scrolled + '%';
+            percentText.textContent = scrolled.toFixed(1);
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollProgress);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick, { passive: true });
+        window.addEventListener('load', updateScrollProgress);
+        window.addEventListener('resize', updateScrollProgress);
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

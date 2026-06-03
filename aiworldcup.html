@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI World Cup 2026 - Master Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:wght@700&amp;family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            content: [],
+            theme: {
+                extend: {
+                    colors: {
+                        deepBlue: '#0a1428',
+                        legalGold: '#d4af37',
+                        emerald: '#10b981',
+                        glass: 'rgba(15, 23, 42, 0.65)',
+                    },
+                    fontFamily: {
+                        brand: ['Orbitron', 'sans-serif'],
+                        title: ['Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a1428;
+            color: #e2e8f0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .liquid-glass {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #10b981, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: -0.04em;
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.45) contrast(1.1);
+        }
+
+        .section-number {
+            position: absolute;
+            top: 40px;
+            left: -70px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            opacity: 0.08;
+            color: #10b981;
+            pointer-events: none;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .bento-grid { grid-template-columns: 1fr; } }
+
+        .rainbow-text {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 400% 400%;
+            animation: rainbow 6s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px; 
+            height: 50px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid #00f5ff;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 999;
+            color: #00f5ff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #back-to-top:hover {
+            background: #00f5ff;
+            color: #0a0a1f;
+            transform: scale(1.1);
+        }
+
+        .prompt-content {
+            font-family: 'Times New Roman', serif;
+            text-align: justify;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body class="font-body overflow-x-hidden">
+
+    <!-- Video Background -->
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/aurora.mp4" type="video/mp4">
+    </video>
+    <div class="fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08),transparent_70%)] z-[-1]"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
+        <div class="flex items-baseline gap-2">
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic rainbow-text">AI Software Development</span>
+        </div>
+        
+        <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80"></div>
+
+        <div class="flex items-center gap-4">
+            <a href="https://phamhoanganhtokens.github.io/truongtho/aisoftwaredevelopment.html" 
+               target="_blank" 
+               class="text-[10px] uppercase tracking-widest hover:text-neonCyan transition-colors opacity-70 hidden sm:block">
+                CỔNG NHÀ PHÁT TRIỂN
+            </a>
+            <button onclick="document.getElementById('activation').scrollIntoView({ behavior: 'smooth' })" 
+                    class="px-5 py-2 border border-white/20 text-[10px] uppercase tracking-widest hover:bg-white hover:text-cosmic transition-all duration-500 font-brand">
+                KHỞI TẠO HỆ THỐNG
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-screen flex flex-col items-center justify-center text-center px-6">
+        <div class="relative z-10 max-w-5xl">
+            <h1 class="text-[6.5vw] md:text-7xl font-light hero-title leading-none mb-6">
+                AI WORLD CUP 2026
+            </h1>
+            <p class="mt-6 text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto animate-fade-rise delay-2 text-center leading-relaxed">
+                <span class="rainbow-text font-medium">Hệ thống Dự đoán Kết quả FIFA World Cup 2026 bằng Trí tuệ Nhân tạo</span>
+            </p>
+
+            <div class="mt-12 animate-fade-rise delay-3">
+                <a href="#" 
+                   class="liquid-glass inline-block px-12 py-4 text-sm tracking-[0.125em] uppercase hover:bg-white hover:text-black transition-all duration-700 rounded-full">
+                    DỰ ĐOÁN TRẬN ĐẤU
+                </a>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="absolute bottom-10 left-8 right-8 flex justify-between items-end text-xs font-mono opacity-75">
+            <div>
+                [ SYSTEM: MULTI-AGENT PREDICTION AI ]<br>
+                v1.0.1
+            </div>
+            <div class="text-right">
+                [ FIFA World Cup 2026 ]<br>
+                <span class="text-emerald-400">[ Master Predictor • {{current_date}} ]</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-24 space-y-32">
+
+        <!-- Section 1 -->
+        <section id="mechanism" class="space-y-12 relative">
+            <div class="section-number">01</div>
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                <div>
+                    <h2 class="font-brand text-4xl md:text-5xl font-bold tracking-tighter">HỆ THỐNG MULTI-AGENT</h2>
+                    <p class="text-emerald-400 font-mono text-sm mt-2">PHẦN 01 // MASTER PROMPT - DỰ ĐOÁN WORLD CUP 2026</p>
+                </div>
+            </div>
+
+            <div class="bento-grid">
+                <div class="col-span-1 lg:col-span-2 row-span-2 liquid-glass rounded-3xl p-10 flex flex-col justify-between">
+                    <h3 class="text-3xl font-bold mb-6">Master Predictor Agent</h3>
+                    <p class="text-slate-300 leading-relaxed text-lg">
+                        Hệ thống trí tuệ nhân tạo đa agent chuyên dự đoán kết quả FIFA World Cup 2026 với độ chính xác cao, sử dụng dữ liệu thời gian thực và mô hình tiên tiến.
+                    </p>
+                    <div class="mt-10 pt-6 border-t border-white/10">
+                        <span class="text-5xl font-bold text-emerald-400">100%</span>
+                        <span class="block text-xs tracking-widest mt-1 text-slate-400">KHOA HỌC - KHÁCH QUAN - MINH BẠCH</span>
+                    </div>
+                </div>
+
+                <div class="liquid-glass rounded-3xl p-8">
+                    <h4 class="font-semibold text-xl mb-3">Data Analyst Agent</h4>
+                    <p class="text-sm text-slate-400">Thu thập dữ liệu bảng đấu, phong độ, lịch sử đối đầu...</p>
+                </div>
+
+                <div class="liquid-glass rounded-3xl p-8">
+                    <h4 class="font-semibold text-xl mb-3">Stats & Probability Agent</h4>
+                    <p class="text-sm text-slate-400">Poisson, Monte Carlo, Elo Rating, Machine Learning</p>
+                </div>
+
+                <div class="liquid-glass rounded-3xl p-8">
+                    <h4 class="font-semibold text-xl mb-3">Expert Scout & Risk Agent</h4>
+                    <p class="text-sm text-slate-400">Phân tích chiến thuật, yếu tố bất ngờ, ngựa ô</p>
+                </div>
+
+                <div class="col-span-1 lg:col-span-2 liquid-glass rounded-3xl p-8 bg-emerald-900/20 border border-emerald-500/30">
+                    <p class="italic text-emerald-300">"Chúng tôi không dự đoán thay bạn, chúng tôi cung cấp phân tích khoa học và khách quan nhất."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="activation" class="grid lg:grid-cols-2 gap-16 items-center relative">
+            <div class="section-number">02</div>
+            <div class="space-y-8">
+                <div class="inline-block px-5 py-2 rounded-full border border-emerald-400/30 text-emerald-400 text-xs font-mono tracking-widest">
+                    MASTER PROMPT
+                </div>
+                <h2 class="font-brand text-5xl font-bold leading-tight">Hệ thống Dự đoán World Cup 2026</h2>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    Master Agent tối cao điều phối toàn bộ hệ thống Multi-Agent để dự đoán kết quả các trận đấu FIFA World Cup 2026 một cách khoa học và chính xác.
+                </p>
+                <button onclick="window.open('#', '_blank')" 
+                        class="flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-4 rounded-2xl transition-all">
+                    BẮT ĐẦU DỰ ĐOÁN →
+                </button>
+            </div>
+
+            <!-- Master Prompt Block -->
+            <div class="relative">
+                <div class="rounded-3xl overflow-hidden shadow-2xl shadow-emerald-500/20 liquid-glass">
+                    <div class="px-6 py-4 bg-slate-900/70 border-b border-white/10 flex justify-between">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <span class="font-mono text-xs text-slate-400">MASTER PROMPT • AI World Cup 2026</span>
+                    </div>
+                    <div class="p-8 text-sm overflow-auto custom-scrollbar prompt-content max-h-[520px] text-slate-200">
+                        <p><strong>Phạm Hoàng Anh</strong> – Chuyên Gia của công ty <strong>AI Software Development</strong> (website: www.phamhoanganhtokens.com).</p>
+                        <p><strong>Dự án hiện tại:</strong> Hệ thống Dự đoán Kết quả FIFA World Cup 2026 bằng Trí tuệ Nhân tạo.</p>
+                        <p><strong>Thời gian thực hiện:</strong> Hôm nay là ngày <strong>{{current_date}}</strong>.</p>
+                        <hr class="my-6 border-white/10">
+                        <h3 class="font-bold text-emerald-400 mb-3">VAI TRÒ CỐT LÕI</h3>
+                        <p>  <strong>Master Agent</strong> chịu trách nhiệm điều phối toàn bộ hệ thống. Không trực tiếp phân tích chi tiết mà sẽ phân tích yêu cầu, kích hoạt các Slave Agents, cross-check và đưa ra báo cáo cuối cùng.</p>
+                        <p>Luôn duy trì tư duy khoa học, khách quan, không thiên vị bất kỳ đội bóng nào.</p>
+                        <hr class="my-6 border-white/10">
+                        <h3 class="font-bold text-emerald-400 mb-3">CÁC SLAVE AGENTS</h3>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li><strong>Data Analyst Agent</strong>: Thu thập dữ liệu mới nhất.</li>
+                            <li><strong>Stats & Probability Agent</strong>: Xây dựng mô hình Poisson, Monte Carlo, Elo...</li>
+                            <li><strong>Expert Scout Agent</strong>: Phân tích chiến thuật, đội hình, HLV.</li>
+                            <li><strong>Risk & Surprise Agent</strong>: Đánh giá yếu tố bất ngờ, ngựa ô.</li>
+                            <li><strong>Summary & Visualization Agent</strong>: Tổng hợp và tạo bảng biểu.</li>
+                        </ul>
+                        <hr class="my-6 border-white/10">
+                        <p class="font-semibold">Quy trình làm việc bắt buộc: Chào & Xác nhận → Lập kế hoạch → Kích hoạt Agents → Cross-Check → Phân tích 3 kịch bản → Báo cáo Tổng hợp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="liquid-glass rounded-3xl p-12">
+            <div class="section-number">03</div>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-4xl font-bold mb-4">Tính năng chính</h2>
+                <p class="text-slate-400">Hệ thống được tối ưu cho World Cup 2026</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-900/50 rounded-2xl p-8 text-center hover:border-emerald-400 border border-transparent transition-all">
+                    <span class="text-5xl mb-6 block">📊</span>
+                    <h3 class="font-semibold text-xl mb-2">Dự Đoán Chính Xác</h3>
+                    <p class="text-sm text-slate-400">Monte Carlo Simulation, Poisson Distribution, Elo Rating</p>
+                </div>
+                <div class="bg-slate-900/50 rounded-2xl p-8 text-center hover:border-emerald-400 border border-transparent transition-all">
+                    <span class="text-5xl mb-6 block">⚽</span>
+                    <h3 class="font-semibold text-xl mb-2">Phân Tích Chiến Thuật</h3>
+                    <p class="text-sm text-slate-400">Đội hình, phong cách chơi, lợi thế sân bãi</p>
+                </div>
+                <div class="bg-slate-900/50 rounded-2xl p-8 text-center hover:border-emerald-400 border border-transparent transition-all">
+                    <span class="text-5xl mb-6 block">🎲</span>
+                    <h3 class="font-semibold text-xl mb-2">Kịch Bản & Rủi Ro</h3>
+                    <p class="text-sm text-slate-400">Kịch bản cơ bản, tích cực và bất ngờ (Upset)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // Real-time Clock
+        function updateClock() {
+            const el = document.getElementById('real-time-clock');
+            const now = new Date();
+            el.textContent = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} - ${now.toLocaleTimeString('vi-VN',{hour12:false})}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Scroll Progress
+        let lastScrollY = 0;
+        let ticking = false;
+
+        function updateScrollProgress() {
+            const progressBar = document.getElementById('scrollProgress');
+            const percentText = document.getElementById('scrollPercent');
+            if (!progressBar || !percentText) return;
+
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            scrolled = Math.min(Math.max(scrolled, 0), 100);
+
+            progressBar.style.width = scrolled + '%';
+            percentText.textContent = scrolled.toFixed(1);
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollProgress);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', requestTick, { passive: true });
+        window.addEventListener('load', updateScrollProgress);
+        window.addEventListener('resize', updateScrollProgress);
+
+        // Back to Top
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            backToTopBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+        });
+    </script>
+</body>
+</html>

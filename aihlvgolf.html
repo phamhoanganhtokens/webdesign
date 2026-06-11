@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HLV Golf | Huấn Luyện Viên Golf Trí Tuệ Nhân Tạo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cosmic: '#0a0a1f',
+                        neonCyan: '#00f5ff',
+                        neonPurple: '#c026d3',
+                        goldAccent: '#facc15',
+                        glass: 'rgba(17, 25, 40, 0.4)',
+                    },
+                    fontFamily: {
+                        brand: ['Orbitron', 'sans-serif'],
+                        hero: ['"Times New Roman"', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a1f;
+            color: #E0E0E0;
+            overflow-x: hidden;
+        }
+
+        .liquid-glass {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00f5ff, #c026d3, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textShine 5s ease infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        .hero-title {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+            letter-spacing: -0.05em;
+            text-align: justify;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0a0a1f; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #2D2D2D; border-radius: 10px; }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(200px, auto));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .bento-grid { grid-template-columns: 1fr; } }
+
+        #bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: grayscale(20%) brightness(0.45);
+        }
+
+        .section-number {
+            position: absolute;
+            top: 30px;
+            left: -60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            opacity: 0.08;
+            color: #00f5ff;
+            pointer-events: none;
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 80px;
+            left: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #00f5ff;
+            z-index: 999;
+            text-shadow: 0 0 10px #00f5ff;
+            pointer-events: none;
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px; height: 50px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid #00f5ff;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        #back-to-top:hover {
+            background: #00f5ff;
+            color: #0a0a1f;
+            transform: scale(1.1);
+        }
+
+        .rainbow-text {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 400% 400%;
+            animation: rainbow 6s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="font-body custom-scrollbar">
+
+    <!-- Video Background -->
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/aurora.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(192,38,211,0.08),transparent_70%)] z-[-1] pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-4 flex justify-between items-center liquid-glass">
+        <div class="flex items-baseline gap-2">
+            <span class="font-brand text-xl font-black tracking-tighter uppercase italic rainbow-text">AI Software Development</span>
+        </div>
+        
+        <div id="real-time-clock" class="hidden md:block font-mono text-[10px] tracking-[0.3em] text-neonCyan opacity-80"></div>
+
+        <div class="flex items-center gap-4">
+            <a href="https://phamhoanganhtokens.github.io/truongtho/aisoftwaredevelopment.html" 
+               target="_blank" 
+               class="text-[10px] uppercase tracking-widest hover:text-neonCyan transition-colors opacity-70 hidden sm:block">
+                CỔNG NHÀ PHÁT TRIỂN
+            </a>
+            <button onclick="document.getElementById('activation').scrollIntoView({ behavior: 'smooth' })" 
+                    class="px-5 py-2 border border-white/20 text-[10px] uppercase tracking-widest hover:bg-white hover:text-cosmic transition-all duration-500 font-brand">
+                BẮT ĐẦU HUẤN LUYỆN
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
+        <div class="relative z-10 max-w-6xl w-full text-center lg:text-left">
+            <p class="font-mono text-neonCyan text-xs uppercase tracking-[0.6em] mb-6 animate-pulse">
+                Trạng Thái Hệ Thống: AI HLV Golf Master Agent Đang Hoạt Động
+            </p>
+            <h1 class="hero-title text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-10">
+                <span class="gradient-text">HLV GOLF TRÍ TUỆ NHÂN TẠO</span>
+            </h1>
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-start lg:items-center mt-12">
+                <div class="max-w-2xl border-l-2 border-neonPurple/50 pl-8">
+                    <p class="text-lg md:text-xl font-light text-gray-300 leading-relaxed uppercase tracking-wide">
+                        Cải thiện swing • Nâng tầm trò chơi • An toàn & Bền vững
+                    </p>
+                    <p class="mt-4 text-sm text-gray-400 uppercase tracking-widest leading-loose opacity-80">
+                        Hệ thống Multi-Agent AI theo tiêu chuẩn PGA, hỗ trợ toàn diện từ kỹ thuật đến tâm lý và thể lực.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col gap-4">
+<a href="https://www.youtube.com/watch?v=mqh8Y_CtVAY" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   class="flex items-center gap-4 group cursor-pointer">
+    <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonCyan transition-all"></div>
+    <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Phân Tích Swing</span>
+</a>
+
+<a href="https://phamhoanganhtokens.github.io/aihlvgolf/image/form.png" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   class="flex items-center gap-4 group cursor-pointer">
+    <div class="w-12 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-neonPurple transition-all"></div>
+    <span class="text-[10px] uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">Lập Kế Hoạch Tập Luyện</span>
+</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+            <span class="text-[8px] uppercase tracking-[0.5em] text-white/40">Cuộn để khám phá</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-neonCyan to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-24 space-y-32">
+
+        <!-- Section 1 -->
+        <section id="mechanism" class="space-y-12 relative">
+            <div class="section-number">01</div>
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/10 pb-8">
+                <div>
+                    <h2 class="font-brand text-3xl md:text-5xl font-black uppercase tracking-tighter">Cơ Chế Master Agent</h2>
+                    <p class="text-neonCyan font-mono text-xs mt-2 uppercase tracking-widest">Hệ Thống AI HLV Golf</p>
+                </div>
+                <p class="max-w-md text-sm text-gray-400 text-right italic">"Swing hoàn hảo bắt nguồn từ nền tảng vững chắc và sự kiên trì thông minh."</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="col-span-1 lg:col-span-2 row-span-2 liquid-glass rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative">
+                    <h3 class="text-2xl font-brand uppercase mb-4">Master Agent - AI HLV Golf</h3>
+                    <p class="text-gray-400 leading-relaxed">Master Agent điều phối 8 Slave Agents chuyên sâu, cung cấp huấn luyện golf theo tiêu chuẩn PGA, cá nhân hóa tối đa và ưu tiên an toàn.</p>
+                    <div class="mt-12">
+                        <div class="flex justify-between items-end">
+                            <span class="text-4xl font-brand font-black text-neonCyan">99.4%</span>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Độ Chính Xác Phân Tích</span>
+                        </div>
+                        <div class="w-full h-1 bg-white/10 mt-4 overflow-hidden">
+                            <div class="h-full bg-neonCyan w-[99.4%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-1 lg:col-span-2 liquid-glass rounded-3xl p-8 border-l-4 border-neonPurple">
+                    <h3 class="text-xl font-brand uppercase mb-2">Phân Tích & Huấn Luyện Thời Gian Thực</h3>
+                    <p class="text-sm text-gray-400">Hệ thống liên tục cập nhật kiến thức golf mới nhất đến năm 2026, phân tích swing, chẩn đoán lỗi và xây dựng kế hoạch tập luyện cá nhân hóa.</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                    <span class="text-3xl font-brand text-white">24 GIỜ</span>
+                    <p class="text-[10px] text-gray-500 mt-2">Phân tích swing sơ bộ</p>
+                </div>
+
+                <div class="col-span-1 liquid-glass rounded-3xl p-8 flex flex-col justify-center items-center text-center bg-neonPurple/5">
+                    <span class="text-3xl font-brand text-white">72 GIỜ</span>
+                    <p class="text-[10px] text-gray-500 mt-2">Kế hoạch huấn luyện chi tiết</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="activation" class="grid lg:grid-cols-2 gap-16 items-center relative">
+            <div class="section-number">02</div>
+            <div class="space-y-8">
+                <div class="inline-block px-4 py-1 rounded-full border border-neonCyan/30 text-neonCyan text-[10px] font-mono uppercase tracking-[0.2em]">
+                    HỆ THỐNG MULTI-AGENT PGA
+                </div>
+                <h2 class="font-brand text-4xl md:text-5xl font-black uppercase leading-tight">AI HLV GOLF<br><span class="text-neonPurple">HUẤN LUYỆN VIÊN THÔNG MINH</span></h2>
+                <p class="text-gray-400 leading-relaxed">Master Agent điều phối 8 Slave Agents chuyên sâu (Kỹ thuật, Chẩn đoán lỗi, Tâm lý, Thể lực...) để mang đến trải nghiệm huấn luyện golf chuyên nghiệp và cá nhân hóa nhất.</p>
+                <button onclick="window.open('https://phamhoanganhtokens.github.io/aihlvgolf/vga/82017.html', '_blank')" 
+                        class="flex items-center gap-4 bg-white text-cosmic font-brand font-black px-8 py-4 uppercase text-xs tracking-widest hover:bg-neonCyan transition-colors">
+                    BẮT ĐẦU HUẤN LUYỆN NGAY →
+                </button>
+            </div>
+
+            <!-- Code Block -->
+            <div class="relative">
+                <div class="code-block rounded-2xl overflow-hidden shadow-2xl shadow-neonPurple/20">
+                    <div class="px-6 py-4 bg-white/5 border-b border-white/10 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <span class="font-mono text-[10px] uppercase text-gray-500 tracking-widest">Master Agent - AI HLV Golf</span>
+                    </div>
+                    <pre class="p-6 text-xs md:text-sm font-mono overflow-x-auto text-gray-300 leading-relaxed custom-scrollbar">
+<code><span class="text-neonPurple">const</span> <span class="text-neonCyan">GolfMasterAgent</span> = () => {
+  <span class="text-gray-500">// Nhận input & cập nhật hồ sơ golfer</span>
+  useEffect(() => {
+    analyzeSwing();
+    delegateToSlaveAgents();
+    qualityControl();
+  }, []);
+
+  <span class="text-neonPurple">return</span> (
+    &lt;<span class="text-neonCyan">PersonalizedGolfTraining</span> 
+      level="PGA Standard"
+      focus="Safety & Progress"
+    /&gt;
+  );
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="experience" class="liquid-glass rounded-[3rem] p-12 relative overflow-hidden">
+            <div class="section-number">03</div>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="font-brand text-3xl font-bold uppercase tracking-widest mb-4">Quy Trình Huấn Luyện</h2>
+                <p class="text-sm text-gray-400">Theo tiêu chuẩn PGA & công nghệ golf hiện đại 2026</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-neonCyan/50 transition-all cursor-pointer text-center">
+                    <span class="text-4xl mb-4 block">⛳</span>
+                    <p class="font-brand">Kỹ Thuật & Swing</p>
+                    <p class="text-xs text-gray-500">Phân tích chi tiết 8 giai đoạn swing</p>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-neonPurple/50 transition-all cursor-pointer text-center">
+                    <span class="text-4xl mb-4 block">🧠</span>
+                    <p class="font-brand">Tâm Lý & Chiến Thuật</p>
+                    <p class="text-xs text-gray-500">Mental game & Course management</p>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-goldAccent/50 transition-all cursor-pointer text-center">
+                    <span class="text-4xl mb-4 block">💪</span>
+                    <p class="font-brand">Thể Lực & Phòng Ngừa</p>
+                    <p class="text-xs text-gray-500">Dinh dưỡng & Tập luyện an toàn</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<!-- ==================== FOOTER ==================== -->
+    <footer id="footer" class="py-20 px-6 border-t border-white/10 relative">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+            <div class="md:col-span-5">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-[#28a745] rounded-xl flex items-center justify-center text-black font-bold text-2xl">AI</div>
+                    <span class="text-3xl font-display tracking-tighter rainbow-text">AI HLV Golf</span>
+                </div>
+                <p class="text-white/70 max-w-md text-lg leading-relaxed">
+                    Huấn luyện viên golf trí tuệ nhân tạo theo tiêu chuẩn PGA. Cải thiện swing - Nâng tầm trò chơi - An toàn & Bền vững.
+                </p>
+
+                <!-- Social Links -->
+                <div class="flex gap-4 mt-10">
+                    <a href="https://x.com/VGA82017" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.facebook.com/sssssphamhoanganhsssss" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.youtube.com/@thanlongcoins" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://t.me/phamhoanganhtokens" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.688 7.96c-.124.58-.46.72-.936.448L12 14.25l-2.25 2.16c-.248.248-.456.116-.456-.224l.48-3.84 7.008-6.72c.312-.288.168-.432-.432-.144L6.75 13.5l-2.25-.72c-.48-.16-.492-.48.096-.72L17.25 7.5c.336-.144.624.192.312.748z"/>
+                        </svg>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/phạm-hoàng-anh-51bb3446" target="_blank" rel="noopener noreferrer" class="social-link w-11 h-11 border border-white/30 rounded-2xl flex items-center justify-center hover:border-[#00FF9F]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="md:col-span-3">
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#28a745]">Khám phá</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li><a href="#mechanism" class="hover:text-[#28a745]">Cơ Chế AI</a></li>
+                    <li><a href="#activation" class="hover:text-[#28a745]">Bắt Đầu Huấn Luyện</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="md:col-span-4">
+                <h4 class="font-display uppercase tracking-widest text-sm mb-6 text-[#28a745]">Liên hệ</h4>
+                <ul class="space-y-4 text-white/70">
+                    <li class="flex items-start gap-3">
+                        <span class="text-[#28a745] mt-1">📍</span>
+                        <span>Quán Ngon đường 39, Phường Tân Thuận, Quận 7, TP. Hồ Chí Minh</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-[#28a745]">📞</span>
+                        <span>+84 090 33 44 55 1</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-[#28a745]">✉️</span>
+                        <a href="https://www.phamhoanganhtokens.com" target="_blank" class="text-neonCyan hover:underline">www.phamhoanganhtokens.com</a>
+                    </li>
+                </ul>
+
+                <div class="mt-8">
+                    <h5 class="text-[#28a745] text-sm mb-3">Vị trí trên bản đồ</h5>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d622.5477281090639!2d106.71737901182837!3d10.74384443005467!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8de8e1c19b%3A0x96021b3d41b2a2ac!2zTmjDoCBIw6FuZyAzOSB8IE5ow6AgSMOgbmcgxJDhurdjIFPhuqNuIFF14bqtbiA3!5e1!3m2!1sen!2sus!4v1778843997201!5m2!1sen!2sus" 
+                            width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-white/10 mt-20 pt-8 text-center text-xs text-white/40">
+           © 2026 AI HLV Golf • Huấn Luyện Viên Golf Trí Tuệ Nhân Tạo
+        </div>
+    </footer>
+
+<!-- SCROLL PROGRESS INDICATOR -->
+    <div class="fixed bottom-8 left-8 z-50 hidden md:flex items-center gap-4 font-mono text-xs tracking-[2px] text-white/50">
+        <span class="uppercase">SCROLL</span>
+        <div class="w-28 h-px bg-white/20 relative overflow-hidden">
+            <div id="scrollProgress" class="absolute top-0 left-0 h-full bg-[#00FF9F] transition-all duration-200" style="width: 0%"></div>
+        </div>
+        <span id="scrollPercent" class="w-8 text-right text-[#00FF9F]">00</span>
+        <span class="text-white/30">%</span>
+    </div>
+    
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // Real-time Clock
+        function updateClock() {
+            const el = document.getElementById('real-time-clock');
+            const now = new Date();
+            el.textContent = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} - ${now.toLocaleTimeString('vi-VN',{hour12:false})}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+// ========== SCROLL PROGRESS - PHIÊN BẢN MƯỢT & CHI TIẾT ==========
+let lastScrollY = 0;
+let ticking = false;
+
+function updateScrollProgress() {
+    const progressBar = document.getElementById('scrollProgress');
+    const percentText = document.getElementById('scrollPercent');
+
+    if (!progressBar || !percentText) return;
+
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    if (height <= 0) {
+        progressBar.style.width = '0%';
+        percentText.textContent = '00.0';
+        return;
+    }
+
+    let scrolled = (winScroll / height) * 100;
+    scrolled = Math.min(Math.max(scrolled, 0), 100);   // Giới hạn 0-100
+
+    // Cập nhật thanh progress
+    progressBar.style.width = scrolled + '%';
+    
+    // Hiển thị % với 1 số thập phân (chi tiết hơn)
+    const displayPercent = scrolled.toFixed(1);
+    percentText.textContent = displayPercent;
+    
+    lastScrollY = winScroll;
+    ticking = false;
+}
+
+// Sử dụng requestAnimationFrame để mượt tối đa
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+    }
+}
+
+// Gắn event
+window.addEventListener('scroll', requestTick, { passive: true });
+
+// Khởi tạo ban đầu
+window.addEventListener('load', () => {
+    updateScrollProgress();
+});
+
+// Cập nhật lại khi resize cửa sổ
+window.addEventListener('resize', () => {
+    updateScrollProgress();
+});
+
+        // Back to Top
+        const btn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            btn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+        });
+    </script>
+</body>
+</html>

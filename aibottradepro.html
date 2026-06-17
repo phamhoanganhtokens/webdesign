@@ -202,27 +202,46 @@
             </div>
         </section>
 
-        <!-- Section 3: Thông số EA -->
-        <section id="parameters" class="space-y-10">
+        <!-- Section 3: Biểu đồ TradingView -->
+        <section id="chart" class="space-y-10">
             <div class="flex items-center gap-4">
                 <span class="text-xs font-mono-tech opacity-40">03</span>
                 <div class="h-px flex-1 bg-white/10"></div>
-                <h2 class="text-4xl font-light tracking-tight accent-gradient">THÔNG SỐ CẤU HÌNH</h2>
+                <h2 class="text-4xl font-light tracking-tight accent-gradient">BIỂU ĐỒ THỊ TRƯỜNG THỜI GIAN THỰC</h2>
             </div>
-            <div class="liquid-glass p-8 rounded-3xl overflow-hidden">
-                <pre class="font-mono-tech text-sm text-emerald-300 overflow-x-auto">
-#property version   "1.00"
-Symbol          : XAUUSDm
-Initial Lot     : 0.01
-Lot Multiplier  : 1.5
-Max Lot         : 0.1
-Grid Step       : 100 pips
-Take Profit     : 2000 pips
-Max Orders      : 10
-Trade Direction : BOTH
-Max Drawdown    : 100%
-                </pre>
+            <div class="liquid-glass p-6 rounded-3xl overflow-hidden" style="height: 620px;">
+                <div class="tradingview-widget-container h-full">
+                    <div class="tradingview-widget-container__widget h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                    {
+                      "colorTheme": "dark",
+                      "dateRange": "1D",
+                      "showChart": true,
+                      "locale": "vi_VN",
+                      "width": "100%",
+                      "height": "100%",
+                      "isTransparent": true,
+                      "showSymbolLogo": true,
+                      "showFloatingTooltip": true,
+                      "plotLineColorGrowing": "rgba(74, 222, 128, 1)",
+                      "plotLineColorFalling": "rgba(248, 113, 113, 1)",
+                      "gridLineColor": "rgba(255,255,255,0.05)",
+                      "scaleFontColor": "rgba(163, 163, 163, 1)",
+                      "tabs": [
+                        {
+                          "title": "Tài sản chính",
+                          "symbols": [
+                            { "s": "TVC:GOLD", "d": "Vàng (XAUUSD)" },
+                            { "s": "TVC:USOIL", "d": "Dầu thô WTI" },
+                            { "s": "BINANCE:BTCUSDT", "d": "Bitcoin" }
+                          ]
+                        }
+                      ]
+                    }
+                    </script>
+                </div>
             </div>
+            <p class="text-center text-xs opacity-50 font-mono-tech">Dữ liệu được cung cấp bởi TradingView • Cập nhật thời gian thực</p>
         </section>
 
         <!-- Section 4: Phiên bản -->

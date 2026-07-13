@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RX-07 • Giao diện Điều khiển AI Robotics</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00f3ff;
+            --primary-glow: rgba(0, 243, 255, 0.5);
+            --secondary: #ff00ea;
+            --secondary-glow: rgba(255, 0, 234, 0.4);
+            --bg-dark: #05060f;
+            --panel-bg: rgba(15, 23, 42, 0.8);
+            --border: rgba(0, 243, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, rgba(5, 6, 15, 1) 100%),
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: #e2e8f0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .heading-font { font-family: 'Orbitron', sans-serif; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* Cyberpunk Effects */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scan-line 4s linear infinite;
+        }
+
+        @keyframes scan-line {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .neon-text {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .neon-border {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow), inset 0 0 5px var(--primary-glow);
+        }
+
+        .cyber-button {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+            clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
+        }
+
+        .cyber-button:hover {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .cyber-button-red {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .cyber-button-red:hover {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 0 20px var(--secondary-glow);
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
+            70% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 0 5px rgba(0, 243, 255, 0); }
+            100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+        }
+
+        /* Glitch Animation */
+        .glitch { animation: glitch 5s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            1% { transform: translate(-2px, 2px); }
+            2% { transform: translate(2px, -2px); }
+            3% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+
+        .control-grid button {
+            transition: transform 0.1s;
+        }
+        .control-grid button:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body class="p-0 m-0 select-none">
+    <div class="scanlines"></div>
+
+    <div class="flex h-screen w-full relative z-10">
+        <!-- Sidebar Navigation -->
+        <aside class="w-72 glass-panel border-r border-cyan-900/30 flex flex-col">
+            <div class="p-6 border-b border-cyan-900/40">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-black neon-border rounded-xl flex items-center justify-center text-3xl">
+                        <i class="fa-solid fa-microchip neon-text"></i>
+                    </div>
+                    <div>
+                        <h1 class="heading-font text-2xl font-bold tracking-widest neon-text glitch">RX-07</h1>
+                        <p class="text-[10px] uppercase tracking-[0.2em] text-cyan-500/70">KẾT NỐI NEURAL HOẠT ĐỘNG</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 flex-grow space-y-2 mt-4">
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center gap-4 px-6 py-4 bg-cyan-500/10 border-l-2 border-cyan-400 text-cyan-400 group">
+                        <i class="fa-solid fa-gauge-high group-hover:animate-pulse"></i>
+                        <span class="font-semibold tracking-wide">BẢNG ĐIỀU KHIỂN</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 px-6 py-4 text-slate-400 hover:text-cyan-300 hover:bg-cyan-500/5 transition-all">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span class="font-semibold tracking-wide">ĐIỀU KHIỂN</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 px-6 py-4 text-slate-400 hover:text-cyan-300 hover:bg-cyan-500/5 transition-all">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <span class="font-semibold tracking-wide">TELEMETRY</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 px-6 py-4 text-slate-400 hover:text-cyan-300 hover:bg-cyan-500/5 transition-all">
+                        <i class="fa-solid fa-brain"></i>
+                        <span class="font-semibold tracking-wide">LOGIC AI</span>
+                    </a>
+                </nav>
+
+                <div class="mt-8 px-4">
+                    <div class="p-4 bg-black/40 border border-cyan-900/30 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-slate-500 uppercase tracking-tighter">Tình trạng Hệ thống</span>
+                            <span class="text-xs text-cyan-400">Ổn định</span>
+                        </div>
+                        <div class="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyan-400 shadow-[0_0_10px_#00f3ff]" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-cyan-900/40">
+                <div class="flex items-center gap-3 p-3 bg-slate-900/80 rounded-lg border border-emerald-900/30">
+                    <span class="status-dot bg-emerald-400 shadow-[0_0_8px_#4ade80]"></span>
+                    <div class="leading-tight">
+                        <p class="text-xs font-bold text-emerald-400">MODEL RX-07 HOẠT ĐỘNG</p>
+                        <p class="text-[10px] text-slate-500 font-mono">KẾT NỐI: SECURE-5G</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header Bar -->
+            <header class="h-20 glass-panel border-b border-cyan-900/30 flex items-center justify-between px-8">
+                <div class="flex items-center gap-10">
+                    <div>
+                        <h2 class="heading-font text-xl text-white flex items-center gap-3">
+                            <span class="text-cyan-500 opacity-50">&gt;</span> ĐƠN VỊ ĐANG HOẠT ĐỘNG: RX-07 OMEGA
+                        </h2>
+                        <p class="text-xs text-slate-500 font-mono">VỊ TRÍ: KHU VỰC-B3 / SẢN XUẤT</p>
+                    </div>
+                    
+                    <div class="hidden lg:flex items-center gap-6">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-slate-500 uppercase">Nhiệt độ lõi</span>
+                            <span class="text-orange-400 font-bold" id="header-temp">32.4°C</span>
+                        </div>
+                        <div class="flex flex-col border-l border-slate-700 pl-6">
+                            <span class="text-[10px] text-slate-500 uppercase">Độ trễ</span>
+                            <span class="text-cyan-400 font-bold">14ms</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <button id="emergency-btn" class="cyber-button cyber-button-red px-6 py-2 heading-font text-sm font-bold tracking-tighter">
+                        <i class="fa-solid fa-radiation mr-2"></i> DỪNG KHẨN CẤP
+                    </button>
+                    
+                    <div class="flex items-center gap-4 border-l border-slate-700 pl-6">
+                        <div class="text-right">
+                            <p class="text-sm font-bold tracking-tight text-white uppercase">Phạm Hoàng Anh</p>
+                            <p class="text-[10px] text-cyan-500 font-mono">CẤP BẬC: Multi-AI Agent system</p>
+                        </div>
+                        <div class="w-10 h-10 neon-border rounded-lg overflow-hidden bg-cyan-900/20">
+                            <img src="https://phamhoanganhtokens.github.io/airobotics/image/phamhoanganh.jpg" alt="Avatar">
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="flex-1 p-6 overflow-y-auto custom-scrollbar">
+                <div class="grid grid-cols-12 gap-6 pb-6">
+                    
+                    <!-- Left Column: Status & Preview -->
+                    <div class="col-span-12 xl:col-span-4 space-y-6">
+                        <!-- Status Panel -->
+                        <div class="glass-panel p-5 rounded-tr-3xl">
+                            <h3 class="heading-font text-sm text-cyan-400 mb-4 border-b border-cyan-900/30 pb-2 flex justify-between">
+                                <span>TRẠNG THÁI ĐƠN VỊ</span>
+                                <span class="text-[10px] text-slate-500 mono-font">UUID: 4409-X7</span>
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center bg-black/40 p-3 rounded border border-slate-800">
+                                    <span class="text-xs text-slate-400 uppercase tracking-widest">Tọa độ Toàn cầu</span>
+                                    <span class="mono-font text-cyan-400 text-sm">X: 12.45 | Y: 8.72 | Z: 0.3</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-black/40 p-3 rounded border border-slate-800">
+                                        <p class="text-[10px] text-slate-500 uppercase">Vận tốc</p>
+                                        <p class="text-xl font-bold text-white">1.8 <span class="text-xs text-cyan-500">m/s</span></p>
+                                    </div>
+                                    <div class="bg-black/40 p-3 rounded border border-slate-800">
+                                        <p class="text-[10px] text-slate-500 uppercase">Hướng</p>
+                                        <p class="text-xl font-bold text-white">42.8° <span class="text-xs text-cyan-500">ĐB</span></p>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-cyan-500/5 border border-cyan-500/20 rounded">
+                                    <p class="text-[10px] text-cyan-500 uppercase mb-1">Mục tiêu hiện tại</p>
+                                    <p class="text-sm font-semibold text-white tracking-wide">KHẢO SÁT LƯỚI KHU VỰC B3</p>
+                                    <div class="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                                        <div class="h-full bg-cyan-400" id="mission-progress" style="width: 68%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3D Viewport Placeholder -->
+                        <div class="glass-panel aspect-video rounded-bl-3xl p-1 bg-black relative flex items-center justify-center">
+                            <div class="absolute inset-0 opacity-20 pointer-events-none">
+                                <div class="w-full h-full" style="background-image: radial-gradient(#00f3ff 0.5px, transparent 0.5px); background-size: 15px 15px;"></div>
+                            </div>
+                            <div class="text-center z-10">
+                                <div class="text-7xl mb-2 glitch">🤖</div>
+                                <div class="heading-font text-cyan-400 text-lg tracking-widest">X-7 RENDER ẢO</div>
+                                <p class="text-[10px] text-slate-500 uppercase">Bản đồ Không gian Thời gian thực Hoạt động</p>
+                            </div>
+                            <div class="absolute top-4 left-4 p-2 bg-cyan-500/10 border border-cyan-500/30 rounded">
+                                <div class="flex items-center gap-2">
+                                    <span class="status-dot bg-cyan-400"></span>
+                                    <span class="text-[10px] font-bold text-cyan-400">HỆ THỐNG HOẠT ĐỘNG</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Middle Column: Visual Feed -->
+                    <div class="col-span-12 xl:col-span-5 space-y-6">
+                        <div class="glass-panel p-2 rounded-xl bg-black/90">
+                            <div class="relative group">
+                                            <!-- Video thay cho img -->
+            <video 
+                src="https://huggingface.co/datasets/phamhoanganh/video/resolve/main/airobotticsa.mp4"
+                autoplay 
+                loop 
+                muted 
+                playsinline
+                class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity rounded-lg">
+            </video>
+                                
+                                <!-- Camera Overlays -->
+                                <div class="absolute inset-0 pointer-events-none border-[12px] border-transparent p-4 flex flex-col justify-between">
+                                    <div class="flex justify-between items-start">
+                                        <div class="text-red-500 flex items-center gap-2 font-bold heading-font text-xs">
+                                            <span class="w-3 h-3 bg-red-600 rounded-full animate-pulse"></span> GHI 00:42:12:09
+                                        </div>
+                                        <div class="text-cyan-500 font-mono text-[10px] text-right">
+                                            CAM_01_CHÍNH<br>
+                                            RE_4K_60FPS
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-center">
+                                         <div class="w-24 h-24 border border-cyan-500/30 flex items-center justify-center opacity-40">
+                                            <div class="w-1 h-8 bg-cyan-500/50 absolute"></div>
+                                            <div class="w-8 h-1 bg-cyan-500/50 absolute"></div>
+                                         </div>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <div class="bg-black/60 px-3 py-1 rounded text-cyan-400 text-[10px] mono-font border border-cyan-900/50">
+                                            ISO_800 | F2.8 | SHUT_1/250
+                                        </div>
+                                        <div class="bg-black/60 px-3 py-1 rounded text-white text-[10px] heading-font border border-slate-700">
+                                            TỌA ĐỘ LƯỚI: B3-112
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HUD Borders -->
+                                <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500"></div>
+                                <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-500"></div>
+                                <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-500"></div>
+                                <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-500"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="glass-panel p-4 rounded-xl">
+                                <h4 class="text-[10px] heading-font text-slate-500 uppercase mb-4">Mật độ Tải Động cơ</h4>
+                                <canvas id="motorChart" height="150"></canvas>
+                            </div>
+                            <div class="glass-panel p-4 rounded-xl">
+                                <h4 class="text-[10px] heading-font text-slate-500 uppercase mb-4">Chất lượng Tín hiệu</h4>
+                                <canvas id="signalChart" height="150"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Manual Controls -->
+                    <div class="col-span-12 xl:col-span-3 space-y-6">
+                        <div class="glass-panel p-6 rounded-tl-3xl">
+                            <h3 class="heading-font text-sm text-cyan-400 mb-6 border-b border-cyan-900/30 pb-2">ĐIỀU KHIỂN THỦ CÔNG</h3>
+                            
+                            <div class="control-grid grid grid-cols-3 gap-3 max-w-[240px] mx-auto">
+                                <div></div>
+                                <button onclick="logAction('THRUST_FWD')" class="aspect-square glass-panel flex items-center justify-center group hover:neon-border">
+                                    <i class="fa-solid fa-chevron-up text-2xl text-slate-500 group-hover:text-cyan-400"></i>
+                                </button>
+                                <div></div>
+                                
+                                <button onclick="logAction('YAW_LEFT')" class="aspect-square glass-panel flex items-center justify-center group hover:neon-border">
+                                    <i class="fa-solid fa-chevron-left text-2xl text-slate-500 group-hover:text-cyan-400"></i>
+                                </button>
+                                <button onclick="logAction('HOLD_POSITION')" class="aspect-square bg-secondary/10 border border-secondary/50 flex items-center justify-center group">
+                                    <i class="fa-solid fa-stop text-2xl text-secondary group-hover:scale-110 transition-transform"></i>
+                                </button>
+                                <button onclick="logAction('YAW_RIGHT')" class="aspect-square glass-panel flex items-center justify-center group hover:neon-border">
+                                    <i class="fa-solid fa-chevron-right text-2xl text-slate-500 group-hover:text-cyan-400"></i>
+                                </button>
+
+                                <div></div>
+                                <button onclick="logAction('THRUST_BWD')" class="aspect-square glass-panel flex items-center justify-center group hover:neon-border">
+                                    <i class="fa-solid fa-chevron-down text-2xl text-slate-500 group-hover:text-cyan-400"></i>
+                                </button>
+                                <button onclick="logAction('ROTATE_360')" class="aspect-square glass-panel flex items-center justify-center group hover:neon-border">
+                                    <i class="fa-solid fa-arrows-rotate text-2xl text-slate-500 group-hover:text-cyan-400"></i>
+                                </button>
+                            </div>
+
+                            <div class="mt-8 space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-[10px] heading-font mb-2">
+                                        <span class="text-slate-500">CÔNG SUẤT ĐẦU RA</span>
+                                        <span class="text-cyan-400">65%</span>
+                                    </div>
+                                    <input type="range" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+                                </div>
+                                <button class="w-full py-3 cyber-button heading-font text-xs font-bold tracking-widest mt-2">
+                                    KHỞI ĐỘNG GRAPPLE
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- System Log -->
+                        <div class="glass-panel p-4 rounded-b-xl flex flex-col h-[280px]">
+                            <h3 class="text-[10px] heading-font text-cyan-400 mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-terminal"></i> NHẬT KÝ KERNEL
+                            </h3>
+                            <div id="console-log" class="flex-1 overflow-y-auto mono-font text-[10px] space-y-1 pr-2">
+                                <div class="text-slate-500">[19:40:01] Khởi tạo Giao diện Neural...</div>
+                                <div class="text-emerald-500">[19:40:02] Kết nối đã thiết lập trên 192.168.1.87</div>
+                                <div class="text-slate-300">[19:40:05] Robot di chuyển đến (15.2, 9.1)</div>
+                                <div class="text-cyan-400">[19:40:07] PHÁT HIỆN CHƯỚNG NGẠI VẬT → ĐANG ĐỔI ĐƯỜNG...</div>
+                                <div class="text-slate-300">[19:40:09] Module nhận diện khuôn mặt: Thụ động</div>
+                                <div class="text-emerald-500">[19:40:11] Tiến độ: 68% hoàn thành</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Taskbar -->
+            <footer class="h-12 glass-panel border-t border-cyan-900/30 flex items-center px-8 bg-black/80">
+                <div class="flex-1 flex items-center gap-10 text-[10px] font-mono tracking-wider">
+                    <div class="flex items-center gap-2">
+                        <span class="text-cyan-500">ĐỊA CHỈ IP:</span>
+                        <span class="text-white">192.168.1.87</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-cyan-500">PHIÊN BẢN OS:</span>
+                        <span class="text-white">X-CORE_2.4.1</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-cyan-500">MÔ HÌNH AI:</span>
+                        <span class="text-white">NEURO_VISION_4.2</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-cyan-500">PIN:</span>
+                        <div class="w-16 h-2 bg-slate-800 rounded-full inline-block relative overflow-hidden">
+                            <div class="absolute top-0 left-0 h-full bg-emerald-500" style="width: 87%"></div>
+                        </div>
+                        <span class="text-emerald-400 font-bold">87%</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="text-[10px] heading-font text-white bg-cyan-900/40 px-4 py-1.5 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all rounded">
+                        TẢI LẠI MÔ PHỎNG
+                    </button>
+                    <button class="text-[10px] heading-font text-black bg-cyan-400 px-6 py-1.5 font-bold tracking-widest hover:brightness-125 transition-all rounded shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                        NHIỆM VỤ MỚI
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Real-time Data Simulation
+        const consoleEl = document.getElementById('console-log');
+        const headerTemp = document.getElementById('header-temp');
+        
+        function logAction(action) {
+            const time = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+            const message = document.createElement('div');
+            message.className = 'text-cyan-300 border-l border-cyan-500 pl-2 mt-1';
+            message.innerHTML = `[${time}] LỆNH ĐÃ GỬI: <span class="font-bold">${action}</span>`;
+            consoleEl.appendChild(message);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // Emergency Stop
+        document.getElementById('emergency-btn').addEventListener('click', () => {
+             if(confirm("CẢNH BÁO: Xác nhận Ngắt kết nối khẩn cấp & Dừng vật lý?")) {
+                const time = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'text-red-500 font-bold bg-red-500/10 p-1 mt-1';
+                alertDiv.innerHTML = `[${time}] HỆ THỐNG ĐÃ DỪNG BỞI NGƯỜI ĐIỀU KHIỂN`;
+                consoleEl.appendChild(alertDiv);
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+                document.body.style.filter = "grayscale(1) contrast(1.2)";
+                setTimeout(() => alert("GIAO THỨC ALPHA: Đơn vị đã bị vô hiệu hóa."), 100);
+             }
+        });
+
+        // Initialize Charts
+        const ctxMotor = document.getElementById('motorChart').getContext('2d');
+        const ctxSignal = document.getElementById('signalChart').getContext('2d');
+
+        const chartConfig = (label, color) => ({
+            type: 'line',
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', ''],
+                datasets: [{
+                    label: label,
+                    data: Array.from({length: 10}, () => Math.floor(Math.random() * 100)),
+                    borderColor: color,
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    fill: true,
+                    backgroundColor: `${color}10`
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false, min: 0, max: 120 },
+                    x: { display: false }
+                },
+                animation: { duration: 500 }
+            }
+        });
+
+        const motorChart = new Chart(ctxMotor, chartConfig('Tải Động cơ', '#00f3ff'));
+        const signalChart = new Chart(ctxSignal, chartConfig('Tín hiệu', '#ff00ea'));
+
+        // Update loop
+        setInterval(() => {
+            // Update Charts
+            [motorChart, signalChart].forEach(chart => {
+                chart.data.datasets[0].data.shift();
+                chart.data.datasets[0].data.push(Math.floor(Math.random() * 40) + 40);
+                chart.update('none');
+            });
+
+            // Update Temperature
+            const currentTemp = (32 + Math.random()).toFixed(1);
+            headerTemp.innerText = `${currentTemp}°C`;
+
+            // Random Log Events
+            if(Math.random() > 0.85) {
+                const logs = [
+                    "Cập nhật khu vực lưới: Ổn định",
+                    "Đồng bộ bộ đệm hình ảnh thành công",
+                    "Độ trễ kết nối: 12ms",
+                    "Quét khí quyển đã cập nhật",
+                    "Pathfinder đang tính toán tuyến đường tối ưu..."
+                ];
+                const msg = logs[Math.floor(Math.random() * logs.length)];
+                const time = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+                const logDiv = document.createElement('div');
+                logDiv.className = 'text-slate-500';
+                logDiv.innerHTML = `[${time}] ${msg}`;
+                consoleEl.appendChild(logDiv);
+                if(consoleEl.children.length > 50) consoleEl.removeChild(consoleEl.firstChild);
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+            }
+        }, 2000);
+
+        console.log("%c GIAO DIỆN ROBOTIX ĐÃ KHỞI ĐỘNG ", "background: #00f3ff; color: #000; font-weight: bold; padding: 5px;");
+    </script>
+</body>
+</html>
